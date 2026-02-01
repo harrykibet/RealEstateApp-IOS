@@ -21,18 +21,18 @@ public struct SignupView: View {
             Text("Create Account")
                 .font(.largeTitle.bold())
 
-            TextField("Email", text: $viewModel.email)
+            TextField("Email", text: $viewModel.form.email)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
                 .textFieldStyle(.roundedBorder)
 
-            SecureField("Password", text: $viewModel.password)
+            SecureField("Password", text: $viewModel.form.password)
                 .textFieldStyle(.roundedBorder)
 
-            SecureField("Confirm Password", text: $viewModel.confirmPassword)
+            SecureField("Confirm Password", text: $viewModel.form.confirmPassword)
                 .textFieldStyle(.roundedBorder)
 
-            if let error = viewModel.errorMessage {
+            if let error = viewModel.uiState.errorMessage {
                 Text(error)
                     .foregroundColor(.red)
                     .font(.caption)
@@ -41,14 +41,14 @@ public struct SignupView: View {
             Button {
                 Task { await viewModel.signup() }
             } label: {
-                if viewModel.isLoading {
+                if viewModel.uiState.isLoading {
                     ProgressView()
                 } else {
                     Text("Sign Up")
                 }
             }
             .buttonStyle(.borderedProminent)
-            .disabled(viewModel.isLoading)
+            .disabled(viewModel.uiState.isLoading)
 
             Button("Back to Login") {
                 viewModel.backToLogin()

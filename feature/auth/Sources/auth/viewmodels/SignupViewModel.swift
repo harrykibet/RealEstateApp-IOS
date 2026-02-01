@@ -10,13 +10,12 @@ import Foundation
 
 @MainActor
 public final class SignupViewModel: ObservableObject {
-
-    @Published public var email = ""
-    @Published public var password = ""
-    @Published public var confirmPassword = ""
-
-    @Published public var isLoading: Bool = false
-    @Published public var errorMessage: String?
+    
+    //Sign Up Form State
+    @Published public var form = SignupFormState()
+    
+    // Sign Up UI State
+    @Published public var uiState: SignupUiState = .idle
 
     private let coordinator: AuthCoordinatorViewModel
 
@@ -25,23 +24,22 @@ public final class SignupViewModel: ObservableObject {
     }
 
     public func signup() async {
-        guard password == confirmPassword else {
-            errorMessage = "Passwords do not match"
+        guard form.isFormValid else {
+            uiState = .error("Passwords do not match")
             return
         }
 
-        isLoading = true
-        errorMessage = nil
+        uiState = .loading
 
         do {
             // TODO: signup API
             try await Task.sleep(nanoseconds: 1_000_000_000)
             coordinator.signupSucceeded()
         } catch {
-            errorMessage = "Signup failed"
+            uiState = .error("Signup failed")
         }
 
-        isLoading = false
+        uiState = .loading
     }
 
     public func backToLogin() {

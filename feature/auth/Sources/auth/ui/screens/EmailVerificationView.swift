@@ -24,7 +24,7 @@ public struct EmailVerificationView: View {
             Text("Check your inbox and verify your email address.")
                 .multilineTextAlignment(.center)
 
-            if let message = viewModel.message {
+            if let message = viewModel.uiState.errorMessage {
                 Text(message).foregroundColor(.green)
             }
 
@@ -32,7 +32,7 @@ public struct EmailVerificationView: View {
                 Task { await viewModel.resendEmail() }
             } label: {
                 Group {
-                        if viewModel.isLoading {
+                    if viewModel.uiState.isLoading {
                             ProgressView()
                         } else {
                             Text("Resend Email")

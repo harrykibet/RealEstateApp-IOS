@@ -1,0 +1,45 @@
+//
+//  EmailVerificationUiState.swift
+//  auth
+//
+//  Created by builder on 2/1/26.
+//
+
+
+public enum EmailVerificationUiState {
+    case idle
+    case sending
+    case loading
+    case waitingForVerification
+    case verified
+    case error(String)
+}
+
+extension EmailVerificationUiState {
+
+    var isLoading: Bool {
+        switch self {
+        case .sending, .waitingForVerification:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var errorMessage: String? {
+        if case let .error(message) = self {
+            return message
+        }
+        return nil
+    }
+
+    var isError: Bool {
+        if case .error = self { return true }
+        return false
+    }
+
+    var isVerified: Bool {
+        if case .verified = self { return true }
+        return false
+    }
+}

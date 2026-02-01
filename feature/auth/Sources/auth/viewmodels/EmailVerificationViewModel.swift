@@ -10,8 +10,8 @@ import Foundation
 @MainActor
 public final class EmailVerificationViewModel: ObservableObject {
 
-    @Published public var isLoading: Bool = false
-    @Published public var message: String?
+    // UI State
+    @Published public var uiState: EmailVerificationUiState = .idle
 
     private let coordinator: AuthCoordinatorViewModel
 
@@ -20,10 +20,10 @@ public final class EmailVerificationViewModel: ObservableObject {
     }
 
     public func resendEmail() async {
-        isLoading = true
+        uiState = .loading
         try? await Task.sleep(nanoseconds: 800_000_000)
-        message = "Verification email resent"
-        isLoading = false
+        uiState = .error("Verification email resent")
+        uiState = .idle
     }
 
     public func emailVerified() {

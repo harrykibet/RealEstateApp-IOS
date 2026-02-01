@@ -43,7 +43,7 @@ public final class LoginViewModel: ObservableObject {
             uiState = .error("Login failed")
         }
 
-        uiState = .loading
+        uiState = .idle
     }
 
     public func goToSignup() {

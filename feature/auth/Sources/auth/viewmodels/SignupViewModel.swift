@@ -39,7 +39,7 @@ public final class SignupViewModel: ObservableObject {
             uiState = .error("Signup failed")
         }
 
-        uiState = .loading
+        uiState = .idle
     }
 
     public func backToLogin() {

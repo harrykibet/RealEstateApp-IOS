@@ -32,7 +32,7 @@ public final class ForgotPasswordViewModel: ObservableObject {
         try? await Task.sleep(nanoseconds: 800_000_000)
 
         uiState = .success("Password reset link sent")
-        uiState = .loading
+        uiState = .idle
     }
 
     public func backToLogin() {

@@ -26,11 +26,11 @@ public struct ForgotPasswordView: View {
                 .autocapitalization(.none)
                 .textFieldStyle(.roundedBorder)
 
-            if let error = viewModel.errorMessage {
+            if let error = viewModel.uiState.errorMessage {
                 Text(error).foregroundColor(.red)
             }
 
-            if let success = viewModel.successMessage {
+            if let success = viewModel.uiState.successMessage {
                 Text(success).foregroundColor(.green)
             }
 
@@ -38,7 +38,7 @@ public struct ForgotPasswordView: View {
                 Task { await viewModel.sendResetLink() }
             } label: {
                 Group {
-                        if viewModel.isLoading {
+                    if viewModel.uiState.isLoading {
                             ProgressView()
                         } else {
                             Text("Send Reset Link")

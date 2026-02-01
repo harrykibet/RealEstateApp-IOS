@@ -25,7 +25,7 @@ public struct PhoneVerificationView: View {
                 .keyboardType(.numberPad)
                 .textFieldStyle(.roundedBorder)
 
-            if let error = viewModel.errorMessage {
+            if let error = viewModel.uiState.errorMessage {
                 Text(error).foregroundColor(.red)
             }
 
@@ -33,7 +33,7 @@ public struct PhoneVerificationView: View {
                 Task { await viewModel.verifyCode() }
             } label: {
                 Group {
-                        if viewModel.isLoading {
+                    if viewModel.uiState.isLoading {
                             ProgressView()
                         } else {
                             Text("Verify")

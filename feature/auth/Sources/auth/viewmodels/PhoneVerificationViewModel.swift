@@ -10,9 +10,11 @@ import Foundation
 @MainActor
 public final class PhoneVerificationViewModel: ObservableObject {
 
+    // OTP
     @Published public var code: String = ""
-    @Published public var isLoading: Bool = false
-    @Published public var errorMessage: String?
+    
+    //UI State
+    @Published public var uiState: PhoneVerificationUiState = .idle
 
     private let coordinator: AuthCoordinatorViewModel
 
@@ -26,17 +28,16 @@ public final class PhoneVerificationViewModel: ObservableObject {
 
     public func verifyCode() async {
         guard code.count >= 4 else {
-            errorMessage = "Invalid verification code"
+            uiState = .error("Invalid verification code")
             return
         }
 
-        isLoading = true
-        errorMessage = nil
+        uiState = .loading
 
         try? await Task.sleep(nanoseconds: 800_000_000)
 
         coordinator.phoneVerified()
-        isLoading = false
+        uiState = .idle
     }
 
     public func verifyEmailInstead() {

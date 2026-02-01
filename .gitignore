@@ -1,0 +1,8 @@
+# Swift & Xcode
+DerivedData/
+build/
+*.xcworkspace
+*.xcuserstate
+*.xcodeproj/project.xcworkspace/
+.idea/
+Pods/

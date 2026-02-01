@@ -1,0 +1,40 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  TEST_SHARD_COUNT: 2
+  BITRISE_PROJECT_PATH: estatia.xcodeproj
+  BITRISE_SCHEME: estatia
+  BITRISE_DISTRIBUTION_METHOD: ad-hoc
+
+# Job to build the app for testing
+build_for_testing:
+  stage: build
+  script:
+    - echo "Building for testing"
+    - xcodebuild clean build-for-testing -project $BITRISE_PROJECT_PATH -scheme $BITRISE_SCHEME -destination 'platform=iOS Simulator'
+
+# Job to run the tests
+run_tests:
+  stage: test
+  script:
+    - echo "Running tests"
+    - xcodebuild test -project $BITRISE_PROJECT_PATH -scheme $BITRISE_SCHEME -destination 'platform=iOS Simulator'
+    - echo "Test results saved to artifact directory"
+  artifacts:
+    paths:
+      - path/to/test/results  # Adjust this to the location of your test results
+
+# Job to archive and export the IPA
+archive_and_export_app:
+  stage: deploy
+  script:
+    - echo "Archiving and exporting IPA"
+    - xcodebuild archive -project $BITRISE_PROJECT_PATH -scheme $BITRISE_SCHEME -archivePath build/estatia.xcarchive
+    - xcodebuild -exportArchive -archivePath build/estatia.xcarchive -exportPath build/estatia.ipa -exportOptionsPlist ExportOptions.plist
+  artifacts:
+    paths:
+      - build/estatia.ipa
+

@@ -7,36 +7,35 @@
 
 
 import SwiftUI
-import profile
-import home
-import search
-import property
-import model
 
 struct MainTabView: View {
-    let user: User
+    @ObservedObject var coordinator: AppCoordinator
 
     var body: some View {
-        TabView {
-            HomeView()
+        TabView(selection: $coordinator.selectedTab) {
+            coordinator.view(for: .home)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
+                .tag(AppCoordinator.AppTab.home)
 
-            SearchView()
+            coordinator.view(for: .search)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
+                .tag(AppCoordinator.AppTab.search)
 
-            AddPropertyView()
+            coordinator.view(for: .property)
                 .tabItem {
                     Label("Add", systemImage: "plus.app.fill")
                 }
+                .tag(AppCoordinator.AppTab.add)
 
-            UserProfileView(user: user)
+            coordinator.view(for: .profile(coordinator.currentUser))
                 .tabItem {
                     Label("Profile", systemImage: "person.fill")
                 }
+                .tag(AppCoordinator.AppTab.profile)
         }
         .accentColor(.primary)
     }
@@ -44,15 +43,6 @@ struct MainTabView: View {
 
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        MainTabView(user: User(
-            userId: "123",
-            name: "Harry Kibet",
-            email: "harry@example.com",
-            phoneNumber: "+254712345678",
-            profilePictureUrl:"https://i.pravatar.cc/150?img=3",
-            userType: .landlord,
-            verified: true,
-            likedProperties: ["property_1", "property_2"]
-        ))
+        MainTabView(coordinator: AppCoordinator(container: AppDIContainer()))
     }
 }

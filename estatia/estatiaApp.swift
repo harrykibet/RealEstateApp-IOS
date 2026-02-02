@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseCore
-import model
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
@@ -22,26 +21,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct YourApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    private let container: AppDIContainer
+    @StateObject private var coordinator: AppCoordinator
+
+    init() {
+        let container = AppDIContainer()
+        self.container = container
+        _coordinator = StateObject(wrappedValue: AppCoordinator(container: container))
+    }
 
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                MainTabView(user: mockUser) // ✅ Inject mock user here
-            }
+            coordinator.makeRootView()
         }
-    }
-
-    // ✅ Mock user instance
-    var mockUser: User {
-        User(
-            userId: "demo_001",
-            name: "Harry Kibet",
-            email: "harry@example.com",
-            phoneNumber: "+254712345678",
-            profilePictureUrl: "https://i.pravatar.cc/150?img=3",
-            userType: .landlord,
-            verified: true,
-            likedProperties: ["property_a", "property_b"]
-        )
     }
 }

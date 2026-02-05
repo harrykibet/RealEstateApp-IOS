@@ -14,14 +14,26 @@ let package = Package(
             name: "data",
             targets: ["data"]),
     ],
+    dependencies: [
+        .package(path: "../model"),
+        .package(path: "../network")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "data"),
+            name: "data",
+            dependencies: [
+                .product(name: "model", package: "model"),
+                .product(name: "network", package: "network")
+            ]),
         .testTarget(
             name: "dataTests",
-            dependencies: ["data"]
+            dependencies: [
+                "data",
+                .product(name: "network", package: "network"),
+                .product(name: "model", package: "model")
+            ]
         ),
     ]
 )

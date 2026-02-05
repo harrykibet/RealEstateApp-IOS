@@ -8,7 +8,12 @@
 
 import Foundation
 
-struct SecurityConfig {
-    var encryptionAlgorithm: String
-    var keyAlias: String
+public struct SecurityConfig: Codable, Equatable {
+    public var encryptionAlgorithm: String
+    public var keyAlias: String
+
+    public init(encryptionAlgorithm: String, keyAlias: String) {
+        self.encryptionAlgorithm = encryptionAlgorithm
+        self.keyAlias = keyAlias
+    }
 }

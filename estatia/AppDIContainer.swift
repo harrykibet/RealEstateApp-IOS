@@ -60,7 +60,7 @@ public final class AppDIContainer {
         }
     }
 
-    public enum FeatureDestination: Hashable {
+    public enum FeatureDestination {
         case home
         case search
         case property
@@ -139,3 +139,76 @@ public final class AppDIContainer {
         }
     }
 }
+extension AppDIContainer.FeatureDestination: Equatable {
+    public static func == (lhs: AppDIContainer.FeatureDestination, rhs: AppDIContainer.FeatureDestination) -> Bool {
+        switch (lhs, rhs) {
+        case (.home, .home):
+            return true
+        case (.search, .search):
+            return true
+        case (.property, .property):
+            return true
+        case (.profile(let u1), .profile(let u2)):
+            return u1.userId == u2.userId
+        case (.settings, .settings):
+            return true
+        case (.comments, .comments):
+            return true
+        case (.payments, .payments):
+            return true
+        case (.intelligence, .intelligence):
+            return true
+        case (.favorites, .favorites):
+            return true
+        case (.chats, .chats):
+            return true
+        case (.market, .market):
+            return true
+        case (.service, .service):
+            return true
+        case (.player, .player):
+            return true
+        case (.auth, .auth):
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension AppDIContainer.FeatureDestination: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        switch self {
+        case .home:
+            hasher.combine(0)
+        case .search:
+            hasher.combine(1)
+        case .property:
+            hasher.combine(2)
+        case .profile(let user):
+            hasher.combine(3)
+            hasher.combine(user.userId)
+        case .settings:
+            hasher.combine(4)
+        case .comments:
+            hasher.combine(5)
+        case .payments:
+            hasher.combine(6)
+        case .intelligence:
+            hasher.combine(7)
+        case .favorites:
+            hasher.combine(8)
+        case .chats:
+            hasher.combine(9)
+        case .market:
+            hasher.combine(10)
+        case .service:
+            hasher.combine(11)
+        case .player:
+            hasher.combine(12)
+        case .auth:
+            hasher.combine(13)
+        }
+    }
+}
+

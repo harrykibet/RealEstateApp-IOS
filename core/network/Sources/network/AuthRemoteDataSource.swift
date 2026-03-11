@@ -12,11 +12,11 @@ public final class NoopAuthRemoteDataSource: AuthRemoteDataSource {
     public init() {}
 
     public func signIn(email: String, password: String) async throws -> User {
-        User(email: email, name: nil)
+        User(name: nil, email: email)
     }
 
     public func signUp(email: String, password: String, displayName: String?) async throws -> User {
-        User(email: email, name: displayName)
+        User(name: displayName, email: email)
     }
 
     public func signOut() async throws {}

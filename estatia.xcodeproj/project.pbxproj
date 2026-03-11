@@ -87,6 +87,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A672D3E2F61F4CA004BCD13 /* PlayerEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerEngine; sourceTree = "<group>"; };
+		5A672D3F2F61F589004BCD13 /* PlayerUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerUI; sourceTree = "<group>"; };
 		5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5AA8A6532DC3952000F71CEF /* estatia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = estatia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA8A6602DC3952200F71CEF /* estatiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = estatiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -132,16 +134,6 @@
 		5AA8A66D2DC3952200F71CEF /* estatiaUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = estatiaUITests;
-			sourceTree = "<group>";
-		};
-		5ADA029F2F0371E00071E1DF /* Core */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Core;
-			sourceTree = "<group>";
-		};
-		5ADA02C82F0371FE0071E1DF /* Feature */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Feature;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -226,8 +218,6 @@
 				5AA8A6552DC3952000F71CEF /* estatia */,
 				5AA8A6632DC3952200F71CEF /* estatiaTests */,
 				5AA8A66D2DC3952200F71CEF /* estatiaUITests */,
-				5ADA029F2F0371E00071E1DF /* Core */,
-				5ADA02C82F0371FE0071E1DF /* Feature */,
 				5AA8A6542DC3952000F71CEF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -266,6 +256,8 @@
 		5AA8A6882DC398B800F71CEF /* core */ = {
 			isa = PBXGroup;
 			children = (
+				5A672D3F2F61F589004BCD13 /* PlayerUI */,
+				5A672D3E2F61F4CA004BCD13 /* PlayerEngine */,
 				5AA8A6A12DC39EC700F71CEF /* testing */,
 				5AA8A6942DC39BA200F71CEF /* notifications */,
 				5AA8A6932DC39B6400F71CEF /* model */,

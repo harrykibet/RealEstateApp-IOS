@@ -27,33 +27,10 @@
 		5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694502DC62E2800245881 /* FirebaseRemoteConfig */; };
 		5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694522DC62E2800245881 /* FirebaseStorage */; };
 		5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694562DC62E2800245881 /* FirebaseVertexAI */; };
-		5A6E74A32DC6901B0016751B /* analytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74A22DC6901B0016751B /* analytics */; };
-		5A6E74A62DC690D20016751B /* common in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74A52DC690D20016751B /* common */; };
-		5A6E74A92DC691430016751B /* data in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74A82DC691430016751B /* data */; };
-		5A6E74AC2DC691D00016751B /* database in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74AB2DC691D00016751B /* database */; };
-		5A6E74AF2DC692400016751B /* domain in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74AE2DC692400016751B /* domain */; };
-		5A6E74B22DC6934B0016751B /* model in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74B12DC6934B0016751B /* model */; };
-		5A6E74B52DC6939A0016751B /* network in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74B42DC6939A0016751B /* network */; };
-		5A6E74B82DC693CD0016751B /* notifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74B72DC693CD0016751B /* notifications */; };
-		5A6E74BB2DC693F50016751B /* security in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74BA2DC693F50016751B /* security */; };
-		5A6E74BE2DC694400016751B /* testing in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74BD2DC694400016751B /* testing */; };
-		5A6E74C12DC694840016751B /* ui in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74C02DC694840016751B /* ui */; };
-		5A6E74C42DC695170016751B /* chats in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74C32DC695170016751B /* chats */; };
-		5A6E74C72DC695650016751B /* comments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74C62DC695650016751B /* comments */; };
-		5A6E74CA2DC695C50016751B /* favorites in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74C92DC695C50016751B /* favorites */; };
-		5A6E74CD2DC695FF0016751B /* home in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74CC2DC695FF0016751B /* home */; };
-		5A6E74D02DC6969F0016751B /* intelligence in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74CF2DC6969F0016751B /* intelligence */; };
-		5A6E74D32DC696CA0016751B /* market in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74D22DC696CA0016751B /* market */; };
-		5A6E74D62DC696ED0016751B /* payments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74D52DC696ED0016751B /* payments */; };
-		5A6E74D92DC6970A0016751B /* player in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74D82DC6970A0016751B /* player */; };
-		5A6E74DC2DC697270016751B /* profile in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74DB2DC697270016751B /* profile */; };
-		5A6E74DF2DC6974A0016751B /* property in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74DE2DC6974A0016751B /* property */; };
-		5A6E74E22DC6976B0016751B /* search in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74E12DC6976B0016751B /* search */; };
-		5A6E74E52DC697B70016751B /* service in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74E42DC697B70016751B /* service */; };
-		5A6E74E82DC697DD0016751B /* settings in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6E74E72DC697DD0016751B /* settings */; };
-		5A9B9D952DCF810D00835345 /* model in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9B9D942DCF810D00835345 /* model */; };
+		5A392A502F69DEC4003CE8F2 /* model in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A4F2F69DEC4003CE8F2 /* model */; };
+		5A392A622F69E0EB003CE8F2 /* analytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A612F69E0EB003CE8F2 /* analytics */; };
+		5A392A652F69E136003CE8F2 /* common in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A642F69E136003CE8F2 /* common */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
-		5A9F4EE12DC65C7F00587413 /* auth in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9F4EE02DC65C7F00587413 /* auth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,24 +64,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5A672D3E2F61F4CA004BCD13 /* PlayerEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerEngine; sourceTree = "<group>"; };
-		5A672D3F2F61F589004BCD13 /* PlayerUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerUI; sourceTree = "<group>"; };
+		5A392A522F69DFD8003CE8F2 /* analytics */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = analytics; sourceTree = "<group>"; };
+		5A392A532F69DFD8003CE8F2 /* common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = common; sourceTree = "<group>"; };
+		5A392A542F69DFD8003CE8F2 /* data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = data; sourceTree = "<group>"; };
+		5A392A552F69DFD8003CE8F2 /* database */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = database; sourceTree = "<group>"; };
+		5A392A562F69DFD8003CE8F2 /* domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = domain; sourceTree = "<group>"; };
+		5A392A572F69DFD8003CE8F2 /* model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = model; sourceTree = "<group>"; };
+		5A392A582F69DFD8003CE8F2 /* network */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = network; sourceTree = "<group>"; };
+		5A392A592F69DFD8003CE8F2 /* notifications */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = notifications; sourceTree = "<group>"; };
+		5A392A5A2F69DFD8003CE8F2 /* PlayerEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerEngine; sourceTree = "<group>"; };
+		5A392A5B2F69DFD8003CE8F2 /* PlayerUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerUI; sourceTree = "<group>"; };
+		5A392A5C2F69DFD8003CE8F2 /* security */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = security; sourceTree = "<group>"; };
+		5A392A5D2F69DFD8003CE8F2 /* testing */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = testing; sourceTree = "<group>"; };
+		5A392A5E2F69DFD8003CE8F2 /* ui */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ui; sourceTree = "<group>"; };
 		5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5AA8A6532DC3952000F71CEF /* estatia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = estatia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA8A6602DC3952200F71CEF /* estatiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = estatiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA8A66A2DC3952200F71CEF /* estatiaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = estatiaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA8A6892DC398E700F71CEF /* home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = home; sourceTree = "<group>"; };
 		5AA8A68A2DC3991B00F71CEF /* profile */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = profile; sourceTree = "<group>"; };
-		5AA8A68B2DC3996300F71CEF /* data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = data; sourceTree = "<group>"; };
-		5AA8A68C2DC3999600F71CEF /* ui */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ui; sourceTree = "<group>"; };
-		5AA8A68D2DC399D500F71CEF /* database */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = database; sourceTree = "<group>"; };
-		5AA8A68E2DC39A1700F71CEF /* network */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = network; sourceTree = "<group>"; };
-		5AA8A68F2DC39A5100F71CEF /* domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = domain; sourceTree = "<group>"; };
-		5AA8A6902DC39A8400F71CEF /* common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = common; sourceTree = "<group>"; };
-		5AA8A6912DC39AF200F71CEF /* analytics */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = analytics; sourceTree = "<group>"; };
-		5AA8A6922DC39B2700F71CEF /* security */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = security; sourceTree = "<group>"; };
-		5AA8A6932DC39B6400F71CEF /* model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = model; sourceTree = "<group>"; };
-		5AA8A6942DC39BA200F71CEF /* notifications */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = notifications; sourceTree = "<group>"; };
 		5AA8A6952DC39C1100F71CEF /* auth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = auth; sourceTree = "<group>"; };
 		5AA8A6962DC39C5200F71CEF /* chats */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = chats; sourceTree = "<group>"; };
 		5AA8A6972DC39C8000F71CEF /* comments */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = comments; sourceTree = "<group>"; };
@@ -117,7 +95,6 @@
 		5AA8A69E2DC39E0600F71CEF /* search */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = search; sourceTree = "<group>"; };
 		5AA8A69F2DC39E3F00F71CEF /* service */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = service; sourceTree = "<group>"; };
 		5AA8A6A02DC39E6C00F71CEF /* settings */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = settings; sourceTree = "<group>"; };
-		5AA8A6A12DC39EC700F71CEF /* testing */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = testing; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -143,50 +120,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A6E74DC2DC697270016751B /* profile in Frameworks */,
 				5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */,
 				5A1694432DC62E2800245881 /* FirebaseFunctions in Frameworks */,
 				5A16944F2DC62E2800245881 /* FirebasePerformance in Frameworks */,
-				5A6E74BB2DC693F50016751B /* security in Frameworks */,
-				5A6E74CD2DC695FF0016751B /* home in Frameworks */,
-				5A6E74C42DC695170016751B /* chats in Frameworks */,
-				5A6E74D92DC6970A0016751B /* player in Frameworks */,
-				5A6E74E22DC6976B0016751B /* search in Frameworks */,
-				5A9F4EE12DC65C7F00587413 /* auth in Frameworks */,
-				5A6E74B82DC693CD0016751B /* notifications in Frameworks */,
 				5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */,
-				5A6E74A62DC690D20016751B /* common in Frameworks */,
 				5A16943B2DC62E2800245881 /* FirebaseDatabase in Frameworks */,
-				5A6E74C72DC695650016751B /* comments in Frameworks */,
 				5A16943D2DC62E2800245881 /* FirebaseDynamicLinks in Frameworks */,
 				5A16942F2DC62E2800245881 /* FirebaseAppCheck in Frameworks */,
-				5A6E74D32DC696CA0016751B /* market in Frameworks */,
 				5A1694332DC62E2800245881 /* FirebaseAuth in Frameworks */,
 				5A1694292DC62E2800245881 /* FirebaseAnalytics in Frameworks */,
+				5A392A502F69DEC4003CE8F2 /* model in Frameworks */,
 				5A16943F2DC62E2800245881 /* FirebaseFirestore in Frameworks */,
 				5A16944D2DC62E2800245881 /* FirebaseMessaging in Frameworks */,
-				5A6E74E52DC697B70016751B /* service in Frameworks */,
 				5A1694492DC62E2800245881 /* FirebaseInstallations in Frameworks */,
-				5A9B9D952DCF810D00835345 /* model in Frameworks */,
-				5A6E74B52DC6939A0016751B /* network in Frameworks */,
 				5A1694312DC62E2800245881 /* FirebaseAppDistribution-Beta in Frameworks */,
 				5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				5A392A622F69E0EB003CE8F2 /* analytics in Frameworks */,
 				5A1694472DC62E2800245881 /* FirebaseInAppMessaging-Beta in Frameworks */,
-				5A6E74D62DC696ED0016751B /* payments in Frameworks */,
-				5A6E74BE2DC694400016751B /* testing in Frameworks */,
-				5A6E74AF2DC692400016751B /* domain in Frameworks */,
-				5A6E74A32DC6901B0016751B /* analytics in Frameworks */,
-				5A6E74D02DC6969F0016751B /* intelligence in Frameworks */,
-				5A6E74AC2DC691D00016751B /* database in Frameworks */,
-				5A6E74E82DC697DD0016751B /* settings in Frameworks */,
-				5A6E74CA2DC695C50016751B /* favorites in Frameworks */,
-				5A6E74DF2DC6974A0016751B /* property in Frameworks */,
-				5A6E74C12DC694840016751B /* ui in Frameworks */,
-				5A6E74A92DC691430016751B /* data in Frameworks */,
 				5A1694392DC62E2800245881 /* FirebaseCrashlytics in Frameworks */,
 				5A16944B2DC62E2800245881 /* FirebaseMLModelDownloader in Frameworks */,
-				5A6E74B22DC6934B0016751B /* model in Frameworks */,
 				5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */,
+				5A392A652F69E136003CE8F2 /* common in Frameworks */,
 				5A1694372DC62E2800245881 /* FirebaseCore in Frameworks */,
 				5A16942B2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 			);
@@ -209,30 +163,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5AA8A64A2DC3952000F71CEF = {
+		5A392A512F69DF10003CE8F2 /* packages */ = {
 			isa = PBXGroup;
 			children = (
-				5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */,
-				5AA8A6882DC398B800F71CEF /* core */,
-				5AA8A6862DC3985100F71CEF /* feature */,
-				5AA8A6552DC3952000F71CEF /* estatia */,
-				5AA8A6632DC3952200F71CEF /* estatiaTests */,
-				5AA8A66D2DC3952200F71CEF /* estatiaUITests */,
-				5AA8A6542DC3952000F71CEF /* Products */,
+				5A392A5F2F69DFD8003CE8F2 /* core */,
+				5A8521532F69D64A0059C848 /* feature */,
 			);
+			path = packages;
 			sourceTree = "<group>";
 		};
-		5AA8A6542DC3952000F71CEF /* Products */ = {
+		5A392A5F2F69DFD8003CE8F2 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				5AA8A6532DC3952000F71CEF /* estatia.app */,
-				5AA8A6602DC3952200F71CEF /* estatiaTests.xctest */,
-				5AA8A66A2DC3952200F71CEF /* estatiaUITests.xctest */,
+				5A392A522F69DFD8003CE8F2 /* analytics */,
+				5A392A532F69DFD8003CE8F2 /* common */,
+				5A392A542F69DFD8003CE8F2 /* data */,
+				5A392A552F69DFD8003CE8F2 /* database */,
+				5A392A562F69DFD8003CE8F2 /* domain */,
+				5A392A572F69DFD8003CE8F2 /* model */,
+				5A392A582F69DFD8003CE8F2 /* network */,
+				5A392A592F69DFD8003CE8F2 /* notifications */,
+				5A392A5A2F69DFD8003CE8F2 /* PlayerEngine */,
+				5A392A5B2F69DFD8003CE8F2 /* PlayerUI */,
+				5A392A5C2F69DFD8003CE8F2 /* security */,
+				5A392A5D2F69DFD8003CE8F2 /* testing */,
+				5A392A5E2F69DFD8003CE8F2 /* ui */,
 			);
-			name = Products;
+			path = core;
 			sourceTree = "<group>";
 		};
-		5AA8A6862DC3985100F71CEF /* feature */ = {
+		5A8521532F69D64A0059C848 /* feature */ = {
 			isa = PBXGroup;
 			children = (
 				5AA8A6A02DC39E6C00F71CEF /* settings */,
@@ -253,24 +213,26 @@
 			path = feature;
 			sourceTree = "<group>";
 		};
-		5AA8A6882DC398B800F71CEF /* core */ = {
+		5AA8A64A2DC3952000F71CEF = {
 			isa = PBXGroup;
 			children = (
-				5A672D3F2F61F589004BCD13 /* PlayerUI */,
-				5A672D3E2F61F4CA004BCD13 /* PlayerEngine */,
-				5AA8A6A12DC39EC700F71CEF /* testing */,
-				5AA8A6942DC39BA200F71CEF /* notifications */,
-				5AA8A6932DC39B6400F71CEF /* model */,
-				5AA8A6922DC39B2700F71CEF /* security */,
-				5AA8A6912DC39AF200F71CEF /* analytics */,
-				5AA8A6902DC39A8400F71CEF /* common */,
-				5AA8A68F2DC39A5100F71CEF /* domain */,
-				5AA8A68E2DC39A1700F71CEF /* network */,
-				5AA8A68D2DC399D500F71CEF /* database */,
-				5AA8A68C2DC3999600F71CEF /* ui */,
-				5AA8A68B2DC3996300F71CEF /* data */,
+				5A392A512F69DF10003CE8F2 /* packages */,
+				5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */,
+				5AA8A6552DC3952000F71CEF /* estatia */,
+				5AA8A6632DC3952200F71CEF /* estatiaTests */,
+				5AA8A66D2DC3952200F71CEF /* estatiaUITests */,
+				5AA8A6542DC3952000F71CEF /* Products */,
 			);
-			path = core;
+			sourceTree = "<group>";
+		};
+		5AA8A6542DC3952000F71CEF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5AA8A6532DC3952000F71CEF /* estatia.app */,
+				5AA8A6602DC3952200F71CEF /* estatiaTests.xctest */,
+				5AA8A66A2DC3952200F71CEF /* estatiaUITests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,32 +276,9 @@
 				5A1694502DC62E2800245881 /* FirebaseRemoteConfig */,
 				5A1694522DC62E2800245881 /* FirebaseStorage */,
 				5A1694562DC62E2800245881 /* FirebaseVertexAI */,
-				5A9F4EE02DC65C7F00587413 /* auth */,
-				5A6E74A22DC6901B0016751B /* analytics */,
-				5A6E74A52DC690D20016751B /* common */,
-				5A6E74A82DC691430016751B /* data */,
-				5A6E74AB2DC691D00016751B /* database */,
-				5A6E74AE2DC692400016751B /* domain */,
-				5A6E74B12DC6934B0016751B /* model */,
-				5A6E74B42DC6939A0016751B /* network */,
-				5A6E74B72DC693CD0016751B /* notifications */,
-				5A6E74BA2DC693F50016751B /* security */,
-				5A6E74BD2DC694400016751B /* testing */,
-				5A6E74C02DC694840016751B /* ui */,
-				5A6E74C32DC695170016751B /* chats */,
-				5A6E74C62DC695650016751B /* comments */,
-				5A6E74C92DC695C50016751B /* favorites */,
-				5A6E74CC2DC695FF0016751B /* home */,
-				5A6E74CF2DC6969F0016751B /* intelligence */,
-				5A6E74D22DC696CA0016751B /* market */,
-				5A6E74D52DC696ED0016751B /* payments */,
-				5A6E74D82DC6970A0016751B /* player */,
-				5A6E74DB2DC697270016751B /* profile */,
-				5A6E74DE2DC6974A0016751B /* property */,
-				5A6E74E12DC6976B0016751B /* search */,
-				5A6E74E42DC697B70016751B /* service */,
-				5A6E74E72DC697DD0016751B /* settings */,
-				5A9B9D942DCF810D00835345 /* model */,
+				5A392A4F2F69DEC4003CE8F2 /* model */,
+				5A392A612F69E0EB003CE8F2 /* analytics */,
+				5A392A642F69E136003CE8F2 /* common */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -425,31 +364,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5A1694272DC62E2800245881 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				5A9F4EDF2DC65C7F00587413 /* XCLocalSwiftPackageReference "feature/auth" */,
-				5A6E74A12DC6901B0016751B /* XCLocalSwiftPackageReference "core/analytics" */,
-				5A6E74A42DC690D20016751B /* XCLocalSwiftPackageReference "core/common" */,
-				5A6E74A72DC691430016751B /* XCLocalSwiftPackageReference "core/data" */,
-				5A6E74AA2DC691D00016751B /* XCLocalSwiftPackageReference "core/database" */,
-				5A6E74AD2DC692400016751B /* XCLocalSwiftPackageReference "core/domain" */,
-				5A6E74B32DC6939A0016751B /* XCLocalSwiftPackageReference "core/network" */,
-				5A6E74B62DC693CD0016751B /* XCLocalSwiftPackageReference "core/notifications" */,
-				5A6E74B92DC693F50016751B /* XCLocalSwiftPackageReference "core/security" */,
-				5A6E74BC2DC694400016751B /* XCLocalSwiftPackageReference "core/testing" */,
-				5A6E74BF2DC694840016751B /* XCLocalSwiftPackageReference "core/ui" */,
-				5A6E74C22DC695170016751B /* XCLocalSwiftPackageReference "feature/chats" */,
-				5A6E74C52DC695650016751B /* XCLocalSwiftPackageReference "feature/comments" */,
-				5A6E74C82DC695C50016751B /* XCLocalSwiftPackageReference "feature/favorites" */,
-				5A6E74CB2DC695FF0016751B /* XCLocalSwiftPackageReference "feature/home" */,
-				5A6E74CE2DC6969F0016751B /* XCLocalSwiftPackageReference "feature/intelligence" */,
-				5A6E74D12DC696CA0016751B /* XCLocalSwiftPackageReference "feature/market" */,
-				5A6E74D42DC696ED0016751B /* XCLocalSwiftPackageReference "feature/payments" */,
-				5A6E74D72DC6970A0016751B /* XCLocalSwiftPackageReference "feature/player" */,
-				5A6E74DA2DC697270016751B /* XCLocalSwiftPackageReference "feature/profile" */,
-				5A6E74DD2DC6974A0016751B /* XCLocalSwiftPackageReference "feature/property" */,
-				5A6E74E02DC6976B0016751B /* XCLocalSwiftPackageReference "feature/search" */,
-				5A6E74E32DC697B70016751B /* XCLocalSwiftPackageReference "feature/service" */,
-				5A6E74E62DC697DD0016751B /* XCLocalSwiftPackageReference "feature/settings" */,
-				5A9B9D932DCF810D00835345 /* XCLocalSwiftPackageReference "core/model" */,
+				5A392A602F69E0EB003CE8F2 /* XCLocalSwiftPackageReference "packages/core/analytics" */,
+				5A392A632F69E136003CE8F2 /* XCLocalSwiftPackageReference "packages/core/common" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -815,105 +731,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		5A6E74A12DC6901B0016751B /* XCLocalSwiftPackageReference "core/analytics" */ = {
+		5A392A602F69E0EB003CE8F2 /* XCLocalSwiftPackageReference "packages/core/analytics" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = core/analytics;
+			relativePath = packages/core/analytics;
 		};
-		5A6E74A42DC690D20016751B /* XCLocalSwiftPackageReference "core/common" */ = {
+		5A392A632F69E136003CE8F2 /* XCLocalSwiftPackageReference "packages/core/common" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = core/common;
-		};
-		5A6E74A72DC691430016751B /* XCLocalSwiftPackageReference "core/data" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/data;
-		};
-		5A6E74AA2DC691D00016751B /* XCLocalSwiftPackageReference "core/database" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/database;
-		};
-		5A6E74AD2DC692400016751B /* XCLocalSwiftPackageReference "core/domain" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/domain;
-		};
-		5A6E74B32DC6939A0016751B /* XCLocalSwiftPackageReference "core/network" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/network;
-		};
-		5A6E74B62DC693CD0016751B /* XCLocalSwiftPackageReference "core/notifications" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/notifications;
-		};
-		5A6E74B92DC693F50016751B /* XCLocalSwiftPackageReference "core/security" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/security;
-		};
-		5A6E74BC2DC694400016751B /* XCLocalSwiftPackageReference "core/testing" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/testing;
-		};
-		5A6E74BF2DC694840016751B /* XCLocalSwiftPackageReference "core/ui" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/ui;
-		};
-		5A6E74C22DC695170016751B /* XCLocalSwiftPackageReference "feature/chats" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/chats;
-		};
-		5A6E74C52DC695650016751B /* XCLocalSwiftPackageReference "feature/comments" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/comments;
-		};
-		5A6E74C82DC695C50016751B /* XCLocalSwiftPackageReference "feature/favorites" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/favorites;
-		};
-		5A6E74CB2DC695FF0016751B /* XCLocalSwiftPackageReference "feature/home" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/home;
-		};
-		5A6E74CE2DC6969F0016751B /* XCLocalSwiftPackageReference "feature/intelligence" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/intelligence;
-		};
-		5A6E74D12DC696CA0016751B /* XCLocalSwiftPackageReference "feature/market" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/market;
-		};
-		5A6E74D42DC696ED0016751B /* XCLocalSwiftPackageReference "feature/payments" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/payments;
-		};
-		5A6E74D72DC6970A0016751B /* XCLocalSwiftPackageReference "feature/player" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/player;
-		};
-		5A6E74DA2DC697270016751B /* XCLocalSwiftPackageReference "feature/profile" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/profile;
-		};
-		5A6E74DD2DC6974A0016751B /* XCLocalSwiftPackageReference "feature/property" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/property;
-		};
-		5A6E74E02DC6976B0016751B /* XCLocalSwiftPackageReference "feature/search" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/search;
-		};
-		5A6E74E32DC697B70016751B /* XCLocalSwiftPackageReference "feature/service" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/service;
-		};
-		5A6E74E62DC697DD0016751B /* XCLocalSwiftPackageReference "feature/settings" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/settings;
-		};
-		5A9B9D932DCF810D00835345 /* XCLocalSwiftPackageReference "core/model" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = core/model;
-		};
-		5A9F4EDF2DC65C7F00587413 /* XCLocalSwiftPackageReference "feature/auth" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = feature/auth;
+			relativePath = packages/core/common;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -1029,109 +853,17 @@
 			package = 5A1694272DC62E2800245881 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
 		};
-		5A6E74A22DC6901B0016751B /* analytics */ = {
+		5A392A4F2F69DEC4003CE8F2 /* model */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = model;
+		};
+		5A392A612F69E0EB003CE8F2 /* analytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = analytics;
 		};
-		5A6E74A52DC690D20016751B /* common */ = {
+		5A392A642F69E136003CE8F2 /* common */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = common;
-		};
-		5A6E74A82DC691430016751B /* data */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = data;
-		};
-		5A6E74AB2DC691D00016751B /* database */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = database;
-		};
-		5A6E74AE2DC692400016751B /* domain */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = domain;
-		};
-		5A6E74B12DC6934B0016751B /* model */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = model;
-		};
-		5A6E74B42DC6939A0016751B /* network */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = network;
-		};
-		5A6E74B72DC693CD0016751B /* notifications */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = notifications;
-		};
-		5A6E74BA2DC693F50016751B /* security */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = security;
-		};
-		5A6E74BD2DC694400016751B /* testing */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = testing;
-		};
-		5A6E74C02DC694840016751B /* ui */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ui;
-		};
-		5A6E74C32DC695170016751B /* chats */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = chats;
-		};
-		5A6E74C62DC695650016751B /* comments */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = comments;
-		};
-		5A6E74C92DC695C50016751B /* favorites */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = favorites;
-		};
-		5A6E74CC2DC695FF0016751B /* home */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = home;
-		};
-		5A6E74CF2DC6969F0016751B /* intelligence */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = intelligence;
-		};
-		5A6E74D22DC696CA0016751B /* market */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = market;
-		};
-		5A6E74D52DC696ED0016751B /* payments */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = payments;
-		};
-		5A6E74D82DC6970A0016751B /* player */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = player;
-		};
-		5A6E74DB2DC697270016751B /* profile */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = profile;
-		};
-		5A6E74DE2DC6974A0016751B /* property */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = property;
-		};
-		5A6E74E12DC6976B0016751B /* search */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = search;
-		};
-		5A6E74E42DC697B70016751B /* service */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = service;
-		};
-		5A6E74E72DC697DD0016751B /* settings */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = settings;
-		};
-		5A9B9D942DCF810D00835345 /* model */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = model;
-		};
-		5A9F4EE02DC65C7F00587413 /* auth */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = auth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

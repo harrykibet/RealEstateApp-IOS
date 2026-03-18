@@ -1,8 +1,111 @@
-# Swift & Xcode
+# =========================
+# 🔥 OS / SYSTEM NOISE
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails / temp
+._*
+.Spotlight-V100
+.Trashes
+
+# =========================
+# 🔥 XCODE DERIVED DATA
+# =========================
 DerivedData/
 build/
-*.xcworkspace
-*.xcuserstate
-*.xcodeproj/project.xcworkspace/
-.idea/
+*.build/
+
+# SwiftPM build artifacts
+.swiftpm/build/
+
+# =========================
+# 🔥 XCODE USER STATE (CRITICAL)
+# =========================
+# Per-user workspace data
+**/xcuserdata/
+**/*.xcuserstate
+
+# SwiftPM Xcode user data (your current problem)
+**/.swiftpm/xcode/xcuserdata/
+
+# Workspace user data
+**/*.xcworkspace/xcuserdata/
+
+# =========================
+# 🔥 XCODE PROJECT NOISE
+# =========================
+# These are sometimes generated and not deterministic
+*.xccheckout
+*.xcscmblueprint
+
+# =========================
+# 🔥 PLAYGROUND
+# =========================
+timeline.xctimeline
+playground.xcworkspace
+
+# =========================
+# 🔥 SWIFTPM
+# =========================
+# Lock this ONLY if you want reproducible builds
+# Otherwise ignore
+# Package.resolved
+
+# If you want deterministic CI builds → KEEP this tracked
+# If not → uncomment below
+# Package.resolved
+
+# =========================
+# 🔥 FASTLANE / CI
+# =========================
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# =========================
+# 🔥 LOGS / TEMP FILES
+# =========================
+*.log
+*.tmp
+*.swp
+*.lock
+
+# =========================
+# 🔥 SECRETS / CONFIG
+# =========================
+.env
+.env.*
+*.key
+*.p12
+*.mobileprovision
+
+# =========================
+# 🔥 THIRD PARTY / DEPENDENCIES
+# =========================
+# CocoaPods (if you ever mix)
 Pods/
+
+# Carthage (if ever used)
+Carthage/Build/
+
+# =========================
+# 🔥 TEST ARTIFACTS
+# =========================
+*.profdata
+*.gcda
+*.gcno
+
+# =========================
+# 🔥 IDE OTHER
+# =========================
+.idea/
+.vscode/
+
+# =========================
+# 🔥 MISC
+# =========================
+*.orig
+*.rej

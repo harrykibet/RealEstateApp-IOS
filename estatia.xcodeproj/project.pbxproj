@@ -41,6 +41,10 @@
 		5A70DF5A2F6A9E3A0075AF00 /* security in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF592F6A9E3A0075AF00 /* security */; };
 		5A70DF5D2F6A9E7D0075AF00 /* testing in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF5C2F6A9E7D0075AF00 /* testing */; };
 		5A70DF602F6A9ED10075AF00 /* ui in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF5F2F6A9ED10075AF00 /* ui */; };
+		5A70DF632F6A9F660075AF00 /* auth in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF622F6A9F660075AF00 /* auth */; };
+		5A70DF662F6A9FAD0075AF00 /* chats in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF652F6A9FAD0075AF00 /* chats */; };
+		5A70DF692F6A9FFB0075AF00 /* comments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF682F6A9FFB0075AF00 /* comments */; };
+		5A70DF6C2F6AA03D0075AF00 /* favorites in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF6B2F6AA03D0075AF00 /* favorites */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -136,6 +140,7 @@
 				5A70DF4B2F6A9CAD0075AF00 /* model in Frameworks */,
 				5A392A6E2F69E29D003CE8F2 /* domain in Frameworks */,
 				5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */,
+				5A70DF632F6A9F660075AF00 /* auth in Frameworks */,
 				5A1694432DC62E2800245881 /* FirebaseFunctions in Frameworks */,
 				5A16944F2DC62E2800245881 /* FirebasePerformance in Frameworks */,
 				5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */,
@@ -150,10 +155,12 @@
 				5A70DF4E2F6A9CE20075AF00 /* network in Frameworks */,
 				5A16944D2DC62E2800245881 /* FirebaseMessaging in Frameworks */,
 				5A70DF602F6A9ED10075AF00 /* ui in Frameworks */,
+				5A70DF6C2F6AA03D0075AF00 /* favorites in Frameworks */,
 				5A1694492DC62E2800245881 /* FirebaseInstallations in Frameworks */,
 				5A1694312DC62E2800245881 /* FirebaseAppDistribution-Beta in Frameworks */,
 				5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				5A392A622F69E0EB003CE8F2 /* analytics in Frameworks */,
+				5A70DF662F6A9FAD0075AF00 /* chats in Frameworks */,
 				5A1694472DC62E2800245881 /* FirebaseInAppMessaging-Beta in Frameworks */,
 				5A1694392DC62E2800245881 /* FirebaseCrashlytics in Frameworks */,
 				5A70DF512F6A9D110075AF00 /* notifications in Frameworks */,
@@ -161,6 +168,7 @@
 				5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */,
 				5A392A652F69E136003CE8F2 /* common in Frameworks */,
 				5A1694372DC62E2800245881 /* FirebaseCore in Frameworks */,
+				5A70DF692F6A9FFB0075AF00 /* comments in Frameworks */,
 				5A392A682F69E212003CE8F2 /* data in Frameworks */,
 				5A16942B2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				5A392A6B2F69E256003CE8F2 /* database in Frameworks */,
@@ -312,6 +320,10 @@
 				5A70DF592F6A9E3A0075AF00 /* security */,
 				5A70DF5C2F6A9E7D0075AF00 /* testing */,
 				5A70DF5F2F6A9ED10075AF00 /* ui */,
+				5A70DF622F6A9F660075AF00 /* auth */,
+				5A70DF652F6A9FAD0075AF00 /* chats */,
+				5A70DF682F6A9FFB0075AF00 /* comments */,
+				5A70DF6B2F6AA03D0075AF00 /* favorites */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -410,6 +422,10 @@
 				5A70DF582F6A9E3A0075AF00 /* XCLocalSwiftPackageReference "packages/core/security" */,
 				5A70DF5B2F6A9E7D0075AF00 /* XCLocalSwiftPackageReference "packages/core/testing" */,
 				5A70DF5E2F6A9ED10075AF00 /* XCLocalSwiftPackageReference "packages/core/ui" */,
+				5A70DF612F6A9F660075AF00 /* XCLocalSwiftPackageReference "packages/feature/auth" */,
+				5A70DF642F6A9FAD0075AF00 /* XCLocalSwiftPackageReference "packages/feature/chats" */,
+				5A70DF672F6A9FFB0075AF00 /* XCLocalSwiftPackageReference "packages/feature/comments" */,
+				5A70DF6A2F6AA03D0075AF00 /* XCLocalSwiftPackageReference "packages/feature/favorites" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -827,6 +843,22 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/core/ui;
 		};
+		5A70DF612F6A9F660075AF00 /* XCLocalSwiftPackageReference "packages/feature/auth" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/auth;
+		};
+		5A70DF642F6A9FAD0075AF00 /* XCLocalSwiftPackageReference "packages/feature/chats" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/chats;
+		};
+		5A70DF672F6A9FFB0075AF00 /* XCLocalSwiftPackageReference "packages/feature/comments" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/comments;
+		};
+		5A70DF6A2F6AA03D0075AF00 /* XCLocalSwiftPackageReference "packages/feature/favorites" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/favorites;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -996,6 +1028,22 @@
 		5A70DF5F2F6A9ED10075AF00 /* ui */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ui;
+		};
+		5A70DF622F6A9F660075AF00 /* auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = auth;
+		};
+		5A70DF652F6A9FAD0075AF00 /* chats */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = chats;
+		};
+		5A70DF682F6A9FFB0075AF00 /* comments */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = comments;
+		};
+		5A70DF6B2F6AA03D0075AF00 /* favorites */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = favorites;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

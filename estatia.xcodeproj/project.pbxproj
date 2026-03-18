@@ -45,6 +45,10 @@
 		5A70DF662F6A9FAD0075AF00 /* chats in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF652F6A9FAD0075AF00 /* chats */; };
 		5A70DF692F6A9FFB0075AF00 /* comments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF682F6A9FFB0075AF00 /* comments */; };
 		5A70DF6C2F6AA03D0075AF00 /* favorites in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF6B2F6AA03D0075AF00 /* favorites */; };
+		5A70DF6F2F6AA0910075AF00 /* home in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF6E2F6AA0910075AF00 /* home */; };
+		5A70DF722F6AA0DF0075AF00 /* intelligence in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF712F6AA0DF0075AF00 /* intelligence */; };
+		5A70DF752F6AA1250075AF00 /* market in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF742F6AA1250075AF00 /* market */; };
+		5A70DF782F6AA16E0075AF00 /* payments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF772F6AA16E0075AF00 /* payments */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -144,7 +148,9 @@
 				5A1694432DC62E2800245881 /* FirebaseFunctions in Frameworks */,
 				5A16944F2DC62E2800245881 /* FirebasePerformance in Frameworks */,
 				5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */,
+				5A70DF752F6AA1250075AF00 /* market in Frameworks */,
 				5A16943B2DC62E2800245881 /* FirebaseDatabase in Frameworks */,
+				5A70DF782F6AA16E0075AF00 /* payments in Frameworks */,
 				5A16943D2DC62E2800245881 /* FirebaseDynamicLinks in Frameworks */,
 				5A16942F2DC62E2800245881 /* FirebaseAppCheck in Frameworks */,
 				5A1694332DC62E2800245881 /* FirebaseAuth in Frameworks */,
@@ -154,9 +160,11 @@
 				5A16943F2DC62E2800245881 /* FirebaseFirestore in Frameworks */,
 				5A70DF4E2F6A9CE20075AF00 /* network in Frameworks */,
 				5A16944D2DC62E2800245881 /* FirebaseMessaging in Frameworks */,
+				5A70DF6F2F6AA0910075AF00 /* home in Frameworks */,
 				5A70DF602F6A9ED10075AF00 /* ui in Frameworks */,
 				5A70DF6C2F6AA03D0075AF00 /* favorites in Frameworks */,
 				5A1694492DC62E2800245881 /* FirebaseInstallations in Frameworks */,
+				5A70DF722F6AA0DF0075AF00 /* intelligence in Frameworks */,
 				5A1694312DC62E2800245881 /* FirebaseAppDistribution-Beta in Frameworks */,
 				5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				5A392A622F69E0EB003CE8F2 /* analytics in Frameworks */,
@@ -324,6 +332,10 @@
 				5A70DF652F6A9FAD0075AF00 /* chats */,
 				5A70DF682F6A9FFB0075AF00 /* comments */,
 				5A70DF6B2F6AA03D0075AF00 /* favorites */,
+				5A70DF6E2F6AA0910075AF00 /* home */,
+				5A70DF712F6AA0DF0075AF00 /* intelligence */,
+				5A70DF742F6AA1250075AF00 /* market */,
+				5A70DF772F6AA16E0075AF00 /* payments */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -426,6 +438,10 @@
 				5A70DF642F6A9FAD0075AF00 /* XCLocalSwiftPackageReference "packages/feature/chats" */,
 				5A70DF672F6A9FFB0075AF00 /* XCLocalSwiftPackageReference "packages/feature/comments" */,
 				5A70DF6A2F6AA03D0075AF00 /* XCLocalSwiftPackageReference "packages/feature/favorites" */,
+				5A70DF6D2F6AA0910075AF00 /* XCLocalSwiftPackageReference "packages/feature/home" */,
+				5A70DF702F6AA0DF0075AF00 /* XCLocalSwiftPackageReference "packages/feature/intelligence" */,
+				5A70DF732F6AA1250075AF00 /* XCLocalSwiftPackageReference "packages/feature/market" */,
+				5A70DF762F6AA16E0075AF00 /* XCLocalSwiftPackageReference "packages/feature/payments" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -859,6 +875,22 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/feature/favorites;
 		};
+		5A70DF6D2F6AA0910075AF00 /* XCLocalSwiftPackageReference "packages/feature/home" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/home;
+		};
+		5A70DF702F6AA0DF0075AF00 /* XCLocalSwiftPackageReference "packages/feature/intelligence" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/intelligence;
+		};
+		5A70DF732F6AA1250075AF00 /* XCLocalSwiftPackageReference "packages/feature/market" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/market;
+		};
+		5A70DF762F6AA16E0075AF00 /* XCLocalSwiftPackageReference "packages/feature/payments" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/payments;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1044,6 +1076,22 @@
 		5A70DF6B2F6AA03D0075AF00 /* favorites */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = favorites;
+		};
+		5A70DF6E2F6AA0910075AF00 /* home */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = home;
+		};
+		5A70DF712F6AA0DF0075AF00 /* intelligence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = intelligence;
+		};
+		5A70DF742F6AA1250075AF00 /* market */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = market;
+		};
+		5A70DF772F6AA16E0075AF00 /* payments */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = payments;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

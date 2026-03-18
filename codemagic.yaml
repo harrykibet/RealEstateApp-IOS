@@ -1,34 +1,103 @@
 workflows:
-  ios_build:
-    name: iOS Build
+  ios-native:
+    name: Native iOS
     max_build_duration: 120
     instance_type: mac_mini_m2
+
     environment:
+      xcode: latest   # ✅ always track latest stable toolchain
       vars:
-        CI: "true"  # Define CI environment variable for Xcode optimization
-        BITRISE_PROJECT_PATH: "estatia.xcodeproj"
-        BITRISE_SCHEME: "estatia"
-        BITRISE_DISTRIBUTION_METHOD: "ad-hoc"
+        CI: "true"
+        XCODE_PROJECT: "estatia.xcodeproj"
+        XCODE_SCHEME: "estatia"
+        DERIVED_DATA: "$CM_BUILD_DIR/build"
       groups:
-        - apple_signing  # Stores provisioning profiles and certificates for signing
+        - apple_signing
+
     scripts:
-      - name: Set Xcode location
-        script: |
-          sudo xcode-select -s /Applications/Xcode-16.3.app
 
-      - name: Resolve Swift Package Manager dependencies
+      # =========================
+      # 🔥 DISPLAY BOOTSTRAP (critical for simulator stability)
+      # =========================
+      - name: Bootstrap virtual display
         script: |
-          echo "Resolving Swift Package Manager dependencies..."
-          xcodebuild -resolvePackageDependencies -project "$BITRISE_PROJECT_PATH"
+          echo "Initializing CI display environment..."
+          chmod +x scripts/ci-display-bootstrap.sh
+          ./scripts/ci-display-bootstrap.sh
 
-      - name: Clean & Build for testing (using xcodebuild)
+      # =========================
+      # 🔥 CLEAN STATE (stateless CI)
+      # =========================
+      - name: Clean repository state
         script: |
+          echo "Cleaning repo..."
+          git clean -fdx
+
+      # =========================
+      # 🔥 RESOLVE SPM (deterministic)
+      # =========================
+      - name: Resolve Swift Package Dependencies
+        script: |
+          echo "Resolving Swift Package dependencies..."
+          xcodebuild -resolvePackageDependencies \
+            -project "$XCODE_PROJECT" \
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/spm"
+
+      # =========================
+      # 🔥 BUILD FOR TESTING
+      # =========================
+      - name: Build for testing
+        script: |
+          set -e
+
+          DESTINATION="platform=iOS Simulato,OS=latest,name=iPhone 17 Pro"
+
+          echo "Building project..."
+
           xcodebuild clean build-for-testing \
-            -project "$BITRISE_PROJECT_PATH" \
-            -scheme "$BITRISE_SCHEME" \
-            -destination "platform=iOS Simulator,name=iPhone 16 Pro" \
-            -derivedDataPath build
-            
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "$DESTINATION" \
+            -derivedDataPath "$DERIVED_DATA" \
+            -parallelizeTargets \
+            -quiet \
+            CODE_SIGNING_ALLOWED=NO
+
+      # =========================
+      # 🔥 VERIFY BUILD OUTPUT
+      # =========================
+      - name: Validate build artifacts
+        script: |
+          echo "Validating build output..."
+
+          APP_PATH=$(find "$DERIVED_DATA" -name "*.app" | head -n 1)
+
+          if [ -d "$APP_PATH" ]; then
+            echo "✅ App build found: $APP_PATH"
+          else
+            echo "❌ ERROR: No .app produced"
+            exit 1
+          fi
+
+      # =========================
+      # 🔥 OPTIONAL: TEST EXECUTION
+      # =========================
+      - name: Run tests (optional)
+        script: |
+          set -e
+
+          DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 17 Pro"
+
+          xcodebuild test-without-building \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -destination "$DESTINATION" \
+            -derivedDataPath "$DERIVED_DATA"
+
+    artifacts:
+      - build/**/*.app
+      - build/**/*.dSYM
+
     publishing:
       email:
         recipients:

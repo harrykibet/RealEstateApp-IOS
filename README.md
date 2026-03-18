@@ -123,8 +123,8 @@ Each module is an independent Swift package with explicit dependencies.
 
 ## Developer Resources
 
-* `docs/ARCHITECTURE.md`
-* `docs/ENGINEERING.md`
+* [ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+* [ENGINEERING.md](./docs/ENGINEERING.md)
 
 ---
 

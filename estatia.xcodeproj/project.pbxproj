@@ -38,6 +38,9 @@
 		5A70DF512F6A9D110075AF00 /* notifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF502F6A9D110075AF00 /* notifications */; };
 		5A70DF542F6A9D7C0075AF00 /* PlayerEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF532F6A9D7C0075AF00 /* PlayerEngine */; };
 		5A70DF572F6A9DB30075AF00 /* PlayerUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF562F6A9DB30075AF00 /* PlayerUI */; };
+		5A70DF5A2F6A9E3A0075AF00 /* security in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF592F6A9E3A0075AF00 /* security */; };
+		5A70DF5D2F6A9E7D0075AF00 /* testing in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF5C2F6A9E7D0075AF00 /* testing */; };
+		5A70DF602F6A9ED10075AF00 /* ui in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF5F2F6A9ED10075AF00 /* ui */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -128,6 +131,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A70DF5D2F6A9E7D0075AF00 /* testing in Frameworks */,
+				5A70DF5A2F6A9E3A0075AF00 /* security in Frameworks */,
 				5A70DF4B2F6A9CAD0075AF00 /* model in Frameworks */,
 				5A392A6E2F69E29D003CE8F2 /* domain in Frameworks */,
 				5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */,
@@ -144,6 +149,7 @@
 				5A16943F2DC62E2800245881 /* FirebaseFirestore in Frameworks */,
 				5A70DF4E2F6A9CE20075AF00 /* network in Frameworks */,
 				5A16944D2DC62E2800245881 /* FirebaseMessaging in Frameworks */,
+				5A70DF602F6A9ED10075AF00 /* ui in Frameworks */,
 				5A1694492DC62E2800245881 /* FirebaseInstallations in Frameworks */,
 				5A1694312DC62E2800245881 /* FirebaseAppDistribution-Beta in Frameworks */,
 				5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
@@ -303,6 +309,9 @@
 				5A70DF502F6A9D110075AF00 /* notifications */,
 				5A70DF532F6A9D7C0075AF00 /* PlayerEngine */,
 				5A70DF562F6A9DB30075AF00 /* PlayerUI */,
+				5A70DF592F6A9E3A0075AF00 /* security */,
+				5A70DF5C2F6A9E7D0075AF00 /* testing */,
+				5A70DF5F2F6A9ED10075AF00 /* ui */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -398,6 +407,9 @@
 				5A70DF4F2F6A9D110075AF00 /* XCLocalSwiftPackageReference "packages/core/notifications" */,
 				5A70DF522F6A9D7C0075AF00 /* XCLocalSwiftPackageReference "packages/core/PlayerEngine" */,
 				5A70DF552F6A9DB30075AF00 /* XCLocalSwiftPackageReference "packages/core/PlayerUI" */,
+				5A70DF582F6A9E3A0075AF00 /* XCLocalSwiftPackageReference "packages/core/security" */,
+				5A70DF5B2F6A9E7D0075AF00 /* XCLocalSwiftPackageReference "packages/core/testing" */,
+				5A70DF5E2F6A9ED10075AF00 /* XCLocalSwiftPackageReference "packages/core/ui" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -803,6 +815,18 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/core/PlayerUI;
 		};
+		5A70DF582F6A9E3A0075AF00 /* XCLocalSwiftPackageReference "packages/core/security" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/core/security;
+		};
+		5A70DF5B2F6A9E7D0075AF00 /* XCLocalSwiftPackageReference "packages/core/testing" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/core/testing;
+		};
+		5A70DF5E2F6A9ED10075AF00 /* XCLocalSwiftPackageReference "packages/core/ui" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/core/ui;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -960,6 +984,18 @@
 		5A70DF562F6A9DB30075AF00 /* PlayerUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PlayerUI;
+		};
+		5A70DF592F6A9E3A0075AF00 /* security */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = security;
+		};
+		5A70DF5C2F6A9E7D0075AF00 /* testing */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = testing;
+		};
+		5A70DF5F2F6A9ED10075AF00 /* ui */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ui;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

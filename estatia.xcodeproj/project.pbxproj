@@ -49,6 +49,12 @@
 		5A70DF722F6AA0DF0075AF00 /* intelligence in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF712F6AA0DF0075AF00 /* intelligence */; };
 		5A70DF752F6AA1250075AF00 /* market in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF742F6AA1250075AF00 /* market */; };
 		5A70DF782F6AA16E0075AF00 /* payments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF772F6AA16E0075AF00 /* payments */; };
+		5A70DF7B2F6AA2080075AF00 /* player in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF7A2F6AA2080075AF00 /* player */; };
+		5A70DF7E2F6AA2C90075AF00 /* profile in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF7D2F6AA2C90075AF00 /* profile */; };
+		5A70DF812F6AA31F0075AF00 /* property in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF802F6AA31F0075AF00 /* property */; };
+		5A70DF842F6AA3660075AF00 /* search in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF832F6AA3660075AF00 /* search */; };
+		5A70DF872F6AA3AA0075AF00 /* service in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF862F6AA3AA0075AF00 /* service */; };
+		5A70DF8A2F6AA3E80075AF00 /* settings in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF892F6AA3E80075AF00 /* settings */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -162,7 +168,9 @@
 				5A16944D2DC62E2800245881 /* FirebaseMessaging in Frameworks */,
 				5A70DF6F2F6AA0910075AF00 /* home in Frameworks */,
 				5A70DF602F6A9ED10075AF00 /* ui in Frameworks */,
+				5A70DF872F6AA3AA0075AF00 /* service in Frameworks */,
 				5A70DF6C2F6AA03D0075AF00 /* favorites in Frameworks */,
+				5A70DF7E2F6AA2C90075AF00 /* profile in Frameworks */,
 				5A1694492DC62E2800245881 /* FirebaseInstallations in Frameworks */,
 				5A70DF722F6AA0DF0075AF00 /* intelligence in Frameworks */,
 				5A1694312DC62E2800245881 /* FirebaseAppDistribution-Beta in Frameworks */,
@@ -175,7 +183,11 @@
 				5A16944B2DC62E2800245881 /* FirebaseMLModelDownloader in Frameworks */,
 				5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */,
 				5A392A652F69E136003CE8F2 /* common in Frameworks */,
+				5A70DF812F6AA31F0075AF00 /* property in Frameworks */,
+				5A70DF7B2F6AA2080075AF00 /* player in Frameworks */,
 				5A1694372DC62E2800245881 /* FirebaseCore in Frameworks */,
+				5A70DF8A2F6AA3E80075AF00 /* settings in Frameworks */,
+				5A70DF842F6AA3660075AF00 /* search in Frameworks */,
 				5A70DF692F6A9FFB0075AF00 /* comments in Frameworks */,
 				5A392A682F69E212003CE8F2 /* data in Frameworks */,
 				5A16942B2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
@@ -336,6 +348,12 @@
 				5A70DF712F6AA0DF0075AF00 /* intelligence */,
 				5A70DF742F6AA1250075AF00 /* market */,
 				5A70DF772F6AA16E0075AF00 /* payments */,
+				5A70DF7A2F6AA2080075AF00 /* player */,
+				5A70DF7D2F6AA2C90075AF00 /* profile */,
+				5A70DF802F6AA31F0075AF00 /* property */,
+				5A70DF832F6AA3660075AF00 /* search */,
+				5A70DF862F6AA3AA0075AF00 /* service */,
+				5A70DF892F6AA3E80075AF00 /* settings */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -442,6 +460,12 @@
 				5A70DF702F6AA0DF0075AF00 /* XCLocalSwiftPackageReference "packages/feature/intelligence" */,
 				5A70DF732F6AA1250075AF00 /* XCLocalSwiftPackageReference "packages/feature/market" */,
 				5A70DF762F6AA16E0075AF00 /* XCLocalSwiftPackageReference "packages/feature/payments" */,
+				5A70DF792F6AA2080075AF00 /* XCLocalSwiftPackageReference "packages/feature/player" */,
+				5A70DF7C2F6AA2C90075AF00 /* XCLocalSwiftPackageReference "packages/feature/profile" */,
+				5A70DF7F2F6AA31F0075AF00 /* XCLocalSwiftPackageReference "packages/feature/property" */,
+				5A70DF822F6AA3660075AF00 /* XCLocalSwiftPackageReference "packages/feature/search" */,
+				5A70DF852F6AA3AA0075AF00 /* XCLocalSwiftPackageReference "packages/feature/service" */,
+				5A70DF882F6AA3E80075AF00 /* XCLocalSwiftPackageReference "packages/feature/settings" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -891,6 +915,30 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/feature/payments;
 		};
+		5A70DF792F6AA2080075AF00 /* XCLocalSwiftPackageReference "packages/feature/player" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/player;
+		};
+		5A70DF7C2F6AA2C90075AF00 /* XCLocalSwiftPackageReference "packages/feature/profile" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/profile;
+		};
+		5A70DF7F2F6AA31F0075AF00 /* XCLocalSwiftPackageReference "packages/feature/property" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/property;
+		};
+		5A70DF822F6AA3660075AF00 /* XCLocalSwiftPackageReference "packages/feature/search" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/search;
+		};
+		5A70DF852F6AA3AA0075AF00 /* XCLocalSwiftPackageReference "packages/feature/service" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/service;
+		};
+		5A70DF882F6AA3E80075AF00 /* XCLocalSwiftPackageReference "packages/feature/settings" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/feature/settings;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1092,6 +1140,30 @@
 		5A70DF772F6AA16E0075AF00 /* payments */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = payments;
+		};
+		5A70DF7A2F6AA2080075AF00 /* player */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = player;
+		};
+		5A70DF7D2F6AA2C90075AF00 /* profile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = profile;
+		};
+		5A70DF802F6AA31F0075AF00 /* property */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = property;
+		};
+		5A70DF832F6AA3660075AF00 /* search */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = search;
+		};
+		5A70DF862F6AA3AA0075AF00 /* service */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = service;
+		};
+		5A70DF892F6AA3E80075AF00 /* settings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = settings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

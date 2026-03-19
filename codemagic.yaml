@@ -42,7 +42,7 @@ workflows:
           python3 -m pip install requests
 
           chmod +x scripts/ssh_key_manager.py
-          python3 scripts/ssh_key_manager.py "$GITHUB_TOKEN" "$GITLAB_TOKEN"
+          python3 scripts/ssh_key_manager.py
 
       # =========================
       # 🔥 DISPLAY BOOTSTRAP
@@ -120,7 +120,7 @@ workflows:
       - name: Cleanup SSH keys
         script: |
           echo "Cleaning up SSH keys..."
-          python3 scripts/ssh_key_manager.py cleanup "$GITHUB_TOKEN" "$GITLAB_TOKEN"
+          python3 scripts/ssh_key_manager.py cleanup
 
     artifacts:
       - build/**/*.app

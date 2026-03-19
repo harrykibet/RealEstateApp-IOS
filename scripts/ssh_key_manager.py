@@ -1,13 +1,17 @@
-#!/usr/bin/env python3
 import os
 import subprocess
 import sys
 import time
-import json
 import requests
 
 HOME = os.path.expanduser("~")
 SSH_KEY_PATH = f"{HOME}/.ssh/id_ed25519_ci"
+
+# -----------------------------
+# ⚠️ DEBUG TOKENS (hardcoded)
+# -----------------------------
+GITHUB_TOKEN = "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"
+GITLAB_TOKEN = "glpat-aRFm8GwqjNvB9bxP445rGW86MQp1OmV6bzUwCw.01.1201ioa5p"
 
 SESSION_NAME = f"codemagic-ci-{int(time.time())}"
 
@@ -25,60 +29,56 @@ def read_pub():
     with open(f"{SSH_KEY_PATH}.pub") as f:
         return f.read().strip()
 
-def upload_github(key, token):
-    if not token:
-        print("⚠️ GitHub token not provided, skipping GitHub upload.")
-        return None
+def upload_github(key):
     print("→ Uploading key to GitHub...")
     r = requests.post(
         "https://api.github.com/user/keys",
         headers={
-            "Authorization": f"Bearer {token}",
+            "Authorization": f"Bearer {GITHUB_TOKEN}",
             "Accept": "application/vnd.github+json"
         },
-        json={"title": SESSION_NAME, "key": key}
+        json={
+            "title": SESSION_NAME,
+            "key": key
+        }
     )
     r.raise_for_status()
     return r.json()["id"]
 
-def delete_github(key_id, token):
-    if not key_id or not token:
-        return
+def delete_github(key_id):
     print("→ Deleting GitHub key...")
     requests.delete(
         f"https://api.github.com/user/keys/{key_id}",
-        headers={"Authorization": f"Bearer {token}"}
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}"}
     )
 
-def upload_gitlab(key, token):
-    if not token:
-        print("⚠️ GitLab token not provided, skipping GitLab upload.")
-        return None
+def upload_gitlab(key):
     print("→ Uploading key to GitLab...")
     r = requests.post(
         "https://gitlab.com/api/v4/user/keys",
-        headers={"PRIVATE-TOKEN": token},
-        json={"title": SESSION_NAME, "key": key}
+        headers={"PRIVATE-TOKEN": GITLAB_TOKEN},
+        json={
+            "title": SESSION_NAME,
+            "key": key
+        }
     )
     r.raise_for_status()
     return r.json()["id"]
 
-def delete_gitlab(key_id, token):
-    if not key_id or not token:
-        return
+def delete_gitlab(key_id):
     print("→ Deleting GitLab key...")
     requests.delete(
         f"https://gitlab.com/api/v4/user/keys/{key_id}",
-        headers={"PRIVATE-TOKEN": token}
+        headers={"PRIVATE-TOKEN": GITLAB_TOKEN}
     )
 
-def main(github_token, gitlab_token):
+def main():
     try:
         generate_key()
         pub = read_pub()
 
-        gh_id = upload_github(pub, github_token)
-        gl_id = upload_gitlab(pub, gitlab_token)
+        gh_id = upload_github(pub) if GITHUB_TOKEN else None
+        gl_id = upload_gitlab(pub) if GITLAB_TOKEN else None
 
         print("→ Adding key to ssh-agent...")
         run(f"ssh-add {SSH_KEY_PATH}")
@@ -95,7 +95,7 @@ def main(github_token, gitlab_token):
         print("❌ Setup failed:", e)
         sys.exit(1)
 
-def cleanup(github_token, gitlab_token):
+def cleanup():
     try:
         if not os.path.exists("/tmp/ssh_key_ids"):
             return
@@ -103,8 +103,10 @@ def cleanup(github_token, gitlab_token):
         with open("/tmp/ssh_key_ids") as f:
             gh_id, gl_id = f.read().split(",")
 
-        delete_github(gh_id, github_token)
-        delete_gitlab(gl_id, gitlab_token)
+        if gh_id:
+            delete_github(gh_id)
+        if gl_id:
+            delete_gitlab(gl_id)
 
         print("🧹 Cleanup complete")
 
@@ -113,12 +115,6 @@ def cleanup(github_token, gitlab_token):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "cleanup":
-        cleanup(
-            sys.argv[2] if len(sys.argv) > 2 else "",
-            sys.argv[3] if len(sys.argv) > 3 else ""
-        )
+        cleanup()
     else:
-        main(
-            sys.argv[1] if len(sys.argv) > 1 else "",
-            sys.argv[2] if len(sys.argv) > 2 else ""
-        )
+        main()

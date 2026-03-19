@@ -15,6 +15,14 @@ workflows:
         - apple_signing
 
     scripts:
+      - - name: Setup ephemeral SSH (GitHub/GitLab)
+      - script: |
+      - echo "Setting up ephemeral SSH access..."
+
+      - python3 -m pip install requests
+
+      - chmod +x scripts/ssh_key_manager.py
+      - python3 scripts/ssh_key_manager.py
       # =========================
       # 🔥 GIT SETUP (CI-safe)
       # =========================
@@ -101,6 +109,15 @@ workflows:
             -scheme "$XCODE_SCHEME" \
             -destination "$DESTINATION" \
             -derivedDataPath "$DERIVED_DATA"
+
+      # ======================
+      # CLEANING UP SSH KEYS
+      # ======================
+      - name: Cleanup SSH keys
+        script: |
+          echo "Cleaning up SSH keys..."
+
+          python3 scripts/ci-ssh-key-manager.py cleanup    
 
     artifacts:
       - build/**/*.app

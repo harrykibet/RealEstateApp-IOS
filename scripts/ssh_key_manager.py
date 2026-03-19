@@ -124,8 +124,8 @@ def main():
         pub_key = read_pub_key()
         ssh_add_key()
 
-        gh_id = upload_github(pub_key)
         gl_id = upload_gitlab(pub_key)
+        gh_id = upload_github(pub_key)
 
         # Persist IDs for cleanup
         TMP_KEY_IDS.write_text(f"{gh_id or ''},{gl_id or ''}")

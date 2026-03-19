@@ -2,7 +2,7 @@ workflows:
   ios-native:
     name: Native iOS
     max_build_duration: 120
-    instance_type: mac_mini_m2
+    instance_type: mac_mini_m4
 
     environment:
       xcode: latest   # ✅ always track latest stable toolchain
@@ -15,6 +15,14 @@ workflows:
         - apple_signing
 
     scripts:
+      # =========================
+      # 🔥 GIT SETUP (CI-safe)
+      # =========================
+      - name: Setup Git environment
+        script: |
+          echo "Setting up Git..."
+          chmod +x scripts/git_setup.sh
+          ./scripts/git_setup.sh
 
       # =========================
       # 🔥 DISPLAY BOOTSTRAP (critical for simulator stability)
@@ -50,7 +58,7 @@ workflows:
         script: |
           set -e
 
-          DESTINATION="platform=iOS Simulato,OS=latest,name=iPhone 17 Pro"
+          DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
 
           echo "Building project..."
 
@@ -86,7 +94,7 @@ workflows:
         script: |
           set -e
 
-          DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 17 Pro"
+          DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
 
           xcodebuild test-without-building \
             -project "$XCODE_PROJECT" \

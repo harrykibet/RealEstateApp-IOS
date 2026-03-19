@@ -15,7 +15,27 @@ workflows:
         - apple_signing
 
     scripts:
-      - - name: Setup ephemeral SSH (GitHub/GitLab)
+      - # =========================
+      - # 🔥 GIT SETUP (CI-safe)
+      - # =========================
+      - name: Setup Git environment
+      - script: |
+      - echo "Setting up Git..."
+      - chmod +x scripts/git_setup.sh
+      - ./scripts/git_setup.sh
+
+      - # =========================
+      - # 🔥 CLEAN STATE (stateless CI)
+      - # =========================
+      - name: Clean repository state
+      - script: |
+      - echo "Cleaning repo..."
+      - git clean -fdx
+
+      - # =========================
+      - # 🔥 SSH SETUP (CI-safe)
+      - # =========================
+      - name: Setup ephemeral SSH (GitHub/GitLab)
       - script: |
       - echo "Setting up ephemeral SSH access..."
 
@@ -23,14 +43,7 @@ workflows:
 
       - chmod +x scripts/ssh_key_manager.py
       - python3 scripts/ssh_key_manager.py
-      # =========================
-      # 🔥 GIT SETUP (CI-safe)
-      # =========================
-      - name: Setup Git environment
-        script: |
-          echo "Setting up Git..."
-          chmod +x scripts/git_setup.sh
-          ./scripts/git_setup.sh
+
 
       # =========================
       # 🔥 DISPLAY BOOTSTRAP (critical for simulator stability)
@@ -40,14 +53,6 @@ workflows:
           echo "Initializing CI display environment..."
           chmod +x scripts/ci-display-bootstrap.sh
           ./scripts/ci-display-bootstrap.sh
-
-      # =========================
-      # 🔥 CLEAN STATE (stateless CI)
-      # =========================
-      - name: Clean repository state
-        script: |
-          echo "Cleaning repo..."
-          git clean -fdx
 
       # =========================
       # 🔥 RESOLVE SPM (deterministic)

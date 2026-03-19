@@ -10,8 +10,6 @@ workflows:
         XCODE_PROJECT: "estatia.xcodeproj"
         XCODE_SCHEME: "estatia"
         DERIVED_DATA: "$CM_BUILD_DIR/build"
-      groups:
-        - apple_signing
 
     scripts:
 

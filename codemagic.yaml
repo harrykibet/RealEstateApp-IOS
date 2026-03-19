@@ -5,9 +5,8 @@ workflows:
     instance_type: mac_mini_m4
 
     environment:
-      xcode: latest   # ✅ always track latest stable toolchain
+      xcode: latest
       vars:
-        CI: "true"
         XCODE_PROJECT: "estatia.xcodeproj"
         XCODE_SCHEME: "estatia"
         DERIVED_DATA: "$CM_BUILD_DIR/build"
@@ -15,38 +14,38 @@ workflows:
         - apple_signing
 
     scripts:
-      - # =========================
-      - # 🔥 GIT SETUP (CI-safe)
-      - # =========================
-      - name: Setup Git environment
-      - script: |
-      - echo "Setting up Git..."
-      - chmod +x scripts/git_setup.sh
-      - ./scripts/git_setup.sh
-
-      - # =========================
-      - # 🔥 CLEAN STATE (stateless CI)
-      - # =========================
-      - name: Clean repository state
-      - script: |
-      - echo "Cleaning repo..."
-      - git clean -fdx
-
-      - # =========================
-      - # 🔥 SSH SETUP (CI-safe)
-      - # =========================
-      - name: Setup ephemeral SSH (GitHub/GitLab)
-      - script: |
-      - echo "Setting up ephemeral SSH access..."
-
-      - python3 -m pip install requests
-
-      - chmod +x scripts/ssh_key_manager.py
-      - python3 scripts/ssh_key_manager.py
-
 
       # =========================
-      # 🔥 DISPLAY BOOTSTRAP (critical for simulator stability)
+      # 🔥 GIT SETUP
+      # =========================
+      - name: Setup Git environment
+        script: |
+          echo "Setting up Git..."
+          chmod +x scripts/git_setup.sh
+          ./scripts/git_setup.sh
+
+      # =========================
+      # 🔥 CLEAN STATE
+      # =========================
+      - name: Clean repository state
+        script: |
+          echo "Cleaning repo..."
+          git clean -fdx
+
+      # =========================
+      # 🔥 SSH SETUP
+      # =========================
+      - name: Setup ephemeral SSH (GitHub/GitLab)
+        script: |
+          echo "Setting up ephemeral SSH access..."
+
+          python3 -m pip install requests
+
+          chmod +x scripts/ssh_key_manager.py
+          python3 scripts/ssh_key_manager.py
+
+      # =========================
+      # 🔥 DISPLAY BOOTSTRAP
       # =========================
       - name: Bootstrap virtual display
         script: |
@@ -55,7 +54,7 @@ workflows:
           ./scripts/ci-display-bootstrap.sh
 
       # =========================
-      # 🔥 RESOLVE SPM (deterministic)
+      # 🔥 RESOLVE SPM
       # =========================
       - name: Resolve Swift Package Dependencies
         script: |
@@ -65,7 +64,7 @@ workflows:
             -clonedSourcePackagesDirPath "$CM_BUILD_DIR/spm"
 
       # =========================
-      # 🔥 BUILD FOR TESTING
+      # 🔥 BUILD
       # =========================
       - name: Build for testing
         script: |
@@ -85,7 +84,7 @@ workflows:
             CODE_SIGNING_ALLOWED=NO
 
       # =========================
-      # 🔥 VERIFY BUILD OUTPUT
+      # 🔥 VERIFY
       # =========================
       - name: Validate build artifacts
         script: |
@@ -101,7 +100,7 @@ workflows:
           fi
 
       # =========================
-      # 🔥 OPTIONAL: TEST EXECUTION
+      # 🔥 TESTS
       # =========================
       - name: Run tests (optional)
         script: |
@@ -115,14 +114,13 @@ workflows:
             -destination "$DESTINATION" \
             -derivedDataPath "$DERIVED_DATA"
 
-      # ======================
-      # CLEANING UP SSH KEYS
-      # ======================
+      # =========================
+      # 🔥 CLEANUP
+      # =========================
       - name: Cleanup SSH keys
         script: |
           echo "Cleaning up SSH keys..."
-
-          python3 scripts/ci-ssh-key-manager.py cleanup    
+          python3 scripts/ssh_key_manager.py cleanup
 
     artifacts:
       - build/**/*.app

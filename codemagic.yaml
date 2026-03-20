@@ -138,6 +138,12 @@ workflows:
             -scheme "$XCODE_SCHEME" \
             -destination "$DESTINATION" \
             -derivedDataPath "$DERIVED_DATA"
+      
+      # ========================
+      # CLEANUP SSH
+      # ========================
+      - name: Cleanup SSH
+        script: python3 scripts/ssh_key_manager.py cleanup
 
     artifacts:
       - build/**/*.app

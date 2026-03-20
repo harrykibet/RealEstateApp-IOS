@@ -1,13 +1,12 @@
 #!/bin/bash
-
 set -e
 
 # ---------------- CONFIG ----------------
 repos=("gitlab" "github")
 branch="main"
 MAX_SIZE=$((50 * 1024 * 1024)) # 50MB
-BLOCKED_EXTENSIONS=("apk" "aab" "hprof" "log")
-BLOCKED_DIRECTORIES=("build/")
+BLOCKED_EXTENSIONS=("app" "ipa" "dSYM" "log" "hprof")
+BLOCKED_DIRECTORIES=("build/" "DerivedData/" ".build/" "Pods/" "Carthage/Build/" "xcuserdata/" ".swiftpm/" "spm/")
 DRY_RUN=false
 # ----------------------------------------
 
@@ -30,7 +29,6 @@ GRAY='\033[0;90m'
 NC='\033[0m'
 
 # -------- Utility Functions --------
-
 is_binary() {
     file "$1" | grep -q "binary"
 }
@@ -39,53 +37,48 @@ check_blocked_files() {
     FILES=$(git diff --cached --name-only)
 
     for FILE in $FILES; do
-      # Skip if the file is deleted
-              if [ ! -f "$FILE" ]; then
-                  continue
-              fi
+        [ -f "$FILE" ] || continue
 
-        # Block build folders
+        # Block directories
         for DIR in "${BLOCKED_DIRECTORIES[@]}"; do
             if [[ "$FILE" == *"$DIR"* ]]; then
-                echo -e "${RED}❌ Refusing to commit build directory file: $FILE${NC}"
+                echo -e "${RED}❌ Refusing to commit file in blocked directory: $FILE${NC}"
                 exit 1
             fi
         done
 
-        # Block certain extensions completely
+        # Block extensions
         for EXT in "${BLOCKED_EXTENSIONS[@]}"; do
-            if [[ "$FILE" == *".$EXT" ]]; then
+            if [[ "$FILE" == *.$EXT ]]; then
                 echo -e "${RED}❌ Blocked file type: .$EXT ($FILE)${NC}"
                 echo -e "${YELLOW}Add it to .gitignore or use Git LFS if intentional.${NC}"
                 exit 1
             fi
         done
-
-        # Check large files
-        if [ -f "$FILE" ]; then
-            FILE_SIZE=$(stat -c%s "$FILE" 2>/dev/null || echo 0)
-
-            if [ "$FILE_SIZE" -gt "$MAX_SIZE" ]; then
-                SIZE_MB=$(($FILE_SIZE / 1024 / 1024))
-                echo -e "${RED}⚠️ Large file detected: $FILE (${SIZE_MB}MB)${NC}"
-
-                if is_binary "$FILE"; then
-                    echo -e "${YELLOW}💡 This appears to be a binary file."
-                    echo "Consider using Git LFS:"
-                    echo "   git lfs track \"$FILE\""
-                    echo "   git add .gitattributes"
-                    echo "   git add \"$FILE\""
-                    echo "   git commit -m \"chore: move $FILE to LFS\""
-                fi
-
-                read -p "Commit anyway? (y/N): " RESP
-                if [[ ! "$RESP" =~ ^[Yy]$ ]]; then
-                    echo -e "${RED}❌ Commit aborted.${NC}"
-                    exit 1
-                fi
-            fi
-        fi
     done
+}
+
+check_large_files() {
+    echo -e "${CYAN}🔍 Scanning for large files (>$(($MAX_SIZE / 1024 / 1024))MB)...${NC}"
+
+    LARGE_FILES=$(find . -type f \( -name "*" \) -not -path "./.git/*" -not -path "./Pods/*" -not -path "./Carthage/Build/*" | while read f; do
+        SIZE=$(stat -f %z "$f" 2>/dev/null || echo 0)
+        if [ "$SIZE" -gt "$MAX_SIZE" ]; then
+            echo "$SIZE $f"
+        fi
+    done)
+
+    if [ -n "$LARGE_FILES" ]; then
+        echo -e "${RED}⚠️ Large files detected:${NC}"
+        echo "$LARGE_FILES" | while read size path; do
+            SIZE_MB=$(($size / 1024 / 1024))
+            echo -e "${YELLOW}- $path (${SIZE_MB}MB)${NC}"
+        done
+        echo -e "${RED}❌ Commit aborted due to large files.${NC}"
+        exit 1
+    else
+        echo -e "${GREEN}✅ No oversized files found.${NC}"
+    fi
 }
 
 ensure_clean_state() {
@@ -101,7 +94,6 @@ show_commit_summary() {
     echo ""
 }
 
-
 update_repo() {
     local remote="$1"
 
@@ -110,11 +102,11 @@ update_repo() {
     ensure_clean_state
 
     echo -e "${GRAY}→ Staging changes...${NC}"
-    git add --all
+    git add -u
 
     if [[ -n "$(git status --porcelain)" ]]; then
-
         check_blocked_files
+        check_large_files
 
         timestamp="$(date +"%Y-%m-%d %H:%M:%S")"
         commit_message="chore(sync): auto update $timestamp"
@@ -147,7 +139,6 @@ update_repo() {
 }
 
 # -------- Execution --------
-
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo -e "${RED}❌ Not inside a Git repository.${NC}"
     exit 1

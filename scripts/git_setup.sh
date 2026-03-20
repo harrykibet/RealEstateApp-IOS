@@ -120,10 +120,19 @@ fi
 # -------------------------
 # Configure remotes
 # -------------------------
-declare -A remotes=(
-    ["$REMOTE_GITHUB_NAME"]="$GITHUB_URL"
-    ["$REMOTE_GITLAB_NAME"]="$GITLAB_URL"
-)
+
+# -------------------------
+# Ensure remote names have defaults
+# -------------------------
+REMOTE_GITHUB_NAME="${REMOTE_GITHUB_NAME:-github}"
+REMOTE_GITLAB_NAME="${REMOTE_GITLAB_NAME:-gitlab}"
+
+# -------------------------
+# Configure remotes safely
+# -------------------------
+declare -A remotes
+remotes["$REMOTE_GITHUB_NAME"]="$GITHUB_URL"
+remotes["$REMOTE_GITLAB_NAME"]="$GITLAB_URL"
 
 echo "========================================"
 echo "CONFIGURING REMOTES"

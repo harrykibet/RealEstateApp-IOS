@@ -8,10 +8,10 @@ workflows:
       xcode: latest
 
       # ----------------------------
-      # 🔑 Secure token group
+      # 🔑 Secure token group (used by Python SSH uploader)
       # ----------------------------
       groups:
-        - tokens  # contains GITHUB_TOKEN and GITLAB_TOKEN, secured
+        - tokens  # GITHUB_TOKEN, GITLAB_TOKEN
 
       # ----------------------------
       # 📝 Non-secret environment vars
@@ -23,40 +23,66 @@ workflows:
         REMOTE_GITLAB_NAME: gitlab
         GITHUB_REPO: harrykibet/RealEstateApp-IOS.git
         GITLAB_REPO: harrykibet/RealEstateApp-IOS.git
+        SSH_KEY_PATH: "$HOME/.ssh/id_ed25519_ci"
+
         XCODE_PROJECT: estatia.xcodeproj
         XCODE_SCHEME: estatia
         DERIVED_DATA: "$CM_BUILD_DIR/build"
 
     scripts:
-      # ----------------------------
-      # 🔥 GIT SETUP (identity + remotes)
-      # ----------------------------
+
+      # =========================
+      # 🔐 SSH SETUP (CRITICAL FIRST STEP)
+      # =========================
+      - name: Setup ephemeral SSH keys
+        script: |
+          echo "Setting up SSH keys..."
+
+          python3 -m pip install --quiet requests
+
+          chmod +x scripts/ssh_key_manager.py
+          python3 scripts/ssh_key_manager.py
+
+      # =========================
+      # 🔥 GIT SETUP (depends on SSH)
+      # =========================
       - name: Setup Git identity & remotes
         script: |
           echo "Running Git setup..."
           chmod +x scripts/git_setup.sh
+          chmod +x scripts/update_repos.sh
           ./scripts/git_setup.sh
 
-      # ----------------------------
-      # 🔥 CLEAN REPO
-      # ----------------------------
+      # ===========================
+      #  VALIDATE SSH CONNECTION
+      # ===========================
+      - name: Validate SSH connection
+        script: |
+          echo "Testing SSH connectivity..."
+          export GIT_SSH_COMMAND="ssh -i $SSH_KEY_PATH -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
+          ssh -T git@github.com || true
+          ssh -T git@gitlab.com || true
+
+      # =========================
+      # 🧹 CLEAN REPO
+      # =========================
       - name: Clean repository state
         script: |
           echo "Cleaning repo..."
           git clean -fdx
 
-      # ----------------------------
-      # 🔥 DISPLAY BOOTSTRAP
-      # ----------------------------
+      # =========================
+      # 🖥 DISPLAY BOOTSTRAP
+      # =========================
       - name: Bootstrap virtual display
         script: |
           echo "Initializing CI display environment..."
           chmod +x scripts/ci-display-bootstrap.sh
           ./scripts/ci-display-bootstrap.sh
 
-      # ----------------------------
-      # 🔥 RESOLVE SPM
-      # ----------------------------
+      # =========================
+      # 📦 RESOLVE SPM
+      # =========================
       - name: Resolve Swift Package Dependencies
         script: |
           echo "Resolving Swift Package dependencies..."
@@ -64,14 +90,16 @@ workflows:
             -project "$XCODE_PROJECT" \
             -clonedSourcePackagesDirPath "$CM_BUILD_DIR/spm"
 
-      # ----------------------------
-      # 🔥 BUILD
-      # ----------------------------
+      # =========================
+      # 🏗 BUILD
+      # =========================
       - name: Build for testing
         script: |
           set -e
           DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
+
           echo "Building project..."
+
           xcodebuild clean build-for-testing \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -81,13 +109,15 @@ workflows:
             -quiet \
             CODE_SIGNING_ALLOWED=NO
 
-      # ----------------------------
-      # 🔥 VALIDATE BUILD
-      # ----------------------------
+      # =========================
+      # 🔍 VALIDATE
+      # =========================
       - name: Validate build artifacts
         script: |
           echo "Validating build output..."
+
           APP_PATH=$(find "$DERIVED_DATA" -name "*.app" | head -n 1)
+
           if [ -d "$APP_PATH" ]; then
             echo "✅ App build found: $APP_PATH"
           else
@@ -95,13 +125,14 @@ workflows:
             exit 1
           fi
 
-      # ----------------------------
-      # 🔥 RUN TESTS
-      # ----------------------------
+      # =========================
+      # 🧪 TESTS
+      # =========================
       - name: Run tests (optional)
         script: |
           set -e
           DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
+
           xcodebuild test-without-building \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \

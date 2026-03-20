@@ -19,6 +19,8 @@ workflows:
       vars:
         GIT_USER_NAME: harrykibet
         GIT_USER_EMAIL: trmnjames@gmail.com
+        REMOTE_GITHUB_NAME: github
+        REMOTE_GITLAB_NAME: gitlab
         GITHUB_REPO: harrykibet/RealEstateApp-IOS.git
         GITLAB_REPO: harrykibet/RealEstateApp-IOS.git
         XCODE_PROJECT: estatia.xcodeproj

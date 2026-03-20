@@ -13,11 +13,19 @@ echo "========================================"
 : "${GITHUB_REPO:?GITHUB_REPO is required (e.g. org/repo.git)}"
 : "${GITLAB_REPO:?GITLAB_REPO is required (e.g. org/repo.git)}"
 
-# Optional overrides
-REMOTE_GITHUB_NAME="${REMOTE_GITHUB_NAME:-github}"
-REMOTE_GITLAB_NAME="${REMOTE_GITLAB_NAME:-gitlab}"
 SSH_DIR="${SSH_DIR:-$HOME/.ssh}"
 SSH_CONFIG="$SSH_DIR/config"
+
+# -------------------------
+# Safe defaults for remote names
+# -------------------------
+if [ -z "${REMOTE_GITHUB_NAME+x}" ]; then
+    REMOTE_GITHUB_NAME="github"
+fi
+
+if [ -z "${REMOTE_GITLAB_NAME+x}" ]; then
+    REMOTE_GITLAB_NAME="gitlab"
+fi
 
 # -------------------------
 # Configure git identity

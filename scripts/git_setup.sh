@@ -118,40 +118,45 @@ EOF
 fi
 
 # -------------------------
-# Configure remotes
+# Configure remotes (Bash 3 compatible)
 # -------------------------
 
-# -------------------------
-# Ensure remote names have defaults
-# -------------------------
+# Ensure defaults
 REMOTE_GITHUB_NAME="${REMOTE_GITHUB_NAME:-github}"
 REMOTE_GITLAB_NAME="${REMOTE_GITLAB_NAME:-gitlab}"
 
-# -------------------------
-# Configure remotes safely
-# -------------------------
-declare -A remotes
-remotes["$REMOTE_GITHUB_NAME"]="$GITHUB_URL"
-remotes["$REMOTE_GITLAB_NAME"]="$GITLAB_URL"
+GITHUB_URL="https://github.com/${GITHUB_REPO}"
+GITLAB_URL="https://gitlab.com/${GITLAB_REPO}"
+
+# Map names to URLs
+REMOTE1_NAME="$REMOTE_GITHUB_NAME"
+REMOTE1_URL="$GITHUB_URL"
+
+REMOTE2_NAME="$REMOTE_GITLAB_NAME"
+REMOTE2_URL="$GITLAB_URL"
 
 echo "========================================"
 echo "CONFIGURING REMOTES"
 echo "========================================"
 
-for name in "${!remotes[@]}"; do
-    url="${remotes[$name]}"
+for i in 1 2; do
+    REMOTE_NAME_VAR="REMOTE${i}_NAME"
+    REMOTE_URL_VAR="REMOTE${i}_URL"
 
-    if git remote get-url "$name" &>/dev/null; then
-        existing=$(git remote get-url "$name")
-        if [ "$existing" != "$url" ]; then
-            echo "→ Updating remote '$name'"
-            git remote set-url "$name" "$url"
+    NAME="${!REMOTE_NAME_VAR}"
+    URL="${!REMOTE_URL_VAR}"
+
+    if git remote get-url "$NAME" &>/dev/null; then
+        existing=$(git remote get-url "$NAME")
+        if [ "$existing" != "$URL" ]; then
+            echo "→ Updating remote '$NAME'"
+            git remote set-url "$NAME" "$URL"
         else
-            echo "→ Remote '$name' already correct"
+            echo "→ Remote '$NAME' already correct"
         fi
     else
-        echo "→ Adding remote '$name'"
-        git remote add "$name" "$url"
+        echo "→ Adding remote '$NAME'"
+        git remote add "$NAME" "$URL"
     fi
 done
 

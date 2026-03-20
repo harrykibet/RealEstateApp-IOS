@@ -4,39 +4,36 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-
-# Thumbnails / temp
 ._*
 .Spotlight-V100
 .Trashes
 
 # =========================
-# 🔥 XCODE DERIVED DATA
+# 🔥 BUILD OUTPUTS
 # =========================
 DerivedData/
 build/
-*.build/
+.build/
 
-# SwiftPM build artifacts
-.swiftpm/build/
+# =========================
+# 🔥 SWIFTPM (CRITICAL)
+# =========================
+.swiftpm/
+spm/
 
 # =========================
 # 🔥 XCODE USER STATE (CRITICAL)
 # =========================
-# Per-user workspace data
-**/xcuserdata/
-**/*.xcuserstate
+xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
 
-# SwiftPM Xcode user data (your current problem)
-**/.swiftpm/xcode/xcuserdata/
-
-# Workspace user data
-**/*.xcworkspace/xcuserdata/
+# Non-deterministic scheme state
+xcschememanagement.plist
 
 # =========================
 # 🔥 XCODE PROJECT NOISE
 # =========================
-# These are sometimes generated and not deterministic
 *.xccheckout
 *.xcscmblueprint
 
@@ -47,18 +44,14 @@ timeline.xctimeline
 playground.xcworkspace
 
 # =========================
-# 🔥 SWIFTPM
+# 🔥 SWIFTPM RESOLUTION
 # =========================
-# Lock this ONLY if you want reproducible builds
-# Otherwise ignore
-# Package.resolved
-
-# If you want deterministic CI builds → KEEP this tracked
-# If not → uncomment below
+# ✅ KEEP THIS TRACKED for reproducible builds
+# (DO NOT IGNORE unless you intentionally want floating deps)
 # Package.resolved
 
 # =========================
-# 🔥 FASTLANE / CI
+# 🔥 CI / FASTLANE
 # =========================
 fastlane/report.xml
 fastlane/Preview.html
@@ -66,7 +59,7 @@ fastlane/screenshots/
 fastlane/test_output/
 
 # =========================
-# 🔥 LOGS / TEMP FILES
+# 🔥 LOGS / TEMP
 # =========================
 *.log
 *.tmp
@@ -74,7 +67,7 @@ fastlane/test_output/
 *.lock
 
 # =========================
-# 🔥 SECRETS / CONFIG
+# 🔥 SECRETS
 # =========================
 .env
 .env.*
@@ -83,12 +76,9 @@ fastlane/test_output/
 *.mobileprovision
 
 # =========================
-# 🔥 THIRD PARTY / DEPENDENCIES
+# 🔥 DEPENDENCIES (OPTIONAL)
 # =========================
-# CocoaPods (if you ever mix)
 Pods/
-
-# Carthage (if ever used)
 Carthage/Build/
 
 # =========================
@@ -99,7 +89,7 @@ Carthage/Build/
 *.gcno
 
 # =========================
-# 🔥 IDE OTHER
+# 🔥 IDE
 # =========================
 .idea/
 .vscode/

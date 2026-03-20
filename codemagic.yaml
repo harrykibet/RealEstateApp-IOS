@@ -6,56 +6,55 @@ workflows:
 
     environment:
       xcode: latest
+
+      # ----------------------------
+      # 🔑 Secure token group
+      # ----------------------------
+      groups:
+        - tokens  # contains GITHUB_TOKEN and GITLAB_TOKEN, secured
+
+      # ----------------------------
+      # 📝 Non-secret environment vars
+      # ----------------------------
       vars:
-        GITHUB_TOKEN: "$GITHUB_TOKEN"
-        GITLAB_TOKEN: "$GITLAB_TOKEN"
-        XCODE_PROJECT: "estatia.xcodeproj"
-        XCODE_SCHEME: "estatia"
+        GIT_USER_NAME: harrykibet
+        GIT_USER_EMAIL: trmnjames@gmail.com
+        GITHUB_REPO: harrykibet/RealEstateApp-IOS.git
+        GITLAB_REPO: harrykibet/RealEstateApp-IOS.git
+        XCODE_PROJECT: estatia.xcodeproj
+        XCODE_SCHEME: estatia
         DERIVED_DATA: "$CM_BUILD_DIR/build"
 
     scripts:
-
-      # =========================
-      # 🔥 GIT SETUP
-      # =========================
-      - name: Setup Git environment
+      # ----------------------------
+      # 🔥 GIT SETUP (identity + remotes)
+      # ----------------------------
+      - name: Setup Git identity & remotes
         script: |
-          echo "Setting up Git..."
+          echo "Running Git setup..."
           chmod +x scripts/git_setup.sh
           ./scripts/git_setup.sh
 
-      # =========================
-      # 🔥 CLEAN STATE
-      # =========================
+      # ----------------------------
+      # 🔥 CLEAN REPO
+      # ----------------------------
       - name: Clean repository state
         script: |
           echo "Cleaning repo..."
           git clean -fdx
 
-      # =========================
-      # 🔥 SSH SETUP
-      # =========================
-      - name: Setup ephemeral SSH (GitHub/GitLab)
-        script: |
-          echo "Setting up ephemeral SSH access..."
-
-          python3 -m pip install requests
-
-          chmod +x scripts/ssh_key_manager.py
-          python3 scripts/ssh_key_manager.py
-
-      # =========================
+      # ----------------------------
       # 🔥 DISPLAY BOOTSTRAP
-      # =========================
+      # ----------------------------
       - name: Bootstrap virtual display
         script: |
           echo "Initializing CI display environment..."
           chmod +x scripts/ci-display-bootstrap.sh
           ./scripts/ci-display-bootstrap.sh
 
-      # =========================
+      # ----------------------------
       # 🔥 RESOLVE SPM
-      # =========================
+      # ----------------------------
       - name: Resolve Swift Package Dependencies
         script: |
           echo "Resolving Swift Package dependencies..."
@@ -63,17 +62,14 @@ workflows:
             -project "$XCODE_PROJECT" \
             -clonedSourcePackagesDirPath "$CM_BUILD_DIR/spm"
 
-      # =========================
+      # ----------------------------
       # 🔥 BUILD
-      # =========================
+      # ----------------------------
       - name: Build for testing
         script: |
           set -e
-
           DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
-
           echo "Building project..."
-
           xcodebuild clean build-for-testing \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -83,15 +79,13 @@ workflows:
             -quiet \
             CODE_SIGNING_ALLOWED=NO
 
-      # =========================
-      # 🔥 VERIFY
-      # =========================
+      # ----------------------------
+      # 🔥 VALIDATE BUILD
+      # ----------------------------
       - name: Validate build artifacts
         script: |
           echo "Validating build output..."
-
           APP_PATH=$(find "$DERIVED_DATA" -name "*.app" | head -n 1)
-
           if [ -d "$APP_PATH" ]; then
             echo "✅ App build found: $APP_PATH"
           else
@@ -99,28 +93,18 @@ workflows:
             exit 1
           fi
 
-      # =========================
-      # 🔥 TESTS
-      # =========================
+      # ----------------------------
+      # 🔥 RUN TESTS
+      # ----------------------------
       - name: Run tests (optional)
         script: |
           set -e
-
           DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
-
           xcodebuild test-without-building \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -destination "$DESTINATION" \
             -derivedDataPath "$DERIVED_DATA"
-
-      # =========================
-      # 🔥 CLEANUP
-      # =========================
-      - name: Cleanup SSH keys
-        script: |
-          echo "Cleaning up SSH keys..."
-          python3 scripts/ssh_key_manager.py cleanup
 
     artifacts:
       - build/**/*.app

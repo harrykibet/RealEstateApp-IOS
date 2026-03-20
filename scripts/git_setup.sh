@@ -1,93 +1,78 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 echo "========================================"
-echo "GIT SETUP"
+echo "GIT SETUP (CI-aware)"
 echo "========================================"
 
-GIT_NAME="harrykibet"
-GIT_EMAIL="trmnjames@gmail.com"
+# =========================
+# 🔐 REQUIRED ENV VARS
+# =========================
+: "${GIT_USER_NAME:?GIT_USER_NAME is required}"
+: "${GIT_USER_EMAIL:?GIT_USER_EMAIL is required}"
+: "${GITHUB_REPO:?GITHUB_REPO is required (e.g. org/repo.git)}"
+: "${GITLAB_REPO:?GITLAB_REPO is required (e.g. org/repo.git)}"
 
-SSH_DIR="$HOME/.ssh"
+# Optional overrides
+REMOTE_GITHUB_NAME="${REMOTE_GITHUB_NAME:-github}"
+REMOTE_GITLAB_NAME="${REMOTE_GITLAB_NAME:-gitlab}"
+SSH_DIR="${SSH_DIR:-$HOME/.ssh}"
 SSH_CONFIG="$SSH_DIR/config"
 
-mkdir -p "$SSH_DIR"
-chmod 700 "$SSH_DIR"
+# -------------------------
+# Configure git identity
+# -------------------------
+git config --global user.name "$GIT_USER_NAME"
+git config --global user.email "$GIT_USER_EMAIL"
 
-echo "→ Setting global git config..."
-git config --global user.name "$GIT_NAME"
-git config --global user.email "$GIT_EMAIL"
-
-# Define remotes
-declare -A remotes=(
-  ["github"]="git@github.com:harrykibet/RealEstateApp-IOS.git"
-  ["gitlab"]="git@gitlab.com:harrykibet/RealEstateApp-IOS.git"
-)
-
-for name in "${!remotes[@]}"; do
-  url="${remotes[$name]}"
-
-  if git remote get-url "$name" &>/dev/null; then
-    echo -e "\e[33m⚠️  Remote '$name' already exists. Skipping.\e[0m"
-  else
-    git remote add "$name" "$url"
-    echo -e "\e[32m✅ Added remote '$name' with URL: $url\e[0m"
-  fi
-done
-
-# =========================
-# 🚫 CI MODE (NO SSH SETUP)
-# =========================
+# -------------------------
+# Determine CI vs Local
+# -------------------------
 if [ "${CI:-false}" = "true" ]; then
-  echo "⚠️ CI environment detected — skipping SSH setup (handled by ephemeral key manager)"
-  exit 0
-fi
+    echo "⚡ CI mode detected — using HTTPS token authentication"
 
-echo "========================================"
-echo "LOCAL SSH SETUP"
-echo "========================================"
+    : "${GITHUB_TOKEN:?GITHUB_TOKEN required in CI}"
+    : "${GITLAB_TOKEN:?GITLAB_TOKEN required in CI}"
 
-GITHUB_KEY="$SSH_DIR/id_ed25519_github"
-GITLAB_KEY="$SSH_DIR/id_ed25519_gitlab"
+    # Setup token-based HTTPS auth for CI
+    git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+    git config --global url."https://${GITLAB_TOKEN}@gitlab.com/".insteadOf "https://gitlab.com/"
 
-# =========================
-# 🔑 KEY GENERATION (LOCAL ONLY)
-# =========================
-echo "→ Generating GitHub SSH key..."
-if [ ! -f "$GITHUB_KEY" ]; then
-  ssh-keygen -t ed25519 -C "$GIT_EMAIL (github)" -f "$GITHUB_KEY" -N ""
+    GITHUB_URL="https://github.com/${GITHUB_REPO}"
+    GITLAB_URL="https://gitlab.com/${GITLAB_REPO}"
+
 else
-  echo "GitHub key already exists, skipping..."
-fi
+    echo "⚡ Local mode detected — using SSH keys"
 
-echo "→ Generating GitLab SSH key..."
-if [ ! -f "$GITLAB_KEY" ]; then
-  ssh-keygen -t ed25519 -C "$GIT_EMAIL (gitlab)" -f "$GITLAB_KEY" -N ""
-else
-  echo "GitLab key already exists, skipping..."
-fi
+    mkdir -p "$SSH_DIR"
+    chmod 700 "$SSH_DIR"
 
-# =========================
-# 🔐 SSH AGENT
-# =========================
-echo "→ Starting ssh-agent..."
-eval "$(ssh-agent -s)"
+    GITHUB_KEY="${GITHUB_KEY_PATH:-$SSH_DIR/id_ed25519_github}"
+    GITLAB_KEY="${GITLAB_KEY_PATH:-$SSH_DIR/id_ed25519_gitlab}"
 
-# macOS-specific (safe fallback)
-ssh-add --apple-use-keychain "$GITHUB_KEY" 2>/dev/null || ssh-add "$GITHUB_KEY"
-ssh-add --apple-use-keychain "$GITLAB_KEY" 2>/dev/null || ssh-add "$GITLAB_KEY"
+    # -------------------------
+    # Generate SSH keys if missing
+    # -------------------------
+    if [ ! -f "$GITHUB_KEY" ]; then
+        ssh-keygen -t ed25519 -C "$GIT_USER_EMAIL (github)" -f "$GITHUB_KEY" -N ""
+    fi
+    if [ ! -f "$GITLAB_KEY" ]; then
+        ssh-keygen -t ed25519 -C "$GIT_USER_EMAIL (gitlab)" -f "$GITLAB_KEY" -N ""
+    fi
 
-# =========================
-# ⚙️ SSH CONFIG (LOCAL ONLY)
-# =========================
-echo "→ Configuring SSH config..."
+    # -------------------------
+    # Start ssh-agent and add keys
+    # -------------------------
+    eval "$(ssh-agent -s)"
+    ssh-add --apple-use-keychain "$GITHUB_KEY" 2>/dev/null || ssh-add "$GITHUB_KEY"
+    ssh-add --apple-use-keychain "$GITLAB_KEY" 2>/dev/null || ssh-add "$GITLAB_KEY"
 
-touch "$SSH_CONFIG"
-
-# Idempotent config append
-if ! grep -q "Host github.com" "$SSH_CONFIG"; then
-cat <<EOF >> "$SSH_CONFIG"
+    # -------------------------
+    # SSH config
+    # -------------------------
+    touch "$SSH_CONFIG"
+    if ! grep -q "Host github.com" "$SSH_CONFIG"; then
+        cat <<EOF >> "$SSH_CONFIG"
 
 Host github.com
   HostName github.com
@@ -96,10 +81,10 @@ Host github.com
   AddKeysToAgent yes
   UseKeychain yes
 EOF
-fi
+    fi
 
-if ! grep -q "Host gitlab.com" "$SSH_CONFIG"; then
-cat <<EOF >> "$SSH_CONFIG"
+    if ! grep -q "Host gitlab.com" "$SSH_CONFIG"; then
+        cat <<EOF >> "$SSH_CONFIG"
 
 Host gitlab.com
   HostName gitlab.com
@@ -108,27 +93,51 @@ Host gitlab.com
   AddKeysToAgent yes
   UseKeychain yes
 EOF
+    fi
+    chmod 600 "$SSH_CONFIG"
+
+    GITHUB_URL="git@github.com:${GITHUB_REPO}"
+    GITLAB_URL="git@gitlab.com:${GITLAB_REPO}"
+
+    # Print public keys for manual upload
+    echo ""
+    echo "📌 Public keys (add to GitHub/GitLab if missing):"
+    echo "GitHub:"
+    cat "${GITHUB_KEY}.pub"
+    echo ""
+    echo "GitLab:"
+    cat "${GITLAB_KEY}.pub"
 fi
 
-chmod 600 "$SSH_CONFIG"
+# -------------------------
+# Configure remotes
+# -------------------------
+declare -A remotes=(
+    ["$REMOTE_GITHUB_NAME"]="$GITHUB_URL"
+    ["$REMOTE_GITLAB_NAME"]="$GITLAB_URL"
+)
 
-# =========================
-# 📤 OUTPUT KEYS (LOCAL ONLY)
-# =========================
 echo "========================================"
-echo "✅ LOCAL SETUP COMPLETE"
+echo "CONFIGURING REMOTES"
 echo "========================================"
 
-echo ""
-echo "📌 Copy your public keys:"
-echo ""
+for name in "${!remotes[@]}"; do
+    url="${remotes[$name]}"
 
-echo "GitHub:"
-cat "${GITHUB_KEY}.pub"
+    if git remote get-url "$name" &>/dev/null; then
+        existing=$(git remote get-url "$name")
+        if [ "$existing" != "$url" ]; then
+            echo "→ Updating remote '$name'"
+            git remote set-url "$name" "$url"
+        else
+            echo "→ Remote '$name' already correct"
+        fi
+    else
+        echo "→ Adding remote '$name'"
+        git remote add "$name" "$url"
+    fi
+done
 
-echo ""
-echo "GitLab:"
-cat "${GITLAB_KEY}.pub"
-
-echo ""
-echo "👉 Add them to GitHub & GitLab SSH settings."
+echo "========================================"
+echo "✅ GIT SETUP COMPLETE"
+echo "========================================"

@@ -137,8 +137,6 @@ public final class AppDIContainer {
             return AnyView(MarketView(viewModel: MarketViewModel()))
         case .service:
             return AnyView(ServiceView(viewModel: ServiceViewModel()))
-        case .player:
-            return AnyView(PlayerView(viewModel: PlayerViewModel()))
         case .auth:
             return AnyView(AuthView(viewModel: AuthViewModel()))
         }

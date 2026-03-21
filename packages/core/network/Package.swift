@@ -1,35 +1,32 @@
 // swift-tools-version: 6.1
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import PackageDescription
 
 let package = Package(
-    name: "network",
+    name: "CoreNetwork",
     platforms: [
         .iOS(.v18)
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "network",
-            targets: ["network"]),
+            name: "CoreNetwork",
+            targets: ["CoreNetwork"]
+        ),
     ],
     dependencies: [
-        .package(path: "../model")
+        .package(path: "../CoreModel")
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "network",
+            name: "CoreNetwork",
             dependencies: [
-                .product(name: "model", package: "model")
-            ]),
+                .product(name: "CoreModel", package: "CoreModel")
+            ]
+        ),
         .testTarget(
-            name: "networkTests",
+            name: "CoreNetworkTests",
             dependencies: [
-                "network",
-                .product(name: "model", package: "model")
+                "CoreNetwork",
+                .product(name: "CoreModel", package: "CoreModel")
             ]
         ),
     ]

@@ -1,27 +1,24 @@
 // swift-tools-version: 6.1
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import PackageDescription
 
 let package = Package(
-    name: "settings",
+    name: "FeatureSettings",
     platforms: [
         .iOS(.v18)
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "settings",
-            targets: ["settings"]),
+            name: "FeatureSettings",
+            targets: ["FeatureSettings"]
+        ),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "settings"),
+            name: "FeatureSettings"
+        ),
         .testTarget(
-            name: "settingsTests",
-            dependencies: ["settings"]
+            name: "FeatureSettingsTests",
+            dependencies: ["FeatureSettings"]
         ),
     ]
 )

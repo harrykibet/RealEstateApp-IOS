@@ -3,29 +3,29 @@
 import PackageDescription
 
 let package = Package(
-    name: "profile",
+    name: "FeatureProfile",
     platforms: [
         .iOS(.v18)
     ],
     products: [
         .library(
-            name: "profile",
-            targets: ["profile"]
+            name: "FeatureProfile",
+            targets: ["FeatureProfile"]
         ),
     ],
     dependencies: [
-        .package(path: "../core/model")
+        .package(path: "../CoreModel")
     ],
     targets: [
         .target(
-            name: "profile",
+            name: "FeatureProfile",
             dependencies: [
-                .product(name: "model", package: "model")
+                .product(name: "CoreModel", package: "CoreModel")
             ]
         ),
         .testTarget(
-            name: "profileTests",
-            dependencies: ["profile"]
+            name: "FeatureProfileTests",
+            dependencies: ["FeatureProfile"]
         ),
     ]
 )

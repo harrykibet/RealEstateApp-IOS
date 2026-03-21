@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import model
+import CoreModel
 
 public struct UserProfileView: View {
     @State private var user: User

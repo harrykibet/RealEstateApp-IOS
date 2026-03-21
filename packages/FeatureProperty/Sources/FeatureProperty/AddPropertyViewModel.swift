@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import model
+import CoreModel
 
 public class AddPropertyViewModel: ObservableObject {
     public init(){}

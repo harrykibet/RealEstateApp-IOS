@@ -1,4 +1,5 @@
 import SwiftUI
+
 import FeatureHome
 import FeatureSearch
 import FeatureProperty
@@ -21,6 +22,10 @@ import CoreNetwork
 import CoreDatabase
 import CoreSecurity
 import CoreCommon
+import CoreTesting
+import CoreData
+import CoreDomain
+import CoreUI
 import CoreModel
 
 public final class AppDIContainer {

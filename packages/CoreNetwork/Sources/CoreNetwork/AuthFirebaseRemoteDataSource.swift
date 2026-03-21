@@ -1,5 +1,5 @@
 import Foundation
-import CoreModel
+import model
 
 #if canImport(FirebaseAuth)
 import FirebaseAuth

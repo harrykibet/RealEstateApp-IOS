@@ -1,6 +1,6 @@
 import Foundation
-import model
-import network
+import CoreModel
+import CoreNetwork
 
 public protocol SecurityRepository: Repository {
     func fetchSecurityConfig() async throws -> SecurityConfig

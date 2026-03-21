@@ -1,6 +1,6 @@
 import Foundation
-import model
-import network
+import CoreModel
+import CoreNetwork
 
 public protocol UserRepository: Repository {
     func fetchUser(id: String) async throws -> User

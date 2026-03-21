@@ -1,6 +1,6 @@
 import Foundation
-import model
-import network
+import CoreModel
+import CoreNetwork
 
 public protocol PropertyRepository: Repository {
     func fetchProperty(id: String) async throws -> PropertyModel

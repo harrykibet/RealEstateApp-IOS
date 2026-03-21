@@ -1,6 +1,6 @@
 import Foundation
-import model
-import network
+import CoreModel
+import CoreNetwork
 
 public protocol AuthRepository: Repository {
     func signIn(email: String, password: String) async throws -> User

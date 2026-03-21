@@ -56,6 +56,12 @@
 		5A70DF872F6AA3AA0075AF00 /* service in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF862F6AA3AA0075AF00 /* service */; };
 		5A70DF8A2F6AA3E80075AF00 /* settings in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF892F6AA3E80075AF00 /* settings */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
+		5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD692F6F172800F773A3 /* CoreAnalytics */; };
+		5AEDBD6D2F6F176600F773A3 /* CoreCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD6C2F6F176600F773A3 /* CoreCommon */; };
+		5AEDBD702F6F17A300F773A3 /* CoreData in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD6F2F6F17A300F773A3 /* CoreData */; };
+		5AEDBD732F6F17DB00F773A3 /* CoreDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD722F6F17DB00F773A3 /* CoreDatabase */; };
+		5AEDBD762F6F181A00F773A3 /* CoreDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD752F6F181A00F773A3 /* CoreDomain */; };
+		5AEDBD792F6F185900F773A3 /* CoreModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD782F6F185900F773A3 /* CoreModel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,13 +151,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A70DF5D2F6A9E7D0075AF00 /* testing in Frameworks */,
+				5AEDBD702F6F17A300F773A3 /* CoreData in Frameworks */,
 				5A70DF5A2F6A9E3A0075AF00 /* security in Frameworks */,
 				5A70DF4B2F6A9CAD0075AF00 /* model in Frameworks */,
 				5A392A6E2F69E29D003CE8F2 /* domain in Frameworks */,
+				5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */,
 				5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */,
 				5A70DF632F6A9F660075AF00 /* auth in Frameworks */,
 				5A1694432DC62E2800245881 /* FirebaseFunctions in Frameworks */,
 				5A16944F2DC62E2800245881 /* FirebasePerformance in Frameworks */,
+				5AEDBD732F6F17DB00F773A3 /* CoreDatabase in Frameworks */,
 				5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */,
 				5A70DF752F6AA1250075AF00 /* market in Frameworks */,
 				5A16943B2DC62E2800245881 /* FirebaseDatabase in Frameworks */,
@@ -181,9 +190,12 @@
 				5A70DF512F6A9D110075AF00 /* notifications in Frameworks */,
 				5A16944B2DC62E2800245881 /* FirebaseMLModelDownloader in Frameworks */,
 				5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */,
+				5AEDBD6D2F6F176600F773A3 /* CoreCommon in Frameworks */,
 				5A392A652F69E136003CE8F2 /* common in Frameworks */,
 				5A70DF812F6AA31F0075AF00 /* property in Frameworks */,
+				5AEDBD792F6F185900F773A3 /* CoreModel in Frameworks */,
 				5A70DF7B2F6AA2080075AF00 /* player in Frameworks */,
+				5AEDBD762F6F181A00F773A3 /* CoreDomain in Frameworks */,
 				5A1694372DC62E2800245881 /* FirebaseCore in Frameworks */,
 				5A70DF8A2F6AA3E80075AF00 /* settings in Frameworks */,
 				5A70DF842F6AA3660075AF00 /* search in Frameworks */,
@@ -336,6 +348,12 @@
 				5A70DF832F6AA3660075AF00 /* search */,
 				5A70DF862F6AA3AA0075AF00 /* service */,
 				5A70DF892F6AA3E80075AF00 /* settings */,
+				5AEDBD692F6F172800F773A3 /* CoreAnalytics */,
+				5AEDBD6C2F6F176600F773A3 /* CoreCommon */,
+				5AEDBD6F2F6F17A300F773A3 /* CoreData */,
+				5AEDBD722F6F17DB00F773A3 /* CoreDatabase */,
+				5AEDBD752F6F181A00F773A3 /* CoreDomain */,
+				5AEDBD782F6F185900F773A3 /* CoreModel */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -421,6 +439,12 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5A1694272DC62E2800245881 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				5AEDBD682F6F172800F773A3 /* XCLocalSwiftPackageReference "packages/CoreAnalytics" */,
+				5AEDBD6B2F6F176600F773A3 /* XCLocalSwiftPackageReference "packages/CoreCommon" */,
+				5AEDBD6E2F6F17A300F773A3 /* XCLocalSwiftPackageReference "packages/CoreData" */,
+				5AEDBD712F6F17DB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDatabase" */,
+				5AEDBD742F6F181A00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDomain" */,
+				5AEDBD772F6F185900F773A3 /* XCLocalSwiftPackageReference "packages/CoreModel" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -785,6 +809,33 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		5AEDBD682F6F172800F773A3 /* XCLocalSwiftPackageReference "packages/CoreAnalytics" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/CoreAnalytics;
+		};
+		5AEDBD6B2F6F176600F773A3 /* XCLocalSwiftPackageReference "packages/CoreCommon" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/CoreCommon;
+		};
+		5AEDBD6E2F6F17A300F773A3 /* XCLocalSwiftPackageReference "packages/CoreData" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/CoreData;
+		};
+		5AEDBD712F6F17DB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDatabase" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/CoreDatabase;
+		};
+		5AEDBD742F6F181A00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDomain" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/CoreDomain;
+		};
+		5AEDBD772F6F185900F773A3 /* XCLocalSwiftPackageReference "packages/CoreModel" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/CoreModel;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		5A1694272DC62E2800245881 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1008,6 +1059,30 @@
 		5A70DF892F6AA3E80075AF00 /* settings */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = settings;
+		};
+		5AEDBD692F6F172800F773A3 /* CoreAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreAnalytics;
+		};
+		5AEDBD6C2F6F176600F773A3 /* CoreCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreCommon;
+		};
+		5AEDBD6F2F6F17A300F773A3 /* CoreData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreData;
+		};
+		5AEDBD722F6F17DB00F773A3 /* CoreDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreDatabase;
+		};
+		5AEDBD752F6F181A00F773A3 /* CoreDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreDomain;
+		};
+		5AEDBD782F6F185900F773A3 /* CoreModel */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreModel;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

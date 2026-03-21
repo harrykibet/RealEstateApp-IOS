@@ -78,7 +78,6 @@ public final class AppDIContainer {
         case chats
         case market
         case service
-        case player
         case auth
     }
 
@@ -169,8 +168,6 @@ extension AppDIContainer.FeatureDestination: Equatable {
             return true
         case (.service, .service):
             return true
-        case (.player, .player):
-            return true
         case (.auth, .auth):
             return true
         default:
@@ -207,10 +204,8 @@ extension AppDIContainer.FeatureDestination: Hashable {
             hasher.combine(10)
         case .service:
             hasher.combine(11)
-        case .player:
-            hasher.combine(12)
         case .auth:
-            hasher.combine(13)
+            hasher.combine(12)
         }
     }
 }

@@ -80,6 +80,8 @@
 		5AEDBDA92F6F1C8A00F773A3 /* FeatureProfile in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDA82F6F1C8A00F773A3 /* FeatureProfile */; };
 		5AEDBDAC2F6F1CC800F773A3 /* FeatureProperty in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDAB2F6F1CC800F773A3 /* FeatureProperty */; };
 		5AEDBDAF2F6F1CFC00F773A3 /* FeatureSearch in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */; };
+		5AEDBDB22F6F1D2F00F773A3 /* FeatureService in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDB12F6F1D2F00F773A3 /* FeatureService */; };
+		5AEDBDB52F6F1D5D00F773A3 /* FeatureSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDB42F6F1D5D00F773A3 /* FeatureSettings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,11 +180,13 @@
 				5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */,
 				5A70DF632F6A9F660075AF00 /* auth in Frameworks */,
 				5A1694432DC62E2800245881 /* FirebaseFunctions in Frameworks */,
+				5AEDBDB22F6F1D2F00F773A3 /* FeatureService in Frameworks */,
 				5AEDBD882F6F197700F773A3 /* CoreTesting in Frameworks */,
 				5A16944F2DC62E2800245881 /* FirebasePerformance in Frameworks */,
 				5AEDBD732F6F17DB00F773A3 /* CoreDatabase in Frameworks */,
 				5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */,
 				5A70DF752F6AA1250075AF00 /* market in Frameworks */,
+				5AEDBDB52F6F1D5D00F773A3 /* FeatureSettings in Frameworks */,
 				5AEDBD972F6F1A8E00F773A3 /* FeatureFavorites in Frameworks */,
 				5A16943B2DC62E2800245881 /* FirebaseDatabase in Frameworks */,
 				5A70DF782F6AA16E0075AF00 /* payments in Frameworks */,
@@ -408,6 +412,8 @@
 				5AEDBDA82F6F1C8A00F773A3 /* FeatureProfile */,
 				5AEDBDAB2F6F1CC800F773A3 /* FeatureProperty */,
 				5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */,
+				5AEDBDB12F6F1D2F00F773A3 /* FeatureService */,
+				5AEDBDB42F6F1D5D00F773A3 /* FeatureSettings */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -517,6 +523,8 @@
 				5AEDBDA72F6F1C8900F773A3 /* XCLocalSwiftPackageReference "packages/FeatureProfile" */,
 				5AEDBDAA2F6F1CC800F773A3 /* XCLocalSwiftPackageReference "packages/FeatureProperty" */,
 				5AEDBDAD2F6F1CFC00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSearch" */,
+				5AEDBDB02F6F1D2F00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureService" */,
+				5AEDBDB32F6F1D5D00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSettings" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -978,6 +986,14 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/FeatureSearch;
 		};
+		5AEDBDB02F6F1D2F00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureService" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureService;
+		};
+		5AEDBDB32F6F1D5D00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSettings" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureSettings;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1299,6 +1315,14 @@
 		5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureSearch;
+		};
+		5AEDBDB12F6F1D2F00F773A3 /* FeatureService */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureService;
+		};
+		5AEDBDB42F6F1D5D00F773A3 /* FeatureSettings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureSettings;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

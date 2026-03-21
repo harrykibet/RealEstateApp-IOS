@@ -1,5 +1,5 @@
 import SwiftUI
-import model
+import CoreModel
 
 public final class AppCoordinator: ObservableObject {
     public enum AppTab: Hashable {

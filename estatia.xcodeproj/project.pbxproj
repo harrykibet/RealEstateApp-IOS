@@ -215,15 +215,7 @@
 		5A392A512F69DF10003CE8F2 /* packages */ = {
 			isa = PBXGroup;
 			children = (
-				5A392A5F2F69DFD8003CE8F2 /* core */,
-				5A8521532F69D64A0059C848 /* feature */,
-			);
-			path = packages;
-			sourceTree = "<group>";
-		};
-		5A392A5F2F69DFD8003CE8F2 /* core */ = {
-			isa = PBXGroup;
-			children = (
+				5AA8A6952DC39C1100F71CEF /* auth */,
 				5A392A522F69DFD8003CE8F2 /* analytics */,
 				5A392A532F69DFD8003CE8F2 /* common */,
 				5A392A542F69DFD8003CE8F2 /* data */,
@@ -237,13 +229,6 @@
 				5A392A5C2F69DFD8003CE8F2 /* security */,
 				5A392A5D2F69DFD8003CE8F2 /* testing */,
 				5A392A5E2F69DFD8003CE8F2 /* ui */,
-			);
-			path = core;
-			sourceTree = "<group>";
-		};
-		5A8521532F69D64A0059C848 /* feature */ = {
-			isa = PBXGroup;
-			children = (
 				5AA8A6A02DC39E6C00F71CEF /* settings */,
 				5AA8A69F2DC39E3F00F71CEF /* service */,
 				5AA8A69E2DC39E0600F71CEF /* search */,
@@ -254,11 +239,10 @@
 				5AA8A6982DC39CB000F71CEF /* favorites */,
 				5AA8A6972DC39C8000F71CEF /* comments */,
 				5AA8A6962DC39C5200F71CEF /* chats */,
-				5AA8A6952DC39C1100F71CEF /* auth */,
 				5AA8A68A2DC3991B00F71CEF /* profile */,
 				5AA8A6892DC398E700F71CEF /* home */,
 			);
-			path = feature;
+			path = packages;
 			sourceTree = "<group>";
 		};
 		5AA8A64A2DC3952000F71CEF = {

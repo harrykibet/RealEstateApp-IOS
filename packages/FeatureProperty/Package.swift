@@ -14,7 +14,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../../CoreModel")
+        .package(path: "../CoreModel")
     ],
     targets: [
         .target(

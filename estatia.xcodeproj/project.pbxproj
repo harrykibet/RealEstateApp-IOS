@@ -115,36 +115,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5A392A522F69DFD8003CE8F2 /* analytics */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = analytics; sourceTree = "<group>"; };
-		5A392A532F69DFD8003CE8F2 /* common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = common; sourceTree = "<group>"; };
-		5A392A542F69DFD8003CE8F2 /* data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = data; sourceTree = "<group>"; };
-		5A392A552F69DFD8003CE8F2 /* database */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = database; sourceTree = "<group>"; };
-		5A392A562F69DFD8003CE8F2 /* domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = domain; sourceTree = "<group>"; };
-		5A392A572F69DFD8003CE8F2 /* model */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = model; sourceTree = "<group>"; };
-		5A392A582F69DFD8003CE8F2 /* network */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = network; sourceTree = "<group>"; };
-		5A392A592F69DFD8003CE8F2 /* notifications */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = notifications; sourceTree = "<group>"; };
-		5A392A5A2F69DFD8003CE8F2 /* PlayerEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerEngine; sourceTree = "<group>"; };
-		5A392A5B2F69DFD8003CE8F2 /* PlayerUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PlayerUI; sourceTree = "<group>"; };
-		5A392A5C2F69DFD8003CE8F2 /* security */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = security; sourceTree = "<group>"; };
-		5A392A5D2F69DFD8003CE8F2 /* testing */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = testing; sourceTree = "<group>"; };
-		5A392A5E2F69DFD8003CE8F2 /* ui */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ui; sourceTree = "<group>"; };
 		5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		5AA8A6532DC3952000F71CEF /* estatia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = estatia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA8A6602DC3952200F71CEF /* estatiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = estatiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AA8A66A2DC3952200F71CEF /* estatiaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = estatiaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AA8A6892DC398E700F71CEF /* home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = home; sourceTree = "<group>"; };
-		5AA8A68A2DC3991B00F71CEF /* profile */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = profile; sourceTree = "<group>"; };
-		5AA8A6952DC39C1100F71CEF /* auth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = auth; sourceTree = "<group>"; };
-		5AA8A6962DC39C5200F71CEF /* chats */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = chats; sourceTree = "<group>"; };
-		5AA8A6972DC39C8000F71CEF /* comments */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = comments; sourceTree = "<group>"; };
-		5AA8A6982DC39CB000F71CEF /* favorites */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = favorites; sourceTree = "<group>"; };
-		5AA8A6992DC39CE700F71CEF /* intelligence */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = intelligence; sourceTree = "<group>"; };
-		5AA8A69A2DC39D1800F71CEF /* market */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = market; sourceTree = "<group>"; };
-		5AA8A69B2DC39D4A00F71CEF /* payments */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = payments; sourceTree = "<group>"; };
-		5AA8A69D2DC39DC000F71CEF /* property */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = property; sourceTree = "<group>"; };
-		5AA8A69E2DC39E0600F71CEF /* search */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = search; sourceTree = "<group>"; };
-		5AA8A69F2DC39E3F00F71CEF /* service */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = service; sourceTree = "<group>"; };
-		5AA8A6A02DC39E6C00F71CEF /* settings */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = settings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -264,43 +238,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5A392A512F69DF10003CE8F2 /* packages */ = {
-			isa = PBXGroup;
-			children = (
-				5AA8A6952DC39C1100F71CEF /* auth */,
-				5A392A522F69DFD8003CE8F2 /* analytics */,
-				5A392A532F69DFD8003CE8F2 /* common */,
-				5A392A542F69DFD8003CE8F2 /* data */,
-				5A392A552F69DFD8003CE8F2 /* database */,
-				5A392A562F69DFD8003CE8F2 /* domain */,
-				5A392A572F69DFD8003CE8F2 /* model */,
-				5A392A582F69DFD8003CE8F2 /* network */,
-				5A392A592F69DFD8003CE8F2 /* notifications */,
-				5A392A5A2F69DFD8003CE8F2 /* PlayerEngine */,
-				5A392A5B2F69DFD8003CE8F2 /* PlayerUI */,
-				5A392A5C2F69DFD8003CE8F2 /* security */,
-				5A392A5D2F69DFD8003CE8F2 /* testing */,
-				5A392A5E2F69DFD8003CE8F2 /* ui */,
-				5AA8A6A02DC39E6C00F71CEF /* settings */,
-				5AA8A69F2DC39E3F00F71CEF /* service */,
-				5AA8A69E2DC39E0600F71CEF /* search */,
-				5AA8A69D2DC39DC000F71CEF /* property */,
-				5AA8A69B2DC39D4A00F71CEF /* payments */,
-				5AA8A69A2DC39D1800F71CEF /* market */,
-				5AA8A6992DC39CE700F71CEF /* intelligence */,
-				5AA8A6982DC39CB000F71CEF /* favorites */,
-				5AA8A6972DC39C8000F71CEF /* comments */,
-				5AA8A6962DC39C5200F71CEF /* chats */,
-				5AA8A68A2DC3991B00F71CEF /* profile */,
-				5AA8A6892DC398E700F71CEF /* home */,
-			);
-			path = packages;
-			sourceTree = "<group>";
-		};
 		5AA8A64A2DC3952000F71CEF = {
 			isa = PBXGroup;
 			children = (
-				5A392A512F69DF10003CE8F2 /* packages */,
 				5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */,
 				5AA8A6552DC3952000F71CEF /* estatia */,
 				5AA8A6632DC3952200F71CEF /* estatiaTests */,

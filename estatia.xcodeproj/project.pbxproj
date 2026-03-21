@@ -73,6 +73,13 @@
 		5AEDBD942F6F1A5700F773A3 /* FeatureComments in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD932F6F1A5700F773A3 /* FeatureComments */; };
 		5AEDBD972F6F1A8E00F773A3 /* FeatureFavorites in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD962F6F1A8E00F773A3 /* FeatureFavorites */; };
 		5AEDBD9A2F6F1AC400F773A3 /* FeatureHome in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD992F6F1AC400F773A3 /* FeatureHome */; };
+		5AEDBD9D2F6F1B1E00F773A3 /* FeatureIntelligence in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD9C2F6F1B1E00F773A3 /* FeatureIntelligence */; };
+		5AEDBDA02F6F1B5700F773A3 /* FeatureMarket in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD9F2F6F1B5700F773A3 /* FeatureMarket */; };
+		5AEDBDA32F6F1B9100F773A3 /* CoreNotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDA22F6F1B9100F773A3 /* CoreNotifications */; };
+		5AEDBDA62F6F1C4C00F773A3 /* FeaturePayments in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDA52F6F1C4C00F773A3 /* FeaturePayments */; };
+		5AEDBDA92F6F1C8A00F773A3 /* FeatureProfile in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDA82F6F1C8A00F773A3 /* FeatureProfile */; };
+		5AEDBDAC2F6F1CC800F773A3 /* FeatureProperty in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDAB2F6F1CC800F773A3 /* FeatureProperty */; };
+		5AEDBDAF2F6F1CFC00F773A3 /* FeatureSearch in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,16 +197,21 @@
 				5A70DF4E2F6A9CE20075AF00 /* network in Frameworks */,
 				5A16944D2DC62E2800245881 /* FirebaseMessaging in Frameworks */,
 				5AEDBD942F6F1A5700F773A3 /* FeatureComments in Frameworks */,
+				5AEDBDA92F6F1C8A00F773A3 /* FeatureProfile in Frameworks */,
 				5A70DF6F2F6AA0910075AF00 /* home in Frameworks */,
 				5A70DF602F6A9ED10075AF00 /* ui in Frameworks */,
 				5AEDBD912F6F1A1F00F773A3 /* FeatureChats in Frameworks */,
+				5AEDBDA02F6F1B5700F773A3 /* FeatureMarket in Frameworks */,
 				5A70DF872F6AA3AA0075AF00 /* service in Frameworks */,
 				5AEDBD822F6F191400F773A3 /* CorePlayerUI in Frameworks */,
 				5A70DF6C2F6AA03D0075AF00 /* favorites in Frameworks */,
 				5A70DF7E2F6AA2C90075AF00 /* profile in Frameworks */,
 				5A1694492DC62E2800245881 /* FirebaseInstallations in Frameworks */,
+				5AEDBDAF2F6F1CFC00F773A3 /* FeatureSearch in Frameworks */,
+				5AEDBDA62F6F1C4C00F773A3 /* FeaturePayments in Frameworks */,
 				5A70DF722F6AA0DF0075AF00 /* intelligence in Frameworks */,
 				5A1694312DC62E2800245881 /* FirebaseAppDistribution-Beta in Frameworks */,
+				5AEDBDA32F6F1B9100F773A3 /* CoreNotifications in Frameworks */,
 				5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				5A392A622F69E0EB003CE8F2 /* analytics in Frameworks */,
 				5A70DF662F6A9FAD0075AF00 /* chats in Frameworks */,
@@ -220,11 +232,13 @@
 				5A1694372DC62E2800245881 /* FirebaseCore in Frameworks */,
 				5A70DF8A2F6AA3E80075AF00 /* settings in Frameworks */,
 				5A70DF842F6AA3660075AF00 /* search in Frameworks */,
+				5AEDBDAC2F6F1CC800F773A3 /* FeatureProperty in Frameworks */,
 				5AEDBD7C2F6F18AB00F773A3 /* CoreNetwork in Frameworks */,
 				5A70DF692F6A9FFB0075AF00 /* comments in Frameworks */,
 				5A392A682F69E212003CE8F2 /* data in Frameworks */,
 				5A16942B2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				5A392A6B2F69E256003CE8F2 /* database in Frameworks */,
+				5AEDBD9D2F6F1B1E00F773A3 /* FeatureIntelligence in Frameworks */,
 				5A70DF542F6A9D7C0075AF00 /* PlayerEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,6 +401,13 @@
 				5AEDBD932F6F1A5700F773A3 /* FeatureComments */,
 				5AEDBD962F6F1A8E00F773A3 /* FeatureFavorites */,
 				5AEDBD992F6F1AC400F773A3 /* FeatureHome */,
+				5AEDBD9C2F6F1B1E00F773A3 /* FeatureIntelligence */,
+				5AEDBD9F2F6F1B5700F773A3 /* FeatureMarket */,
+				5AEDBDA22F6F1B9100F773A3 /* CoreNotifications */,
+				5AEDBDA52F6F1C4C00F773A3 /* FeaturePayments */,
+				5AEDBDA82F6F1C8A00F773A3 /* FeatureProfile */,
+				5AEDBDAB2F6F1CC800F773A3 /* FeatureProperty */,
+				5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -489,6 +510,13 @@
 				5AEDBD922F6F1A5700F773A3 /* XCLocalSwiftPackageReference "packages/FeatureComments" */,
 				5AEDBD952F6F1A8E00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureFavorites" */,
 				5AEDBD982F6F1AC400F773A3 /* XCLocalSwiftPackageReference "packages/FeatureHome" */,
+				5AEDBD9B2F6F1B1E00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureIntelligence" */,
+				5AEDBD9E2F6F1B5700F773A3 /* XCLocalSwiftPackageReference "packages/FeatureMarket" */,
+				5AEDBDA12F6F1B9100F773A3 /* XCLocalSwiftPackageReference "packages/FeatureNotifications" */,
+				5AEDBDA42F6F1C4C00F773A3 /* XCLocalSwiftPackageReference "packages/FeaturePayments" */,
+				5AEDBDA72F6F1C8900F773A3 /* XCLocalSwiftPackageReference "packages/FeatureProfile" */,
+				5AEDBDAA2F6F1CC800F773A3 /* XCLocalSwiftPackageReference "packages/FeatureProperty" */,
+				5AEDBDAD2F6F1CFC00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSearch" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -922,6 +950,34 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/FeatureHome;
 		};
+		5AEDBD9B2F6F1B1E00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureIntelligence" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureIntelligence;
+		};
+		5AEDBD9E2F6F1B5700F773A3 /* XCLocalSwiftPackageReference "packages/FeatureMarket" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureMarket;
+		};
+		5AEDBDA12F6F1B9100F773A3 /* XCLocalSwiftPackageReference "packages/FeatureNotifications" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureNotifications;
+		};
+		5AEDBDA42F6F1C4C00F773A3 /* XCLocalSwiftPackageReference "packages/FeaturePayments" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeaturePayments;
+		};
+		5AEDBDA72F6F1C8900F773A3 /* XCLocalSwiftPackageReference "packages/FeatureProfile" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureProfile;
+		};
+		5AEDBDAA2F6F1CC800F773A3 /* XCLocalSwiftPackageReference "packages/FeatureProperty" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureProperty;
+		};
+		5AEDBDAD2F6F1CFC00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSearch" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = packages/FeatureSearch;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1215,6 +1271,34 @@
 		5AEDBD992F6F1AC400F773A3 /* FeatureHome */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FeatureHome;
+		};
+		5AEDBD9C2F6F1B1E00F773A3 /* FeatureIntelligence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureIntelligence;
+		};
+		5AEDBD9F2F6F1B5700F773A3 /* FeatureMarket */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureMarket;
+		};
+		5AEDBDA22F6F1B9100F773A3 /* CoreNotifications */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreNotifications;
+		};
+		5AEDBDA52F6F1C4C00F773A3 /* FeaturePayments */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeaturePayments;
+		};
+		5AEDBDA82F6F1C8A00F773A3 /* FeatureProfile */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureProfile;
+		};
+		5AEDBDAB2F6F1CC800F773A3 /* FeatureProperty */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureProperty;
+		};
+		5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FeatureSearch;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

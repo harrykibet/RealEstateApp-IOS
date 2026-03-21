@@ -1,27 +1,27 @@
 import SwiftUI
-import model
+import FeatureHome
+import FeatureSearch
+import FeatureProperty
+import FeatureProfile
+import FeatureSettings
+import FeatureComments
+import FeaturePayments
+import FeatureIntelligence
+import FeatureFavorites
+import FeatureChats
+import FeatureMarket
+import FeatureService
+import FeatureAuth
 
-import home
-import search
-import property
-import profile
-import settings
-import comments
-import payments
-import intelligence
-import favorites
-import chats
-import market
-import service
-import player
-import auth
-
-import analytics
-import notifications
-import network
-import database
-import security
-import common
+import CoreAnalytics
+import CorePlayerUI
+import CorePlayerEngine
+import CoreNotifications
+import CoreNetwork
+import CoreDatabase
+import CoreSecurity
+import CoreCommon
+import CoreModel
 
 public final class AppDIContainer {
     public struct AppScope {

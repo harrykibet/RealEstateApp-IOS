@@ -34,7 +34,6 @@
 		5A08DD3A2F6FB587002E89C0 /* property in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF802F6AA31F0075AF00 /* property */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5A08DD3B2F6FB587002E89C0 /* search in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF832F6AA3660075AF00 /* search */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5A08DD3C2F6FB587002E89C0 /* service in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF862F6AA3AA0075AF00 /* service */; settings = {ATTRIBUTES = (Weak, ); }; };
-		5A08DD3D2F6FB587002E89C0 /* settings in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF892F6AA3E80075AF00 /* settings */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5A1694292DC62E2800245881 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694282DC62E2800245881 /* FirebaseAnalytics */; };
 		5A16942B2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 5A16942A2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion */; };
 		5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 5A16942C2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -144,7 +143,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A08DD3D2F6FB587002E89C0 /* settings in Frameworks */,
 				5A08DD3C2F6FB587002E89C0 /* service in Frameworks */,
 				5A08DD3B2F6FB587002E89C0 /* search in Frameworks */,
 				5A08DD3A2F6FB587002E89C0 /* property in Frameworks */,

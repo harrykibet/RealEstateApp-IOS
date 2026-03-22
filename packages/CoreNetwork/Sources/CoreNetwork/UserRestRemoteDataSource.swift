@@ -1,5 +1,5 @@
 import Foundation
-import model
+import CoreModel
 
 public final class UserRestRemoteDataSource: UserRemoteDataSource {
     private let client: APIClient

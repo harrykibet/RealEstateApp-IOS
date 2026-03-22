@@ -1,5 +1,5 @@
 import Foundation
-import model
+import CoreModel
 
 public protocol UserRemoteDataSource {
     func fetchUser(id: String) async throws -> User

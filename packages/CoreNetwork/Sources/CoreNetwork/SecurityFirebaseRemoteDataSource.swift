@@ -1,5 +1,5 @@
 import Foundation
-import model
+import CoreModel
 
 #if canImport(FirebaseFirestore) && canImport(FirebaseFirestoreSwift)
 import FirebaseFirestore

@@ -1,5 +1,5 @@
 import Foundation
-import model
+import CoreModel
 
 public protocol AuthRemoteDataSource {
     func signIn(email: String, password: String) async throws -> User

@@ -1,5 +1,5 @@
 import Foundation
-import model
+import CoreModel
 
 public protocol SecurityRemoteDataSource {
     func fetchSecurityConfig() async throws -> SecurityConfig

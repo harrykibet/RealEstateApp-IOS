@@ -1,5 +1,5 @@
 import Foundation
-import model
+import CoreModel
 
 public protocol PropertyRemoteDataSource {
     func fetchProperty(id: String) async throws -> PropertyModel

@@ -1,7 +1,7 @@
 import Foundation
 import Testing
-import model
-@testable import network
+import CoreModel
+@testable import CoreNetwork
 
 @Test func authRestRemoteDataSourceSignIn() async throws {
     let expected = User(userId: "user-1", name: "Ada", email: "ada@example.com")

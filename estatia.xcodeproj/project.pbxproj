@@ -7,6 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A08DD222F6FB587002E89C0 /* model in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A4F2F69DEC4003CE8F2 /* model */; };
+		5A08DD232F6FB587002E89C0 /* analytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A612F69E0EB003CE8F2 /* analytics */; };
+		5A08DD242F6FB587002E89C0 /* common in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A642F69E136003CE8F2 /* common */; };
+		5A08DD252F6FB587002E89C0 /* data in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A672F69E212003CE8F2 /* data */; };
+		5A08DD262F6FB587002E89C0 /* database in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A6A2F69E256003CE8F2 /* database */; };
+		5A08DD272F6FB587002E89C0 /* domain in Frameworks */ = {isa = PBXBuildFile; productRef = 5A392A6D2F69E29D003CE8F2 /* domain */; };
+		5A08DD282F6FB587002E89C0 /* model in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF4A2F6A9CAD0075AF00 /* model */; };
+		5A08DD292F6FB587002E89C0 /* network in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF4D2F6A9CE20075AF00 /* network */; };
+		5A08DD2A2F6FB587002E89C0 /* notifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF502F6A9D110075AF00 /* notifications */; };
+		5A08DD2B2F6FB587002E89C0 /* PlayerEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF532F6A9D7C0075AF00 /* PlayerEngine */; };
+		5A08DD2C2F6FB587002E89C0 /* PlayerUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF562F6A9DB30075AF00 /* PlayerUI */; };
+		5A08DD2D2F6FB587002E89C0 /* security in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF592F6A9E3A0075AF00 /* security */; };
+		5A08DD2E2F6FB587002E89C0 /* testing in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF5C2F6A9E7D0075AF00 /* testing */; };
+		5A08DD2F2F6FB587002E89C0 /* ui in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF5F2F6A9ED10075AF00 /* ui */; };
+		5A08DD302F6FB587002E89C0 /* auth in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF622F6A9F660075AF00 /* auth */; };
+		5A08DD312F6FB587002E89C0 /* chats in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF652F6A9FAD0075AF00 /* chats */; };
+		5A08DD322F6FB587002E89C0 /* comments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF682F6A9FFB0075AF00 /* comments */; };
+		5A08DD332F6FB587002E89C0 /* favorites in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF6B2F6AA03D0075AF00 /* favorites */; };
+		5A08DD342F6FB587002E89C0 /* home in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF6E2F6AA0910075AF00 /* home */; };
+		5A08DD352F6FB587002E89C0 /* intelligence in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF712F6AA0DF0075AF00 /* intelligence */; };
+		5A08DD362F6FB587002E89C0 /* market in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF742F6AA1250075AF00 /* market */; };
+		5A08DD372F6FB587002E89C0 /* payments in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF772F6AA16E0075AF00 /* payments */; };
+		5A08DD382F6FB587002E89C0 /* player in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF7A2F6AA2080075AF00 /* player */; };
+		5A08DD392F6FB587002E89C0 /* profile in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF7D2F6AA2C90075AF00 /* profile */; };
+		5A08DD3A2F6FB587002E89C0 /* property in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF802F6AA31F0075AF00 /* property */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5A08DD3B2F6FB587002E89C0 /* search in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF832F6AA3660075AF00 /* search */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5A08DD3C2F6FB587002E89C0 /* service in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF862F6AA3AA0075AF00 /* service */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5A08DD3D2F6FB587002E89C0 /* settings in Frameworks */ = {isa = PBXBuildFile; productRef = 5A70DF892F6AA3E80075AF00 /* settings */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5A1694292DC62E2800245881 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694282DC62E2800245881 /* FirebaseAnalytics */; };
 		5A16942B2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 5A16942A2DC62E2800245881 /* FirebaseAnalyticsOnDeviceConversion */; };
 		5A16942D2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 5A16942C2DC62E2800245881 /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -116,6 +144,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A08DD3D2F6FB587002E89C0 /* settings in Frameworks */,
+				5A08DD3C2F6FB587002E89C0 /* service in Frameworks */,
+				5A08DD3B2F6FB587002E89C0 /* search in Frameworks */,
+				5A08DD3A2F6FB587002E89C0 /* property in Frameworks */,
+				5A08DD392F6FB587002E89C0 /* profile in Frameworks */,
+				5A08DD382F6FB587002E89C0 /* player in Frameworks */,
+				5A08DD372F6FB587002E89C0 /* payments in Frameworks */,
+				5A08DD362F6FB587002E89C0 /* market in Frameworks */,
+				5A08DD352F6FB587002E89C0 /* intelligence in Frameworks */,
+				5A08DD342F6FB587002E89C0 /* home in Frameworks */,
+				5A08DD332F6FB587002E89C0 /* favorites in Frameworks */,
+				5A08DD322F6FB587002E89C0 /* comments in Frameworks */,
+				5A08DD312F6FB587002E89C0 /* chats in Frameworks */,
+				5A08DD302F6FB587002E89C0 /* auth in Frameworks */,
+				5A08DD2F2F6FB587002E89C0 /* ui in Frameworks */,
+				5A08DD2E2F6FB587002E89C0 /* testing in Frameworks */,
+				5A08DD2D2F6FB587002E89C0 /* security in Frameworks */,
+				5A08DD2C2F6FB587002E89C0 /* PlayerUI in Frameworks */,
+				5A08DD2B2F6FB587002E89C0 /* PlayerEngine in Frameworks */,
+				5A08DD2A2F6FB587002E89C0 /* notifications in Frameworks */,
+				5A08DD292F6FB587002E89C0 /* network in Frameworks */,
+				5A08DD282F6FB587002E89C0 /* model in Frameworks */,
+				5A08DD272F6FB587002E89C0 /* domain in Frameworks */,
+				5A08DD262F6FB587002E89C0 /* database in Frameworks */,
+				5A08DD252F6FB587002E89C0 /* data in Frameworks */,
+				5A08DD242F6FB587002E89C0 /* common in Frameworks */,
+				5A08DD232F6FB587002E89C0 /* analytics in Frameworks */,
+				5A08DD222F6FB587002E89C0 /* model in Frameworks */,
 				5AEDBD702F6F17A300F773A3 /* CoreData in Frameworks */,
 				5AEDBD8B2F6F19A800F773A3 /* CoreUI in Frameworks */,
 				5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */,

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 // MARK: - PlayerError
 
@@ -90,7 +91,7 @@ public extension PlayerError {
             return mapNetworkError(nsError)
         }
         
-        if nsError.domain == AVFoundationErrorDomain {
+        if nsError.domain == AVError.errorDomain {
             return .decodingFailed
         }
         
@@ -122,3 +123,4 @@ private extension PlayerError {
         }
     }
 }
+

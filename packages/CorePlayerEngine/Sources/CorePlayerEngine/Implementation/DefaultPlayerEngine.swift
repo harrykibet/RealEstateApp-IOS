@@ -1,3 +1,5 @@
+import Foundation
+
 //
 //  DefaultPlayerEngine.swift
 //  CorePlayerEngine
@@ -6,6 +8,7 @@
 //
 
 @available(iOS 13.0, *)
+@MainActor
 final class DefaultPlayerEngine: PlayerEngine {
     
     private let actor: PlayerActor
@@ -33,27 +36,59 @@ final class DefaultPlayerEngine: PlayerEngine {
     // MARK: API
     
     func load(_ source: MediaSource) async throws {
-        try await actor.handle(.load(source))
+        try await actor.handle(PlayerIntent.load(source))
     }
     
     func play() {
-        Task { await actor.handle(.play) }
+        Task { @MainActor in
+            do {
+                try await actor.handle(PlayerIntent.play)
+            } catch {
+                // Consider emitting an error event if needed
+                // For now, just log
+                assertionFailure("PlayerEngine.play failed: \(error)")
+            }
+        }
     }
     
     func pause() {
-        Task { await actor.handle(.pause) }
+        Task { @MainActor in
+            do {
+                try await actor.handle(PlayerIntent.pause)
+            } catch {
+                assertionFailure("PlayerEngine.pause failed: \(error)")
+            }
+        }
     }
     
     func seek(to seconds: TimeInterval) {
-        Task { await actor.handle(.seek(seconds)) }
+        Task { @MainActor in
+            do {
+                try await actor.handle(PlayerIntent.seek(seconds))
+            } catch {
+                assertionFailure("PlayerEngine.seek failed: \(error)")
+            }
+        }
     }
     
     func stop() {
-        Task { await actor.handle(.stop) }
+        Task { @MainActor in
+            do {
+                try await actor.handle(PlayerIntent.stop)
+            } catch {
+                assertionFailure("PlayerEngine.stop failed: \(error)")
+            }
+        }
     }
     
     func release() {
-        Task { await actor.handle(.release) }
+        Task { @MainActor in
+            do {
+                try await actor.handle(PlayerIntent.release)
+            } catch {
+                assertionFailure("PlayerEngine.release failed: \(error)")
+            }
+        }
     }
     
     var currentTime: TimeInterval {
@@ -64,3 +99,4 @@ final class DefaultPlayerEngine: PlayerEngine {
         get async { await actor.duration }
     }
 }
+

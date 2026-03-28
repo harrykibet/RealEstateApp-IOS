@@ -8,7 +8,7 @@
 import Foundation
 
 
-private enum PlayerIntent {
+public enum PlayerIntent {
     case load(MediaSource)
     case play
     case pause

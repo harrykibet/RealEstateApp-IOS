@@ -11,8 +11,7 @@ import AVFoundation
 // MARK: - AVPlayerWrapper
 
 @available(iOS 13.0, *)
-@MainActor
-final class AVPlayerWrapper {
+final class AVPlayerWrapper: @unchecked Sendable {
     // MARK: Callbacks (Bridged to Engine)
     
     var onReady: (@MainActor @Sendable () -> Void)?
@@ -26,13 +25,10 @@ final class AVPlayerWrapper {
     private var player: AVPlayer?
     private var playerItem: AVPlayerItem?
     
-    private var timeObserver: Any?
-    private var statusObserver: NSKeyValueObservation?
-    private var bufferObserver: NSKeyValueObservation?
+    private let itemObserver = AVPlayerItemObserver()
+    private let timeObserver: AVPlayerTimeObserver
     
     private let queue = DispatchQueue(label: "player.wrapper.queue")
-    
-    private var isBuffering = false
     
     private let progressInterval: TimeInterval
     
@@ -40,29 +36,49 @@ final class AVPlayerWrapper {
     
     init(progressInterval: TimeInterval) {
         self.progressInterval = progressInterval
+        self.timeObserver = AVPlayerTimeObserver(interval: progressInterval, queue: queue)
     }
     
-    
-    @objc
-    private func didFinish() {
-        dispatch { self.onCompletion?() }
+    deinit {
+        itemObserver.detach()
+        timeObserver.detach()
     }
 }
 
 @available(iOS 13.0, *)
 extension AVPlayerWrapper {
-    func load(_ source: MediaSource) async throws {
+    nonisolated(nonsending) func load(_ source: MediaSource) async throws {
         try await queue.sync {
             cleanup()
             
             let asset = AVURLAsset(url: source.url)
             let item = AVPlayerItem(asset: asset)
-            
             self.playerItem = item
-            self.player = AVPlayer(playerItem: item)
+            let player = AVPlayer(playerItem: item)
+            self.player = player
             
-            setupObservers(for: item)
-            setupTimeObserver()
+            itemObserver.attach(to: item)
+            timeObserver.attach(player: player, item: item)
+            
+            itemObserver.onReady = { [weak self] in
+                self?.dispatch { self?.onReady?() }
+            }
+            
+            itemObserver.onBuffering = { [weak self] buffering in
+                self?.dispatch { self?.onBuffering?(buffering) }
+            }
+            
+            itemObserver.onCompletion = { [weak self] in
+                self?.dispatch { self?.onCompletion?() }
+            }
+            
+            itemObserver.onError = { [weak self] error in
+                self?.dispatch { self?.onError?(error) }
+            }
+            
+            timeObserver.onProgress = { [weak self] progress in
+                self?.dispatch { self?.onProgress?(progress) }
+            }
         }
     }
 }
@@ -90,7 +106,7 @@ extension AVPlayerWrapper {
     }
     
     @available(iOS 13.0, *)
-    func seek(to seconds: TimeInterval) async throws {
+    nonisolated(nonsending) func seek(to seconds: TimeInterval) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             queue.async { [weak self] in
                 guard let self, let player = self.player else {
@@ -113,85 +129,6 @@ extension AVPlayerWrapper {
 }
 
 @available(iOS 13.0, *)
-private extension AVPlayerWrapper {
-    
-    func setupObservers(for item: AVPlayerItem) {
-        
-        statusObserver = item.observe(\.status, options: [.new, .initial]) { [weak self] item, _ in
-            guard let self else { return }
-            
-            switch item.status {
-            case .readyToPlay:
-                self.dispatch { self.onReady?() }
-                
-            case .failed:
-                if let error = item.error {
-                    self.dispatch { self.onError?(error) }
-                }
-                
-            default:
-                break
-            }
-        }
-        
-        
-        bufferObserver = item.observe(\.isPlaybackLikelyToKeepUp, options: [.new]) { [weak self] item, _ in
-            guard let self else { return }
-            
-            let buffering = !item.isPlaybackLikelyToKeepUp
-            
-            if buffering != self.isBuffering {
-                self.isBuffering = buffering
-                self.dispatch { self.onBuffering?(buffering) }
-            }
-        }
-        
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didFinish),
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: item
-        )
-    }
-}
-
-@available(iOS 13.0, *)
-private extension AVPlayerWrapper {
-    
-    func setupTimeObserver() {
-        guard let player else { return }
-        
-        let interval = CMTime(seconds: progressInterval, preferredTimescale: 600)
-        
-        timeObserver = player.addPeriodicTimeObserver(
-            forInterval: interval,
-            queue: queue
-        ) { [weak self] time in
-            guard let self, let item = self.playerItem else { return }
-            
-            let current = time.seconds
-            let duration = item.duration.seconds.isFinite ? item.duration.seconds : nil
-            
-            let buffered = item.loadedTimeRanges
-                .compactMap { $0.timeRangeValue }
-                .map { $0.start.seconds + $0.duration.seconds }
-                .max()
-            
-            let progress = PlaybackProgress(
-                currentTime: current,
-                duration: duration,
-                buffered: buffered
-            )
-            
-            self.dispatch {
-                self.onProgress?(progress)
-            }
-        }
-    }
-}
-
-@available(iOS 13.0, *)
 extension AVPlayerWrapper {
     
     func release() {
@@ -201,22 +138,12 @@ extension AVPlayerWrapper {
     }
     
     private func cleanup() {
-        
-        if let observer = timeObserver, let player {
-            player.removeTimeObserver(observer)
-            timeObserver = nil
-        }
-        
-        statusObserver?.invalidate()
-        bufferObserver?.invalidate()
-        
-        NotificationCenter.default.removeObserver(self)
+        itemObserver.detach()
+        timeObserver.detach()
         
         player?.pause()
         player = nil
         playerItem = nil
-        
-        isBuffering = false
     }
 }
 
@@ -225,7 +152,9 @@ private extension AVPlayerWrapper {
     
     @available(iOS 13.0, *)
     func dispatch(_ block: @MainActor @Sendable @escaping () -> Void) {
-        block()
+        Task { @MainActor [block] in
+            block()
+        }
     }
     
     func seekToStart() {

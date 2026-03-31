@@ -12,9 +12,15 @@ let package = Package(
             targets: ["FeatureService"]
         ),
     ],
+    dependencies: [
+        .package(path: "../CoreData")
+    ],
     targets: [
         .target(
-            name: "FeatureService"
+            name: "FeatureService",
+            dependencies: [
+                .product(name: "CoreData", package: "CoreData")
+            ]
         ),
         .testTarget(
             name: "FeatureServiceTests",

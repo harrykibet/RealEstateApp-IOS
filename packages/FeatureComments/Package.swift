@@ -7,14 +7,17 @@ let package = Package(
         .iOS(.v18)
     ],
     products: [
-        .library(
-            name: "FeatureComments",
-            targets: ["FeatureComments"]
-        ),
+        .library(name: "FeatureComments", targets: ["FeatureComments"]),
+    ],
+    dependencies: [
+        .package(path: "../CoreData")
     ],
     targets: [
         .target(
-            name: "FeatureComments"
+            name: "FeatureComments",
+            dependencies: [
+                .product(name: "CoreData", package: "CoreData")
+            ]
         ),
         .testTarget(
             name: "FeatureCommentsTests",

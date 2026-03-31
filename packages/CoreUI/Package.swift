@@ -12,9 +12,15 @@ let package = Package(
             targets: ["CoreUI"]
         ),
     ],
+    dependencies: [
+        .package(path: "../CoreData")
+    ],
     targets: [
         .target(
-            name: "CoreUI"
+            name: "CoreUI",
+            dependencies: [
+                .product(name: "CoreData", package: "CoreData")
+            ]
         ),
         .testTarget(
             name: "CoreUITests",

@@ -67,7 +67,7 @@ public extension PlayerEventEmitter {
 @available(iOS 13.0, *)
 private extension PlayerEventEmitter {
     
-    func add(_ subscriber: Subscriber) {
+    private func add(_ subscriber: Subscriber) {
         lock.lock()
         subscribers[subscriber.id] = subscriber
         lock.unlock()

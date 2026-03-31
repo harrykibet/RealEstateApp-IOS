@@ -2,32 +2,45 @@
 //  PlayerActor.swift
 //  CorePlayerEngine
 //
-//  Created by builder on 3/26/26.
+//  Responsibility:
+//  - Central state machine for playback
+//  - Owns authoritative PlayerState
+//  - Consumes PlayerEvent signals from AV layer
+//  - Emits PlayerEvent + PlayerState externally
+//
+//  Design:
+//  - Actor = single-threaded state authority
+//  - Intent-driven API (PlayerIntent)
+//  - Event-driven internal updates
+//  - No direct AVFoundation coupling
 //
 
 import Foundation
 
 @available(iOS 13.0, *)
 actor PlayerActor {
-    
-    // MARK: Dependencies
-    
+
+    // MARK: - Dependencies
+
     private let config: PlayerConfiguration
     private let player: AVPlayerWrapper
+
     private let stateEmitter: PlayerEventEmitter<PlayerState>
     private let eventEmitter: PlayerEventEmitter<PlayerEvent>
-    
-    // MARK: State
-    
+
+    // MARK: - State
+
     private var state: PlayerState = .idle
     private var currentSource: MediaSource?
-    
+
     private var currentTimeInternal: TimeInterval = 0
     private var durationInternal: TimeInterval?
-    
-    
-    // MARK: Init
-    
+
+    /// Tracks last stable playback intent to resolve buffering transitions correctly
+    private var lastUserIntent: PlayerIntent?
+
+    // MARK: - Init
+
     init(
         config: PlayerConfiguration,
         player: AVPlayerWrapper,
@@ -38,180 +51,167 @@ actor PlayerActor {
         self.player = player
         self.stateEmitter = stateEmitter
         self.eventEmitter = eventEmitter
-        
-        bindCallbacks()
+
+        bindEventStream()
+    }
+
+    deinit {
+        // Ensure underlying resources are released
+        player.release()
     }
 }
 
 @available(iOS 13.0, *)
 private extension PlayerActor {
-    
-    func bindCallbacks() {
-        
-        player.onReady = { [weak self] in
-            Task { await self?.handle(.ready) }
+
+    /// Binds AV layer → PlayerEvent → Actor
+    /// This replaces fragmented callback wiring with a single event stream.
+    func bindEventStream() {
+
+        player.emit = { [weak self] event in
+            guard let self else { return }
+
+            Task {
+                await self.consume(event)
+            }
         }
-        
-        player.onBuffering = { [weak self] buffering in
-            Task { await self?.handle(.buffering(buffering)) }
-        }
-        
-        player.onCompletion = { [weak self] in
-            Task { await self?.handle(.completed) }
-        }
-        
-        player.onError = { [weak self] error in
-            Task { await self?.handle(.failed(error)) }
-        }
-        
-        player.onProgress = { [weak self] progress in
-            Task { await self?.handle(.progress(progress)) }
+    }
+}
+
+@available(iOS 13.0, *)
+private extension PlayerActor {
+
+    /// Consumes low-level PlayerEvent and maps to state transitions.
+    func consume(_ event: PlayerEvent) async {
+
+        switch event {
+
+        case .ready:
+            try? transition(to: .ready)
+            emitEvent(.ready)
+
+            if config.autoPlay {
+                await handle(.play)
+            }
+
+        case .bufferingStarted:
+            try? transition(to: .buffering)
+            emitEvent(.bufferingStarted)
+
+        case .bufferingEnded:
+            // Resume only if last intent was play
+            if lastUserIntent == .play {
+                try? transition(to: .playing)
+            }
+            emitEvent(.bufferingEnded)
+
+        case .playbackCompleted:
+            try? transition(to: .ended)
+            emitEvent(.playbackCompleted)
+
+            if config.looping {
+                await handle(.play)
+            }
+
+        case .progress(let progress):
+            currentTimeInternal = progress.currentTime
+            durationInternal = progress.duration
+            emitEvent(.progress(progress))
+
+        case .failed(let error):
+            try? fail(error)
+
+        default:
+            break
         }
     }
 }
 
 @available(iOS 13.0, *)
 extension PlayerActor {
-    
+
+    /// Public API: external commands
     func handle(_ intent: PlayerIntent) async throws {
-        
+
+        lastUserIntent = intent
+
         switch intent {
-            
-        // MARK: Load
-            
+
         case .load(let source):
             try transition(to: .loading)
             currentSource = source
-            
+
             do {
                 try await player.load(source)
             } catch {
                 try fail(error)
                 throw error
             }
-            
-            
-        // MARK: Ready
-            
-        case .ready:
-            try transition(to: .ready)
-            emitEvent(.ready)
-            
-            if config.autoPlay {
-                await handle(.play)
-            }
-            
-            
-        // MARK: Play
-            
+
         case .play:
             guard state.isPlayable else { return }
-            
-            try transition(to: .playing)
+
             player.play()
+            try transition(to: .playing)
             emitEvent(.playbackStarted)
-            
-            
-        // MARK: Pause
-            
+
         case .pause:
             guard state == .playing else { return }
-            
-            try transition(to: .paused)
+
             player.pause()
+            try transition(to: .paused)
             emitEvent(.playbackPaused)
-            
-            
-        // MARK: Buffering
-            
-        case .buffering(let isBuffering):
-            if isBuffering {
-                try transition(to: .buffering)
-                emitEvent(.bufferingStarted)
-            } else {
-                try transition(to: .playing)
-                emitEvent(.bufferingEnded)
-            }
-            
-            
-        // MARK: Completion
-            
-        case .completed:
-            try transition(to: .ended)
-            emitEvent(.playbackCompleted)
-            
-            if config.looping {
-                await handle(.play)
-            }
-            
-            
-        // MARK: Seek
-            
+
         case .seek(let seconds):
             guard state.isSeekable else { return }
-            
+
             emitEvent(.seekStarted(seconds))
-            
+
             do {
                 try await player.seek(to: seconds)
                 emitEvent(.seekCompleted(seconds))
             } catch {
                 emitEvent(.seekFailed(PlayerError.from(error)))
             }
-            
-            
-        // MARK: Stop
-            
+
         case .stop:
             player.stop()
             try transition(to: .idle)
             emitEvent(.stopped)
-            
-            
-        // MARK: Release
-            
+
         case .release:
             player.release()
             try transition(to: .idle)
             emitEvent(.released)
-            
-            
-        // MARK: Error
-            
-        case .failed(let error):
-            try fail(error)
-            
-            
-        // MARK: Progress
-            
-        case .progress(let progress):
-            currentTimeInternal = progress.currentTime
-            durationInternal = progress.duration
-            emitEvent(.progress(progress))
+
+        default:
+            break
         }
     }
 }
 
+
 @available(iOS 13.0, *)
 private extension PlayerActor {
-    
+
+    /// Validates and applies state transitions
     func transition(to newState: PlayerState) throws {
         guard state.canTransition(to: newState) else {
             throw InvalidStateTransition(from: state, to: newState)
         }
-        
+
         state = newState
         stateEmitter.emit(state)
     }
-    
-    
+
+    /// Handles terminal failure
     func fail(_ error: Error) throws {
         let mapped = PlayerError.from(error)
         try transition(to: .error(mapped))
         emitEvent(.failed(mapped))
     }
-    
-    
+
+    /// Emits external event
     func emitEvent(_ event: PlayerEvent) {
         eventEmitter.emit(event)
     }

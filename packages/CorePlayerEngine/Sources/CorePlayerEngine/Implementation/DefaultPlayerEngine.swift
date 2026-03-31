@@ -9,7 +9,11 @@ import Foundation
 
 @available(iOS 13.0, *)
 @MainActor
-final class DefaultPlayerEngine: PlayerEngine {
+final class  DefaultPlayerEngine: PlayerEngine {
+    var currentTime: TimeInterval
+    
+    var duration: TimeInterval?
+    
     
     private let actor: PlayerActor
     

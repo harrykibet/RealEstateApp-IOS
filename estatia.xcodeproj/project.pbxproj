@@ -27,7 +27,7 @@
 		5A1694512DC62E2800245881 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694502DC62E2800245881 /* FirebaseRemoteConfig */; };
 		5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694522DC62E2800245881 /* FirebaseStorage */; };
 		5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694562DC62E2800245881 /* FirebaseVertexAI */; };
-		5A703E662F7D926A00624287 /* CoreDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 5A703E652F7D926A00624287 /* CoreDesignSystem */; };
+		5A68DF142F7D9DBF0057E1DD /* CoreDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 		5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD692F6F172800F773A3 /* CoreAnalytics */; };
 		5AEDBD6D2F6F176600F773A3 /* CoreCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD6C2F6F176600F773A3 /* CoreCommon */; };
@@ -153,7 +153,7 @@
 				5AEDBD852F6F194400F773A3 /* CoreSecurity in Frameworks */,
 				5A16944B2DC62E2800245881 /* FirebaseMLModelDownloader in Frameworks */,
 				5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */,
-				5A703E662F7D926A00624287 /* CoreDesignSystem in Frameworks */,
+				5A68DF142F7D9DBF0057E1DD /* CoreDesignSystem in Frameworks */,
 				5AEDBD6D2F6F176600F773A3 /* CoreCommon in Frameworks */,
 				5AEDBD792F6F185900F773A3 /* CoreModel in Frameworks */,
 				5AEDBD7F2F6F18DF00F773A3 /* CorePlayerEngine in Frameworks */,
@@ -272,7 +272,7 @@
 				5AEDBDAE2F6F1CFC00F773A3 /* FeatureSearch */,
 				5AEDBDB12F6F1D2F00F773A3 /* FeatureService */,
 				5AEDBDB42F6F1D5D00F773A3 /* FeatureSettings */,
-				5A703E652F7D926A00624287 /* CoreDesignSystem */,
+				5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -384,7 +384,7 @@
 				5AEDBDAD2F6F1CFC00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSearch" */,
 				5AEDBDB02F6F1D2F00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureService" */,
 				5AEDBDB32F6F1D5D00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSettings" */,
-				5A703E642F7D926A00624287 /* XCLocalSwiftPackageReference "packages/CoreDesignSystem" */,
+				5A68DF122F7D9DBF0057E1DD /* XCLocalSwiftPackageReference "packages/CoreDesignSystem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -750,7 +750,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		5A703E642F7D926A00624287 /* XCLocalSwiftPackageReference "packages/CoreDesignSystem" */ = {
+		5A68DF122F7D9DBF0057E1DD /* XCLocalSwiftPackageReference "packages/CoreDesignSystem" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/CoreDesignSystem;
 		};
@@ -972,7 +972,7 @@
 			package = 5A1694272DC62E2800245881 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
 		};
-		5A703E652F7D926A00624287 /* CoreDesignSystem */ = {
+		5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreDesignSystem;
 		};

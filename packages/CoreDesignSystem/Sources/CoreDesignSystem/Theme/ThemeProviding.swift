@@ -7,6 +7,6 @@
 
 import SwiftUI
 
-public protocol AppTheme {
+public protocol ThemeProviding {
     var colors: SemanticColors { get }
 }

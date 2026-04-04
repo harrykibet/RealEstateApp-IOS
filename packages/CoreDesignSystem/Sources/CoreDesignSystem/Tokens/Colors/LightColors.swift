@@ -10,23 +10,23 @@ import SwiftUI
 public extension SemanticColors {
     
     static let light = SemanticColors(
-        primary: ColorPalette.blue900,
-        onPrimary: ColorPalette.white,
+        primary: ColorPalette.Blue.deep,
+        primaryForeground: ColorPalette.Base.white,
         
-        secondary: ColorPalette.emerald500,
-        onSecondary: ColorPalette.white,
+        secondary: ColorPalette.Green.base,
+        secondaryForeground: ColorPalette.Base.white,
         
-        background: ColorPalette.white,
-        surface: ColorPalette.gray50,
-        surfaceVariant: ColorPalette.gray100,
+        background: ColorPalette.Base.white,
+        surface: ColorPalette.Gray.ultraLight,
+        surfaceMuted: ColorPalette.Gray.light,
         
-        textPrimary: ColorPalette.gray900,
-        textSecondary: ColorPalette.gray500,
-        textDisabled: ColorPalette.gray400,
+        textPrimary: ColorPalette.Gray.primary,
+        textSecondary: ColorPalette.Gray.secondary,
+        textDisabled: ColorPalette.Gray.medium,
         
-        success: ColorPalette.green500,
-        error: ColorPalette.red500,
-        warning: ColorPalette.yellow500,
-        info: ColorPalette.blue500
+        success: ColorPalette.Status.success,
+        error: ColorPalette.Status.error,
+        warning: ColorPalette.Status.warning,
+        info: ColorPalette.Status.info
     )
 }

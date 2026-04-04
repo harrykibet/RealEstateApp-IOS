@@ -8,17 +8,19 @@
 import SwiftUI
 
 public extension Color {
+    
     init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
+        let sanitized = hex.trimmingCharacters(in: .alphanumerics.inverted)
+        var value: UInt64 = 0
+        Scanner(string: sanitized).scanHexInt64(&value)
 
         let a, r, g, b: UInt64
-        switch hex.count {
+        
+        switch sanitized.count {
         case 6:
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+            (a, r, g, b) = (255, value >> 16, (value >> 8) & 0xFF, value & 0xFF)
         case 8:
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+            (a, r, g, b) = (value >> 24, (value >> 16) & 0xFF, (value >> 8) & 0xFF, value & 0xFF)
         default:
             (a, r, g, b) = (255, 0, 0, 0)
         }

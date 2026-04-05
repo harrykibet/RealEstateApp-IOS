@@ -35,11 +35,11 @@ public struct EstatiaSecondaryButton: View {
 }
 
 #if DEBUG
+import SwiftUI
 
 #Preview("Secondary Button - Light") {
-    ThemeProvider {
+    PreviewContainer {
         VStack(spacing: 16) {
-            
             EstatiaSecondaryButton(
                 title: "Filter",
                 action: {}
@@ -51,15 +51,12 @@ public struct EstatiaSecondaryButton: View {
                 action: {}
             )
         }
-        .padding()
-        .background(Color.white)
     }
 }
 
 #Preview("Secondary Button - Dark") {
-    ThemeProvider {
+    PreviewContainer(isDarkMode: true) {
         VStack(spacing: 16) {
-            
             EstatiaSecondaryButton(
                 title: "Filter",
                 action: {}
@@ -71,11 +68,7 @@ public struct EstatiaSecondaryButton: View {
                 action: {}
             )
         }
-        .padding()
-        .background(Color.black)
     }
-    .environment(\.colorScheme, .dark)
 }
 
 #endif
-

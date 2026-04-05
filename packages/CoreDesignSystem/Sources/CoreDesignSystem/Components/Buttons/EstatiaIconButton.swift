@@ -38,32 +38,7 @@ public struct EstatiaIconButton: View {
 #if DEBUG
 
 #Preview("Icon Button - Light") {
-    ThemeProvider {
-        HStack(spacing: 16) {
-            
-            EstatiaIconButton(
-                systemImage: "heart",
-                action: {}
-            )
-            
-            EstatiaIconButton(
-                systemImage: "magnifyingglass"
-                action: {}
-            )
-            
-            EstatiaIconButton(
-                systemImage: "bell",
-                isEnabed: false,
-                action: {}
-            )
-        }
-        .padding()
-        background(Color.white)
-    }
-}
-
-#Preview("Icon Button - Dark") {
-    ThemeProvider {
+    PreviewContainer {
         HStack(spacing: 16) {
             
             EstatiaIconButton(
@@ -82,10 +57,30 @@ public struct EstatiaIconButton: View {
                 action: {}
             )
         }
-        .padding()
-        .background(Color.black)
     }
-    .environment(\.colorScheme, .dark)
+}
+
+#Preview("Icon Button - Dark") {
+    PreviewContainer(isDarkMode: true) {
+        HStack(spacing: 16) {
+            
+            EstatiaIconButton(
+                systemImage: "heart",
+                action: {}
+            )
+            
+            EstatiaIconButton(
+                systemImage: "magnifyingglass",
+                action: {}
+            )
+            
+            EstatiaIconButton(
+                systemImage: "bell",
+                isEnabled: false,
+                action: {}
+            )
+        }
+    }
 }
 
 #endif

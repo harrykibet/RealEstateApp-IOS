@@ -41,33 +41,7 @@ public struct EstatiaPrimaryButton: View {
 #if DEBUG
 
 #Preview("Primary Button - Light") {
-    ThemeProvider{
-        VStack(spacing: 16) {
-            
-            EstatiaPrimaryButton(
-                title: "Search Properties",
-                action: {}
-            )
-            
-            EstatiaPrimaryButton(
-                title: "Loading...",
-                isLoading: true,
-                action: {}
-            )
-            
-            EstatiaPrimaryButton(
-                title: "Disabled",
-                isDisabled: true,
-                action: {}
-            )
-        }
-        .padding()
-        .background(Color.white)
-    }
-}
-
-#Preview("Primary Button - Dark") {
-    ThemeProvider {
+    PreviewContainer {
         VStack(spacing: 16) {
             
             EstatiaPrimaryButton(
@@ -87,9 +61,31 @@ public struct EstatiaPrimaryButton: View {
                 action: {}
             )
         }
-        .padding()
-        .background(Color.black)
     }
-    .environment(\.colorScheme, .dark)
 }
+
+#Preview("Primary Button - Dark") {
+    PreviewContainer(isDarkMode: true) {
+        VStack(spacing: 16) {
+            
+            EstatiaPrimaryButton(
+                title: "Search Properties",
+                action: {}
+            )
+            
+            EstatiaPrimaryButton(
+                title: "Loading...",
+                isLoading: true,
+                action: {}
+            )
+            
+            EstatiaPrimaryButton(
+                title: "Disabled",
+                isEnabled: false,
+                action: {}
+            )
+        }
+    }
+}
+
 #endif

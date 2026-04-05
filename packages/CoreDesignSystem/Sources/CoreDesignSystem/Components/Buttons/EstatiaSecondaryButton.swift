@@ -33,3 +33,49 @@ public struct EstatiaSecondaryButton: View {
         }
     }
 }
+
+#if DEBUG
+
+#Preview("Secondary Button - Light") {
+    ThemeProvider {
+        VStack(spacing: 16) {
+            
+            EstatiaSecondaryButton(
+                title: "Filter",
+                action: {}
+            )
+            
+            EstatiaSecondaryButton(
+                title: "Disabled",
+                isEnabled: false,
+                action: {}
+            )
+        }
+        .padding()
+        .background(Color.white)
+    }
+}
+
+#Preview("Secondary Button - Dark") {
+    ThemeProvider {
+        VStack(spacing: 16) {
+            
+            EstatiaSecondaryButton(
+                title: "Filter",
+                action: {}
+            )
+            
+            EstatiaSecondaryButton(
+                title: "Disabled",
+                isEnabled: false,
+                action: {}
+            )
+        }
+        .padding()
+        .background(Color.black)
+    }
+    .environment(\.colorScheme, .dark)
+}
+
+#endif
+

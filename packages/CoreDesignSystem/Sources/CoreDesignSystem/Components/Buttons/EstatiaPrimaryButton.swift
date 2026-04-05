@@ -9,18 +9,18 @@ import SwiftUI
 
 public struct EstatiaPrimaryButton: View {
     
-    private let tittle: String
+    private let title: String
     private let isEnabled: Bool
     private let isLoading: Bool
     private let action: () -> Void
     
     public init(
-        tittle: String,
+        title: String,
         isEnabled: Bool = true,
         isLoading: Bool = false,
         action: @escaping () -> Void
     ) {
-        self.tittle = tittle
+        self.title = title
         self.isEnabled = isEnabled
         self.isLoading = isLoading
         self.action = action

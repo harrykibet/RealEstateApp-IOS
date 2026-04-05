@@ -22,6 +22,7 @@ public struct EstatiaSecondaryButton: View {
         self.isEnabled = isEnabled
         self.action = action
     }
+    
     public var body: some View {
         AppButton(
             style: .secondary,

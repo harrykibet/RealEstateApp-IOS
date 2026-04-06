@@ -27,7 +27,7 @@ public struct AppButton<Content: View>: View {
         self.isEnabled = isEnabled
         self.isLoading = isLoading
         self.action = action
-        self.content = content
+        self.content = content()
     }
     
     public var body: some View {

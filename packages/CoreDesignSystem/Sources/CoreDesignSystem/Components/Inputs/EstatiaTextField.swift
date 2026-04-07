@@ -62,3 +62,38 @@ public struct EstatiaTextField: View {
     }
 }
 
+
+// MARK: - Styling
+
+private extension EstatiaTextField {
+    
+    var isDisabled: Bool {
+        if case .disabled = state { return true }
+        return false
+    }
+    
+    var backgroundColor: Color {
+        switch state {
+        case .disabled:
+            return EstatiaTheme.colors.surfaceMuted
+        default:
+            return EstatiaTheme.colors.surface
+        }
+    }
+    
+    var border: some View {
+        RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
+            .stroke(borderColor, lineWidth: InputTokens.borderWidth)
+    }
+    
+    var borderColor: Color {
+        switch state {
+        case .error:
+            return EstatiaTheme.colors.error
+        case .focused
+            return EstatiaTheme.colors.primary
+        default:
+            return EstatiaTheme.colors.surfaceMuted
+        }
+    }
+}

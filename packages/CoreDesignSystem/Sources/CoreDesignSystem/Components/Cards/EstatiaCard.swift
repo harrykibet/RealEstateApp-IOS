@@ -15,7 +15,7 @@ public struct EstatiaCard<Content: View>: View {
     @Environment(\.theme) private var theme
     
     public init(
-        style: CardStyle = .elevated
+        style: CardStyle = .elevated,
         @ViewBuilder content: () -> Content
     ) {
         self.style = style
@@ -39,7 +39,7 @@ private extension EstatiaCard {
         switch style {
         case .elevated:
             return EstatiaTheme.colors.surface
-        case .filled
+        case .filled:
             return EstatiaTheme.colors.surfaceVariant
         case .outlined:
             return EstatiaTheme.colors.background

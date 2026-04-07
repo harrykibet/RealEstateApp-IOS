@@ -90,7 +90,7 @@ private extension EstatiaTextField {
         switch state {
         case .error:
             return EstatiaTheme.colors.error
-        case .focused
+        case .focused:
             return EstatiaTheme.colors.primary
         default:
             return EstatiaTheme.colors.surfaceMuted

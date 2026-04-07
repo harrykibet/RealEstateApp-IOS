@@ -60,7 +60,7 @@ private extension EstatiaSearchField {
     var border: some View {
         RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
             .stroke(
-                isFocused ? EstatiaTheme.colors.primary : EstatiaTheme.colors.surfaceMuted,
+                isFocused ? EstatiaTheme.colors.primary : EstatiaTheme.colors.surfaceVariant,
                 lineWidth: InputTokens.borderWidth
             )
     }

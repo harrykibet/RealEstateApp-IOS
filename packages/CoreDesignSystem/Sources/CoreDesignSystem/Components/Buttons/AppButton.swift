@@ -62,7 +62,7 @@ private extension AppButton {
         case .primary:
             return EstatiaTheme.colors.primary
         case .secondary:
-            return EstatiaTheme.colors.surfaceMuted
+            return EstatiaTheme.colors.surfaceVariant
         case .iconOnly:
             return Color.clear
         }
@@ -71,7 +71,7 @@ private extension AppButton {
     var foregroundColor: Color {
         switch style {
         case .primary:
-            return EstatiaTheme.colors.primaryForeground
+            return EstatiaTheme.colors.primary
         case .secondary:
             return EstatiaTheme.colors.textPrimary
         case .iconOnly:

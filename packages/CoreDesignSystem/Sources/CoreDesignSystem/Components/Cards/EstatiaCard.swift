@@ -40,7 +40,7 @@ private extension EstatiaCard {
         case .elevated:
             return EstatiaTheme.colors.surface
         case .filled
-            return EstatiaTheme.colors.surfaceMuted
+            return EstatiaTheme.colors.surfaceVariant
         case .outlined:
             return EstatiaTheme.colors.background
         }
@@ -54,7 +54,7 @@ private extension EstatiaCard {
     var borderColor: Color {
         switch style {
         case .outlined:
-            return EstatiaTheme.colors.surfaceMuted
+            return EstatiaTheme.colors.surfaceVariant
         default:
             return Color.clear
         }

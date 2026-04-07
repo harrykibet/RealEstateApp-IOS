@@ -75,7 +75,7 @@ private extension EstatiaTextField {
     var backgroundColor: Color {
         switch state {
         case .disabled:
-            return EstatiaTheme.colors.surfaceMuted
+            return EstatiaTheme.colors.surfaceVariant
         default:
             return EstatiaTheme.colors.surface
         }

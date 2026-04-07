@@ -26,7 +26,7 @@ public struct EstatiaTextField: View {
         placeholder: String,
         state: InputState = .normal
     ) {
-        self.text = text
+        self._text = text
         self.placeholder = placeholder
         self.state = state
     }

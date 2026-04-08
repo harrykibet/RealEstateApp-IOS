@@ -8,7 +8,10 @@
 import SwiftUI
 
 public enum AppButtonStyle {
+    
     case primary
+    
     case secondary
+    
     case iconOnly
 }

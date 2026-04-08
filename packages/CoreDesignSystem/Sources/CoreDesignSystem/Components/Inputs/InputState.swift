@@ -8,8 +8,12 @@
 import SwiftUI
 
 public enum InputState: Equatable {
+    
     case normal
+    
     case focused
+    
     case error(string)
+    
     case disabled
 }

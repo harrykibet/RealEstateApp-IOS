@@ -8,6 +8,7 @@
 import SwiftUI
 
 public struct AppButton<Content: View>: View {
+    
     private let style: AppButtonStyle
     private let action: () -> Void
     private let isEnabled: Bool
@@ -31,69 +32,64 @@ public struct AppButton<Content: View>: View {
     }
     
     public var body: some View {
-        Button(action: handleTab) {
+        Button(action: handleTap) {
             ZStack {
-                content.opacity(isLoading ? 0 : 1)
-                if(isLoading) {
+                content
+                    .opacity(isLoading ? 0 : 1)
+                
+                if isLoading {
                     ProgressView()
+                        .tint(theme.colors.primary)
                 }
             }
             .padding(.horizontal, horizontalPadding)
             .padding(.vertical, verticalPadding)
             .frame(maxWidth: style == .iconOnly ? nil : .infinity)
             .background(backgroundColor)
-            .foreground(foregroundColor)
-            .clipshape(RoundedRectangle(cornerRadius: 12))
+            .foregroundColor(foregroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .disabled(!isEnabled || isLoading)
         .opacity(isEnabled ? 1.0 : 0.6)
     }
     
-    private func handleTab() {
+    private func handleTap() {
         guard isEnabled, !isLoading else { return }
         action()
     }
 }
 
 // MARK: - Styling
+
 private extension AppButton {
+    
     var backgroundColor: Color {
         switch style {
         case .primary:
-            return EstatiaTheme.colors.primary
+            return theme.colors.primary
         case .secondary:
-            return EstatiaTheme.colors.surfaceVariant
+            return theme.colors.surfaceVariant
         case .iconOnly:
-            return Color.clear
+            return .clear
         }
     }
     
     var foregroundColor: Color {
         switch style {
         case .primary:
-            return EstatiaTheme.colors.primary
+            return theme.colors.onPrimary
         case .secondary:
-            return EstatiaTheme.colors.textPrimary
+            return theme.colors.textPrimary
         case .iconOnly:
-            return EstatiaTheme.colors.textPrimary
+            return theme.colors.textPrimary
         }
     }
     
     var horizontalPadding: CGFloat {
-        switch style {
-        case .iconOnly:
-            return 8
-        default:
-            return 16
-        }
+        style == .iconOnly ? 8 : 16
     }
     
     var verticalPadding: CGFloat {
-        switch style {
-        case .iconOnly:
-            return 8
-        default:
-            return 12
-        }
+        style == .iconOnly ? 8 : 12
     }
 }

@@ -28,22 +28,22 @@ public struct EstatiaSearchField: View {
         HStack(spacing: 8) {
             
             Image(systemName: "magnifyingglass")
-                .foregroundColor(EstatiaTheme.colors.textSecondary)
+                .foregroundColor(theme.colors.textSecondary)
             
             TextField(placeholder, text: $text)
                 .focused($isFocused)
-                .foregroundColor(EstatiaTheme.colors.textPrimary)
+                .foregroundColor(theme.colors.textPrimary)
             
             if !text.isEmpty {
                 Button(action: clearText) {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(EstatiaTheme.colors.textSecondary)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
             }
         }
         .padding(.horizontal, InputTokens.horizontalPadding)
         .padding(.vertical, InputTokens.verticalPadding)
-        .background(EstatiaTheme.colors.surface)
+        .background(theme.colors.surface)
         .overlay(border)
         .clipshape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
     }
@@ -60,7 +60,7 @@ private extension EstatiaSearchField {
     var border: some View {
         RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
             .stroke(
-                isFocused ? EstatiaTheme.colors.primary : EstatiaTheme.colors.surfaceVariant,
+                isFocused ? theme.colors.primary : theme.colors.surfaceVariant,
                 lineWidth: InputTokens.borderWidth
             )
     }

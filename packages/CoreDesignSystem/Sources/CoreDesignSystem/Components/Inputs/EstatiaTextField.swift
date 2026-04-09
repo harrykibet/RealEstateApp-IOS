@@ -39,13 +39,13 @@ public struct EstatiaTextField: View {
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text(placeholder)
-                        .foregroundColor(EstatiaTheme.colors.textDisabled)
+                        .foregroundColor(theme.colors.textDisabled)
                 }
                 
                 TextField("", text: $text)
                     .focused($isFocused)
                     .disabled($isDisabled)
-                    .foregroundColor(EstatiaTheme.colors.textPrimary)
+                    .foregroundColor(theme.colors.textPrimary)
             }
             .padding(.horizontal, InputTokens.horizontalPadding)
             .padding(.vertical, InputTokens.verticalPadding)
@@ -56,7 +56,7 @@ public struct EstatiaTextField: View {
             if case let .error(message) = state {
                 Text(message)
                     .font(.caption)
-                    .foregroundColor(EstatiaTheme.colors.error)
+                    .foregroundColor(theme.colors.error)
             }
         }
     }
@@ -75,9 +75,9 @@ private extension EstatiaTextField {
     var backgroundColor: Color {
         switch state {
         case .disabled:
-            return EstatiaTheme.colors.surfaceVariant
+            return theme.colors.surfaceVariant
         default:
-            return EstatiaTheme.colors.surface
+            return theme.colors.surface
         }
     }
     
@@ -89,11 +89,11 @@ private extension EstatiaTextField {
     var borderColor: Color {
         switch state {
         case .error:
-            return EstatiaTheme.colors.error
+            return theme.colors.error
         case .focused:
-            return EstatiaTheme.colors.primary
+            return theme.colors.primary
         default:
-            return EstatiaTheme.colors.surfaceMuted
+            return theme.colors.surfaceVariant
         }
     }
 }

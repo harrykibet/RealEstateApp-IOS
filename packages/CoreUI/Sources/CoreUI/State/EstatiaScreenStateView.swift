@@ -10,23 +10,26 @@ import CoreDesignSystem
 
 public struct EstatiaScreenStateView<Content: View>: View {
     
-    private let state: ScreenState<Void>
+    private let uiState: ScreenUIState
     private let content: () -> Content
     private let onRetry: (() -> Void)?
+    private let onRefresh: (() async -> Void)?
     
     public init(
-        state: ScreenState<Void>,
+        uiState: ScreenUIState,
         onRetry: (() -> Void)? = nil,
+        onRefresh: (() async -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.state = state
         self.onRetry = onRetry
+        self.onRefresh = onRefresh
         self.content = content
     }
     
     public var body: some View {
         Group {
-            switch state {
+            switch uiState.state {
                 
             case .loading:
                 EstatiaLoadingView(message: "Loading...")
@@ -39,8 +42,11 @@ public struct EstatiaScreenStateView<Content: View>: View {
                 
             case .content:
                 content()
-                
             }
+        }
+        .refreshable {
+            guard let onRefresh else { return }
+            await onRefresh()
         }
     }
 }

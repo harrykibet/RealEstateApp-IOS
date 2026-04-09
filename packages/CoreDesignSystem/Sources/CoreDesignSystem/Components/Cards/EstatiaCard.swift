@@ -38,11 +38,11 @@ private extension EstatiaCard {
     var background: Color {
         switch style {
         case .elevated:
-            return EstatiaTheme.colors.surface
+            return theme.colors.surface
         case .filled:
-            return EstatiaTheme.colors.surfaceVariant
+            return theme.colors.surfaceVariant
         case .outlined:
-            return EstatiaTheme.colors.background
+            return theme.colors.background
         }
     }
     
@@ -54,7 +54,7 @@ private extension EstatiaCard {
     var borderColor: Color {
         switch style {
         case .outlined:
-            return EstatiaTheme.colors.surfaceVariant
+            return theme.colors.surfaceVariant
         default:
             return Color.clear
         }

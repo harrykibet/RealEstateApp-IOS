@@ -13,13 +13,13 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../CoreData")
+        .package(path: "../CoreDesignSystem")
     ],
     targets: [
         .target(
             name: "CoreUI",
             dependencies: [
-                .product(name: "CoreData", package: "CoreData")
+                .product(name: "CoreDesignSystem", package: "CoreDesignSystem")
             ]
         ),
         .testTarget(

@@ -16,6 +16,4 @@ public enum ScreenState<Content> {
     case empty
     
     case content(Content)
-    
-    case isRefreshing
 }

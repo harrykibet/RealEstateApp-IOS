@@ -21,7 +21,7 @@ public struct EstatiaScreenStateView<Content: View>: View {
         onRefresh: (() async -> Void)? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
-        self.state = uiState
+        self.uiState = uiState
         self.onRetry = onRetry
         self.onRefresh = onRefresh
         self.content = content

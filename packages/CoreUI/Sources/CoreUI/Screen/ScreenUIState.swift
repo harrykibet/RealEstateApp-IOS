@@ -8,12 +8,12 @@
 
 public struct ScreenUIState {
     
-    public let state: ScreenState
+    public let state: ScreenState<Void>
     
     public let isRefreshing: Bool
     
     public init(
-        state: ScreenState,
+        state: ScreenState<Void>,
         isRefreshing: Bool = false
     ) {
         self.state = state

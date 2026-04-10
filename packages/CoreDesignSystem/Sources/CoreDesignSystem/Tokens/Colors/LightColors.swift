@@ -11,14 +11,14 @@ public extension SemanticColors {
     
     static let light = SemanticColors(
         primary: ColorPalette.Blue.deep,
-        primaryForeground: ColorPalette.Base.white,
+        onPrimary: ColorPalette.Base.white,
         
         secondary: ColorPalette.Green.base,
-        secondaryForeground: ColorPalette.Base.white,
+        onSecondary: ColorPalette.Base.white,
         
         background: ColorPalette.Base.white,
         surface: ColorPalette.Gray.ultraLight,
-        surfaceMuted: ColorPalette.Gray.light,
+        surfaceVariant: ColorPalette.Gray.light,
         
         textPrimary: ColorPalette.Gray.primary,
         textSecondary: ColorPalette.Gray.secondary,

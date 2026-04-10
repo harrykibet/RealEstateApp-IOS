@@ -11,14 +11,14 @@ public extension SemanticColors {
     
     static let dark = SemanticColors(
         primary: ColorPalette.Blue.base,
-        primaryForeground: ColorPalette.Base.black,
+        onPrimary: ColorPalette.Base.black,
         
         secondary: ColorPalette.Green.strong,
-        secondaryForeground: ColorPalette.Base.black,
+        onSecondary: ColorPalette.Base.black,
         
         background: ColorPalette.Base.black,
         surface: Color(hex: "#111827"),
-        surfaceMuted: Color(hex: "#1F2937"),
+        surfaceVariant: Color(hex: "#1F2937"),
         
         textPrimary: ColorPalette.Base.white,
         textSecondary: ColorPalette.Gray.medium,

@@ -13,7 +13,7 @@ public enum InputState: Equatable {
     
     case focused
     
-    case error(string)
+    case error(String)
     
     case disabled
 }

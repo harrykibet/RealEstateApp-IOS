@@ -45,7 +45,7 @@ public struct EstatiaTextField: View {
                 
                 TextField("", text: $text)
                     .focused($isFocused)
-                    .disabled($isDisabled)
+                    .disabled(isDisabled)
                     .foregroundColor(theme.colors.textPrimary)
             }
             .padding(.horizontal, InputTokens.horizontalPadding)
@@ -98,3 +98,4 @@ private extension EstatiaTextField {
         }
     }
 }
+

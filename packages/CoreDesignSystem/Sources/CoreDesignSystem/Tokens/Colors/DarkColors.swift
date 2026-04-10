@@ -9,7 +9,7 @@ import SwiftUI
 
 public extension SemanticColors {
     
-    static let dark = SemanticColors(
+    @MainActor static let dark = SemanticColors(
         primary: ColorPalette.Blue.base,
         onPrimary: ColorPalette.Base.black,
         

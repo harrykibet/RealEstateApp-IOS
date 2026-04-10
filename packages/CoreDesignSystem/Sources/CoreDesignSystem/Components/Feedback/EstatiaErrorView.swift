@@ -15,7 +15,7 @@ public struct EstatiaErrorView: View {
     private let retryTitle: String?
     private let onRetry: (() -> Void)?
     
-    @Environment(.theme) private var theme
+    @Environment(\.theme) private var theme
     
     public init(
         title: String = "Something went wrong",

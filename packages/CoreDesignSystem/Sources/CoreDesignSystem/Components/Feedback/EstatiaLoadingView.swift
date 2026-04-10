@@ -22,12 +22,12 @@ public struct EstatiaLoadingView: View {
         VStack(spacing: FeedbackTokens.spacing) {
             
             ProgressView()
-                .tint(EstatiaTheme.colors.primary)
+                .tint(theme.colors.primary)
             
             if let message {
                 Text(message)
                     .font(.subheadline)
-                    .foregroundColor(EstatiaTheme.colors.textSecondary)
+                    .foregroundColor(theme.colors.textSecondary)
             }
         }
         .padding(FeedbackTokens.verticalPadding)

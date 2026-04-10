@@ -33,15 +33,15 @@ public struct EstatiaErrorView: View {
             
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: FeedbackTokens.iconSize))
-                .foregroundColor(EstatiaTheme.colors.error)
+                .foregroundColor(theme.colors.error)
             
             Text(title)
                 .font(.headline)
-                .foregroundColor(EstatiaTheme.colors.textPrimary)
+                .foregroundColor(theme.colors.textPrimary)
             
             Text(message)
                 .font(.subheadline)
-                .foregroundColor(EstatiaTheme.colors.textSecondary)
+                .foregroundColor(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)
             
             if let retryTitle, let onRetry {

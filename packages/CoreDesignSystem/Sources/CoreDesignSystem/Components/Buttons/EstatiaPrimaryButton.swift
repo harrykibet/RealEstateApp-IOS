@@ -34,7 +34,7 @@ public struct EstatiaPrimaryButton: View {
             isLoading: isLoading,
             action: action
         ) {
-            Text(tittle).font(.headline)
+            Text(title).font(.headline)
         }
     }
 }

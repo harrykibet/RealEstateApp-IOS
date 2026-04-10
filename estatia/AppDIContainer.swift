@@ -16,7 +16,7 @@ import FeatureAuth
 
 import CoreAnalytics
 import CorePlayerUI
-import CorePlayerEngine
+//import CorePlayerEngine
 import CoreNotifications
 import CoreNetwork
 import CoreDatabase

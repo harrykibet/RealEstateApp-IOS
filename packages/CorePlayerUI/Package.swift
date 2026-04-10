@@ -3,6 +3,9 @@ import PackageDescription
 
 let package = Package(
     name: "CorePlayerUI",
+    platforms: [
+        .iOS(.v18)
+    ],
     products: [
         .library(
             name: "CorePlayerUI",

@@ -3,6 +3,9 @@ import PackageDescription
 
 let package = Package(
     name: "CorePlayerEngine",
+    platforms: [
+        .iOS(.v18)
+    ],
     products: [
         .library(
             name: "CorePlayerEngine",

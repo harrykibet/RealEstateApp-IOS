@@ -56,6 +56,7 @@ public struct EstatiaSearchField: View {
 
 // MARK: - Styling
 
+@available(iOS 15.0, *)
 private extension EstatiaSearchField {
     
     var border: some View {

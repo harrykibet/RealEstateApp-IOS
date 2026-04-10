@@ -26,7 +26,7 @@ public struct EstatiaCard<Content: View>: View {
     public var body: some View {
         content
             .padding(CardTokens.padding)
-            .background(backgroundColor)
+            .background(background)
             .overlay(borderOverlay)
             .clipShape(RoundedRectangle(cornerRadius: CardTokens.cornerRadius))
             .shadow(color: shadowColor, radius: shadowRadius)

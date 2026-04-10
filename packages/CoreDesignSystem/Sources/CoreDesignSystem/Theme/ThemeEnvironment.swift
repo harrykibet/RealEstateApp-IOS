@@ -12,7 +12,7 @@ private struct ThemeEnvironmentKey: @MainActor EnvironmentKey {
     @MainActor static let defaultValue: AppTheme = EstatiaTheme(colors: .light)
 }
 
-@available(iOS 13.0, *)
+@MainActor
 public extension EnvironmentValues {
     
     var theme: AppTheme {

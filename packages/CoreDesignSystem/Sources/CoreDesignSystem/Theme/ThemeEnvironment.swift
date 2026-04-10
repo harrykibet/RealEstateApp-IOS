@@ -21,6 +21,7 @@ public extension EnvironmentValues {
     }
 }
 
+@MainActor
 @available(iOS 13.0, *)
 public struct ThemeProvider<Content: View>: View {
     
@@ -46,3 +47,4 @@ public struct ThemeProvider<Content: View>: View {
         }
     }
 }
+

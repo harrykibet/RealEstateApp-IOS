@@ -52,29 +52,16 @@ actor PlayerActor {
         self.stateEmitter = stateEmitter
         self.eventEmitter = eventEmitter
 
-        bindEventStream()
+        // Bind AV layer → PlayerEvent → Actor without calling an actor-isolated method from init
+        player.emit = { [weak self] event in
+            guard let self else { return }
+            Task { await self.consume(event) }
+        }
     }
 
     deinit {
         // Ensure underlying resources are released
         player.release()
-    }
-}
-
-@available(iOS 13.0, *)
-private extension PlayerActor {
-
-    /// Binds AV layer → PlayerEvent → Actor
-    /// This replaces fragmented callback wiring with a single event stream.
-    func bindEventStream() {
-
-        player.emit = { [weak self] event in
-            guard let self else { return }
-
-            Task {
-                await self.consume(event)
-            }
-        }
     }
 }
 
@@ -216,3 +203,4 @@ private extension PlayerActor {
         eventEmitter.emit(event)
     }
 }
+

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 public struct EstatiaSecondaryButton: View {
     
     private let title: String
@@ -35,8 +36,8 @@ public struct EstatiaSecondaryButton: View {
 }
 
 #if DEBUG
-import SwiftUI
 
+@available(iOS 13.0, *)
 #Preview("Secondary Button - Light") {
     PreviewContainer {
         VStack(spacing: 16) {
@@ -53,7 +54,7 @@ import SwiftUI
         }
     }
 }
-
+@available(iOS 13.0, *)
 #Preview("Secondary Button - Dark") {
     PreviewContainer(isDarkMode: true) {
         VStack(spacing: 16) {

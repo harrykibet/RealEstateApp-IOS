@@ -36,7 +36,6 @@
 		5AEDBD762F6F181A00F773A3 /* CoreDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD752F6F181A00F773A3 /* CoreDomain */; };
 		5AEDBD792F6F185900F773A3 /* CoreModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD782F6F185900F773A3 /* CoreModel */; };
 		5AEDBD7C2F6F18AB00F773A3 /* CoreNetwork in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD7B2F6F18AB00F773A3 /* CoreNetwork */; };
-		5AEDBD7F2F6F18DF00F773A3 /* CorePlayerEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD7E2F6F18DF00F773A3 /* CorePlayerEngine */; };
 		5AEDBD822F6F191400F773A3 /* CorePlayerUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD812F6F191400F773A3 /* CorePlayerUI */; };
 		5AEDBD852F6F194400F773A3 /* CoreSecurity in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD842F6F194400F773A3 /* CoreSecurity */; };
 		5AEDBD882F6F197700F773A3 /* CoreTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD872F6F197700F773A3 /* CoreTesting */; };
@@ -156,7 +155,6 @@
 				5A68DF142F7D9DBF0057E1DD /* CoreDesignSystem in Frameworks */,
 				5AEDBD6D2F6F176600F773A3 /* CoreCommon in Frameworks */,
 				5AEDBD792F6F185900F773A3 /* CoreModel in Frameworks */,
-				5AEDBD7F2F6F18DF00F773A3 /* CorePlayerEngine in Frameworks */,
 				5AEDBD9A2F6F1AC400F773A3 /* FeatureHome in Frameworks */,
 				5AEDBD762F6F181A00F773A3 /* CoreDomain in Frameworks */,
 				5A1694372DC62E2800245881 /* FirebaseCore in Frameworks */,
@@ -253,7 +251,6 @@
 				5AEDBD752F6F181A00F773A3 /* CoreDomain */,
 				5AEDBD782F6F185900F773A3 /* CoreModel */,
 				5AEDBD7B2F6F18AB00F773A3 /* CoreNetwork */,
-				5AEDBD7E2F6F18DF00F773A3 /* CorePlayerEngine */,
 				5AEDBD812F6F191400F773A3 /* CorePlayerUI */,
 				5AEDBD842F6F194400F773A3 /* CoreSecurity */,
 				5AEDBD872F6F197700F773A3 /* CoreTesting */,
@@ -1003,10 +1000,6 @@
 		5AEDBD7B2F6F18AB00F773A3 /* CoreNetwork */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreNetwork;
-		};
-		5AEDBD7E2F6F18DF00F773A3 /* CorePlayerEngine */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CorePlayerEngine;
 		};
 		5AEDBD812F6F191400F773A3 /* CorePlayerUI */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 public struct EstatiaCardContent<Content: View>: View {
     
     private let content: Content

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 public struct EstatiaSearchField: View {
     
     @Binding private var text: String

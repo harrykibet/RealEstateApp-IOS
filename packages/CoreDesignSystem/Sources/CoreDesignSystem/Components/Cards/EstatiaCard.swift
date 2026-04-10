@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 public struct EstatiaCard<Content: View>: View {
     
     private let style: CardStyle
@@ -33,6 +34,7 @@ public struct EstatiaCard<Content: View>: View {
 }
 
 // MARK: - Styling
+@available(iOS 13.0, *)
 private extension EstatiaCard {
     
     var background: Color {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 struct PreviewContainer<Content: View>: View {
     
     private let isDarkMode: Bool
@@ -17,7 +18,7 @@ struct PreviewContainer<Content: View>: View {
         @ViewBuilder content: () -> Content
     ) {
         self.isDarkMode = isDarkMode
-        self.content = content
+        self.content = content()
     }
     
     public var body: some View {

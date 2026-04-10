@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 public struct EstatiaLoadingView: View {
     
     private let message: String?

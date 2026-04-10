@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 public struct EstatiaIconButton: View {
     
     private let systemImage: String
@@ -37,6 +38,7 @@ public struct EstatiaIconButton: View {
 
 #if DEBUG
 
+@available(iOS 13.0, *)
 #Preview("Icon Button - Light") {
     PreviewContainer {
         HStack(spacing: 16) {
@@ -60,6 +62,7 @@ public struct EstatiaIconButton: View {
     }
 }
 
+@available(iOS 13.0, *)
 #Preview("Icon Button - Dark") {
     PreviewContainer(isDarkMode: true) {
         HStack(spacing: 16) {

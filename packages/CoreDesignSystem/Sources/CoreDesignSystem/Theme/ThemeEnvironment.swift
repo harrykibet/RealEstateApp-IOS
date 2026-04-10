@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
-private struct ThemeEnvironmentKey: EnvironmentKey {
-    static let defaultValue: AppTheme = EstatiaTheme(colors: .light)
+@MainActor
+private struct ThemeEnvironmentKey: @MainActor EnvironmentKey {
+    @MainActor static let defaultValue: AppTheme = EstatiaTheme(colors: .light)
 }
 
 @available(iOS 13.0, *)
@@ -22,7 +22,6 @@ public extension EnvironmentValues {
 }
 
 @MainActor
-@available(iOS 13.0, *)
 public struct ThemeProvider<Content: View>: View {
     
     private let content: Content

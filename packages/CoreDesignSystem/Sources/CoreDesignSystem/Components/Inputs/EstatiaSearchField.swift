@@ -46,7 +46,7 @@ public struct EstatiaSearchField: View {
         .padding(.vertical, InputTokens.verticalPadding)
         .background(theme.colors.surface)
         .overlay(border)
-        .clipshape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
     }
     
     private func clearText() {

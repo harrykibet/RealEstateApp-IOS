@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 public struct EstatiaTextField: View {
     
     // MARK: - State

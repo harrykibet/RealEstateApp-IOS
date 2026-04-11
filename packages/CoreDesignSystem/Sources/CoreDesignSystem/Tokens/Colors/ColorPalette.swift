@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
 public enum ColorPalette {
     
     public enum Blue {

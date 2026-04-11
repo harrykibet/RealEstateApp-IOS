@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 public struct EstatiaSearchField: View {
     
     @Binding private var text: String
@@ -56,7 +55,6 @@ public struct EstatiaSearchField: View {
 
 // MARK: - Styling
 
-@available(iOS 15.0, *)
 private extension EstatiaSearchField {
     
     var border: some View {

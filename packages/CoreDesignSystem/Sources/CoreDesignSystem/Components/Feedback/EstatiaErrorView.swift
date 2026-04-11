@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
 public struct EstatiaErrorView: View {
     
     private let title: String

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
 public struct EstatiaCardFooter<Content: View>: View {
     
     private let content: Content

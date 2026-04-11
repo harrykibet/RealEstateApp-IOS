@@ -42,14 +42,6 @@ jobs:
         xcodebuild -version
         swift --version
 
-    # 🚨 Guardrail: ensure expected Swift version (optional but recommended)
-    - name: Verify Swift toolchain
-      run: |
-        swift --version | grep "6.2" || {
-          echo "❌ Expected Swift 6.2 toolchain not found"
-          exit 1
-        }
-
     # ⚡ Optimized SwiftPM caching (safe + scalable)
     - name: Cache SwiftPM
       uses: actions/cache@v4

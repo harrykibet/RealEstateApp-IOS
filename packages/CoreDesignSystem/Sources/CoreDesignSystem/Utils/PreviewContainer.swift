@@ -2,17 +2,15 @@
 //  ComponentPreviewWrapper.swift
 //  CoreDesignSystem
 //
-//  Created by builder on 4/5/26.
-//
 
 import SwiftUI
 
 @available(iOS 13.0, *)
-struct PreviewContainer<Content: View>: View {
-    
+public struct PreviewContainer<Content: View>: View {
+
     private let isDarkMode: Bool
     private let content: Content
-    
+
     public init(
         isDarkMode: Bool = false,
         @ViewBuilder content: () -> Content
@@ -20,11 +18,23 @@ struct PreviewContainer<Content: View>: View {
         self.isDarkMode = isDarkMode
         self.content = content()
     }
-    
+
     public var body: some View {
+        themedContent
+    }
+}
+
+@available(iOS 13.0, *)
+private extension PreviewContainer {
+
+    var themedContent: some View {
         ThemeProvider {
-            content.padding()
+            content
         }
-        .environment(\.colorScheme, isDarkMode ? .dark : .light)
+        .environment(\.colorScheme, colorScheme)
+    }
+
+    var colorScheme: ColorScheme {
+        isDarkMode ? .dark : .light
     }
 }

@@ -11,20 +11,55 @@ jobs:
     timeout-minutes: 60
 
     steps:
+    # =========================
+    # 📥 Checkout
+    # =========================
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Select latest Xcode
+    # =========================
+    # 🧠 Select latest STABLE Xcode
+    # =========================
+    - name: Select latest stable Xcode
       run: |
         set -e
-        LATEST_XCODE=$(ls -d /Applications/Xcode_*.app | sort -V | tail -n 1)
+
+        echo "🔍 Available Xcode installations:"
+        ls -d /Applications/Xcode*.app || true
+
+        STABLE_XCODES=$(ls -d /Applications/Xcode*.app \
+          | grep -v -i "beta" \
+          | grep -v -i "rc" \
+          | grep -v -i "preview" || true)
+
+        if [ -z "$STABLE_XCODES" ]; then
+          echo "⚠️ No stable Xcode found, falling back"
+          LATEST_XCODE=$(ls -d /Applications/Xcode*.app | sort -V | tail -n 1)
+        else
+          LATEST_XCODE=$(echo "$STABLE_XCODES" | sort -V | tail -n 1)
+        fi
+
+        echo "✅ Using Xcode: $LATEST_XCODE"
         sudo xcode-select -s "$LATEST_XCODE/Contents/Developer"
 
-    - name: Print toolchain versions
+    # =========================
+    # 🔍 Toolchain Observability
+    # =========================
+    - name: Print toolchain info
       run: |
         xcodebuild -version
         swift --version
 
+    - name: Validate Xcode is NOT beta
+      run: |
+        if xcodebuild -version | grep -i "beta"; then
+          echo "❌ Beta Xcode detected. Failing build."
+          exit 1
+        fi
+
+    # =========================
+    # ⚡ SwiftPM Cache
+    # =========================
     - name: Cache SwiftPM
       uses: actions/cache@v4
       with:
@@ -32,19 +67,68 @@ jobs:
           ~/.swiftpm
           ~/Library/Caches/org.swift.swiftpm
         key: spm-${{ runner.os }}-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          spm-${{ runner.os }}-
 
+    # =========================
+    # ⚡ DerivedData Cache
+    # =========================
+    - name: Cache DerivedData
+      uses: actions/cache@v4
+      with:
+        path: build
+        key: derived-${{ runner.os }}-${{ github.sha }}
+        restore-keys: |
+          derived-${{ runner.os }}-
+
+    # =========================
+    # 📦 Resolve Dependencies
+    # =========================
     - name: Resolve Swift Packages
       run: |
         xcodebuild -resolvePackageDependencies \
           -project estatia.xcodeproj
 
-    # 🔥 Dynamic simulator selection
+    # =========================
+    # 📱 Select VALID Simulator (dynamic)
+    # =========================
     - name: Select simulator
       id: sim
       run: |
-        DEVICE=$(xcrun simctl list devices available | grep "iPhone" | head -n 1 | sed -E 's/^[[:space:]]*//; s/[[:space:]]*\(.*\)//')
-        echo "destination=platform=iOS Simulator,name=$DEVICE" >> $GITHUB_OUTPUT
+        set -e
 
+        echo "📱 Available runtimes:"
+        xcrun simctl list runtimes
+
+        echo "📱 Available devices:"
+        xcrun simctl list devices available
+
+        # Get latest available iOS runtime
+        RUNTIME=$(xcrun simctl list runtimes \
+          | grep "iOS" \
+          | grep -v "unavailable" \
+          | tail -n 1 \
+          | awk -F '[()]' '{print $2}')
+
+        if [ -z "$RUNTIME" ]; then
+          echo "❌ No iOS runtime found"
+          exit 1
+        fi
+
+        echo "✅ Using runtime: $RUNTIME"
+
+        # Create deterministic simulator (avoids name mismatch issues)
+        DEVICE_ID=$(xcrun simctl create "CI-iPhone" \
+          com.apple.CoreSimulator.SimDeviceType.iPhone-15 \
+          "$RUNTIME")
+
+        echo "✅ Created simulator: $DEVICE_ID"
+
+        echo "destination=platform=iOS Simulator,id=$DEVICE_ID" >> $GITHUB_OUTPUT
+
+    # =========================
+    # 🏗️ Build
+    # =========================
     - name: Build for testing
       run: |
         xcodebuild clean build-for-testing \
@@ -54,8 +138,23 @@ jobs:
           -derivedDataPath build \
           CODE_SIGNING_ALLOWED=NO
 
+    # =========================
+    # 🧪 Test
+    # =========================
     - name: Run tests
       run: |
         xcodebuild test-without-building \
           -xctestrun build/Build/Products/*.xctestrun \
           -destination "${{ steps.sim.outputs.destination }}"
+
+    # =========================
+    # 📦 Debug Artifacts
+    # =========================
+    - name: Upload build artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: xcode-build-logs
+        path: |
+          build
+          ~/Library/Logs/DiagnosticReports

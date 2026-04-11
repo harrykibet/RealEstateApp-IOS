@@ -21,7 +21,9 @@ public struct PreviewContainer<Content: View>: View {
 
     public var body: some View {
         ThemeProvider {
-            content
+            ThemedBackground {
+                content
+            }
         }
         .environment(\.colorScheme, colorScheme)
     }

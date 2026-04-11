@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
 public struct AppButton<Content: View>: View {
     
     private let style: AppButtonStyle
@@ -62,7 +61,6 @@ public struct AppButton<Content: View>: View {
 
 // MARK: - Styling
 
-@available(iOS 13.0, *)
 private extension AppButton {
     
     var backgroundColor: Color {

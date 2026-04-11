@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 public enum Preview {
     
     static func light<Content: View>(

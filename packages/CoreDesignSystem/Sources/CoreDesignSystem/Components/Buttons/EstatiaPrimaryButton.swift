@@ -41,52 +41,29 @@ public struct EstatiaPrimaryButton: View {
 
 #if DEBUG
 
-    #Preview("Primary Button - Light") {
-            PreviewContainer {
-                VStack(spacing: 16) {
-                    
-                    EstatiaPrimaryButton(
-                        title: "Search Properties",
-                        action: {}
-                    )
-                    
-                    EstatiaPrimaryButton(
-                        title: "Loading...",
-                        isLoading: true,
-                        action: {}
-                    )
-                    
-                    EstatiaPrimaryButton(
-                        title: "Disabled",
-                        isEnabled: false,
-                        action: {}
-                    )
-                }
+#Preview("Primary Button") {
+    Preview.both {
+        Preview.states {
+            VStack(spacing: 16) {
+
+                EstatiaPrimaryButton(
+                    title: "Search Properties",
+                    action: {}
+                )
+
+                EstatiaPrimaryButton(
+                    title: "Loading...",
+                    isLoading: true,
+                    action: {}
+                )
+
+                EstatiaPrimaryButton(
+                    title: "Disabled",
+                    isEnabled: false,
+                    action: {}
+                )
             }
-    }
-    
-    
-    #Preview("Primary Button - Dark") {
-            PreviewContainer(isDarkMode: true) {
-                VStack(spacing: 16) {
-                    
-                    EstatiaPrimaryButton(
-                        title: "Search Properties",
-                        action: {}
-                    )
-                    
-                    EstatiaPrimaryButton(
-                        title: "Loading...",
-                        isLoading: true,
-                        action: {}
-                    )
-                    
-                    EstatiaPrimaryButton(
-                        title: "Disabled",
-                        isEnabled: false,
-                        action: {}
-                    )
-                }
+        }
     }
 }
 

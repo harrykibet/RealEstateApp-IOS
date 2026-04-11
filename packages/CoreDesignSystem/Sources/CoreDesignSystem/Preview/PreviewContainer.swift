@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 public struct PreviewContainer<Content: View>: View {
 
     private let content: Content

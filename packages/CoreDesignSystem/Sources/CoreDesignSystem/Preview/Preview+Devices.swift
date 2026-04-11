@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 public extension Preview {
     
     static func device<Content: View>(

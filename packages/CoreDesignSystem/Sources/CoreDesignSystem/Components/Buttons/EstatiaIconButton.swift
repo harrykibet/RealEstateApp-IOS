@@ -38,50 +38,27 @@ public struct EstatiaIconButton: View {
 
 #if DEBUG
 
-@available(iOS 13.0, *)
-#Preview("Icon Button - Light") {
-    PreviewContainer {
-        HStack(spacing: 16) {
-            
-            EstatiaIconButton(
-                systemImage: "heart",
-                action: {}
-            )
-            
-            EstatiaIconButton(
-                systemImage: "magnifyingglass",
-                action: {}
-            )
-            
-            EstatiaIconButton(
-                systemImage: "bell",
-                isEnabled: false,
-                action: {}
-            )
-        }
-    }
-}
-
-@available(iOS 13.0, *)
-#Preview("Icon Button - Dark") {
-    PreviewContainer(isDarkMode: true) {
-        HStack(spacing: 16) {
-            
-            EstatiaIconButton(
-                systemImage: "heart",
-                action: {}
-            )
-            
-            EstatiaIconButton(
-                systemImage: "magnifyingglass",
-                action: {}
-            )
-            
-            EstatiaIconButton(
-                systemImage: "bell",
-                isEnabled: false,
-                action: {}
-            )
+#Preview("Icon Button") {
+    Preview.both {
+        Preview.padded {
+            HStack(spacing: 16) {
+                
+                EstatiaIconButton(
+                    systemImage: "heart",
+                    action: {}
+                )
+                
+                EstatiaIconButton(
+                    systemImage: "magnifyingglass",
+                    action: {}
+                )
+                
+                EstatiaIconButton(
+                    systemImage: "bell",
+                    isEnabled: false,
+                    action: {}
+                )
+            }
         }
     }
 }

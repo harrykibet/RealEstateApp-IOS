@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
 public struct EstatiaSecondaryButton: View {
     
     private let title: String
@@ -35,41 +34,46 @@ public struct EstatiaSecondaryButton: View {
     }
 }
 
+
 #if DEBUG
 
-@available(iOS 13.0, *)
 #Preview("Secondary Button - Light") {
-    PreviewContainer {
-        VStack(spacing: 16) {
-            EstatiaSecondaryButton(
-                title: "Filter",
-                action: {}
-            )
-            
-            EstatiaSecondaryButton(
-                title: "Disabled",
-                isEnabled: false,
-                action: {}
-            )
-        }
-    }
-}
-@available(iOS 13.0, *)
-#Preview("Secondary Button - Dark") {
-    PreviewContainer(isDarkMode: true) {
-        VStack(spacing: 16) {
-            EstatiaSecondaryButton(
-                title: "Filter",
-                action: {}
-            )
-            
-            EstatiaSecondaryButton(
-                title: "Disabled",
-                isEnabled: false,
-                action: {}
-            )
+    Preview.light {
+        Preview.padded {
+            VStack(spacing: 16) {
+                
+                EstatiaSecondaryButton(
+                    title: "Filter",
+                    action: {}
+                )
+                
+                EstatiaSecondaryButton(
+                    title: "Disabled",
+                    isEnabled: false,
+                    action: {}
+                )
+            }
         }
     }
 }
 
+#Preview("Secondary Button - Dark") {
+    Preview.dark {
+        Preview.padded {
+            VStack(spacing: 16) {
+                
+                EstatiaSecondaryButton(
+                    title: "Filter",
+                    action: {}
+                )
+                
+                EstatiaSecondaryButton(
+                    title: "Disabled",
+                    isEnabled: false,
+                    action: {}
+                )
+            }
+        }
+    }
+}
 #endif

@@ -41,8 +41,8 @@ public struct EstatiaPrimaryButton: View {
 
 #if DEBUG
 
-#Preview("Primary Button") {
-    Preview.both {
+#Preview("Primary Button - Light") {
+    Preview.light {
         Preview.states {
             VStack(spacing: 16) {
 
@@ -67,4 +67,29 @@ public struct EstatiaPrimaryButton: View {
     }
 }
 
+#Preview("Primary Button - Dark") {
+    Preview.dark {
+        Preview.states {
+            VStack(spacing: 16) {
+
+                EstatiaPrimaryButton(
+                    title: "Search Properties",
+                    action: {}
+                )
+
+                EstatiaPrimaryButton(
+                    title: "Loading...",
+                    isLoading: true,
+                    action: {}
+                )
+
+                EstatiaPrimaryButton(
+                    title: "Disabled",
+                    isEnabled: false,
+                    action: {}
+                )
+            }
+        }
+    }
+}
 #endif

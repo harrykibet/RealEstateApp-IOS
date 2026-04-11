@@ -38,8 +38,8 @@ public struct EstatiaIconButton: View {
 
 #if DEBUG
 
-#Preview("Icon Button") {
-    Preview.both {
+#Preview("Icon Button - Light") {
+    Preview.light {
         Preview.padded {
             HStack(spacing: 16) {
                 
@@ -63,4 +63,28 @@ public struct EstatiaIconButton: View {
     }
 }
 
+#Preview("Icon Button - Dark") {
+    Preview.dark {
+        Preview.padded {
+            HStack(spacing: 16) {
+                
+                EstatiaIconButton(
+                    systemImage: "heart",
+                    action: {}
+                )
+                
+                EstatiaIconButton(
+                    systemImage: "magnifyingglass",
+                    action: {}
+                )
+                
+                EstatiaIconButton(
+                    systemImage: "bell",
+                    isEnabled: false,
+                    action: {}
+                )
+            }
+        }
+    }
+}
 #endif

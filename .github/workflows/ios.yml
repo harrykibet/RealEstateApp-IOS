@@ -7,43 +7,100 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15 # macOS 15 runners support latest Xcode versions
+    runs-on: macos-15
 
-    env:
-      BITRISE_PROJECT_PATH: estatia.xcodeproj
-      BITRISE_SCHEME: estatia
-      BITRISE_DISTRIBUTION_METHOD: ad-hoc
+    timeout-minutes: 60
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.1'
+    # 🔥 Dynamically select latest Xcode (no hardcoding)
+    - name: Select latest Xcode
+      run: |
+        set -e
 
-    - name: Select Xcode 16.3
-      run: sudo xcode-select -s /Applications/Xcode_16.3.app
+        echo "Available Xcode versions:"
+        ls -d /Applications/Xcode*.app || true
 
-    - name: Restore SwiftPM cache
-      uses: actions/cache@v3
+        LATEST_XCODE=$(ls -d /Applications/Xcode_*.app \
+          | sort -V \
+          | tail -n 1)
+
+        if [ -z "$LATEST_XCODE" ]; then
+          echo "❌ No Xcode installations found"
+          exit 1
+        fi
+
+        echo "✅ Using: $LATEST_XCODE"
+
+        sudo xcode-select -s "$LATEST_XCODE/Contents/Developer"
+
+    # 🔍 Toolchain observability (critical for debugging CI drift)
+    - name: Print toolchain versions
+      run: |
+        xcodebuild -version
+        swift --version
+
+    # 🚨 Guardrail: ensure expected Swift version (optional but recommended)
+    - name: Verify Swift toolchain
+      run: |
+        swift --version | grep "6.2" || {
+          echo "❌ Expected Swift 6.2 toolchain not found"
+          exit 1
+        }
+
+    # ⚡ Optimized SwiftPM caching (safe + scalable)
+    - name: Cache SwiftPM
+      uses: actions/cache@v4
       with:
         path: |
-          ~/Library/Developer/Xcode/DerivedData
-          .build
-        key: spm-${{ hashFiles('**/Package.resolved') }}
+          ~/.swiftpm
+          ~/Library/Caches/org.swift.swiftpm
+        key: spm-${{ runner.os }}-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          spm-${{ runner.os }}-
 
+    # ⚡ Optional: cache DerivedData separately (faster builds, but isolated)
+    - name: Cache DerivedData
+      uses: actions/cache@v4
+      with:
+        path: build
+        key: derived-${{ runner.os }}-${{ github.sha }}
+        restore-keys: |
+          derived-${{ runner.os }}-
+
+    # 🔥 Explicit dependency resolution (deterministic builds)
+    - name: Resolve Swift Packages
+      run: |
+        xcodebuild -resolvePackageDependencies \
+          -project estatia.xcodeproj
+
+    # 🏗️ Build (no code signing in CI)
     - name: Build for testing
       run: |
         xcodebuild clean build-for-testing \
-          -project "$BITRISE_PROJECT_PATH" \
-          -scheme "$BITRISE_SCHEME" \
+          -project estatia.xcodeproj \
+          -scheme estatia \
           -destination "platform=iOS Simulator,name=iPhone 16 Pro" \
-          -derivedDataPath build
-          
+          -derivedDataPath build \
+          CODE_SIGNING_ALLOWED=NO \
+          | xcpretty
+
+    # 🧪 Run tests
     - name: Run tests
       run: |
         xcodebuild test-without-building \
           -xctestrun build/Build/Products/*.xctestrun \
-          -destination "platform=iOS Simulator,name=iPhone 16 Pro"
+          -destination "platform=iOS Simulator,name=iPhone 16 Pro" \
+          | xcpretty
+
+    # 📦 Upload build artifacts (debugging failures)
+    - name: Upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: xcode-build-logs
+        path: |
+          build
+          ~/Library/Logs/DiagnosticReports

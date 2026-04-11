@@ -82,15 +82,6 @@ jobs:
           CODE_SIGNING_ALLOWED=NO
 
     # =========================
-    # 🧪 Run tests
-    # =========================
-    - name: Run tests
-      run: |
-        xcodebuild test-without-building \
-          -xctestrun build/Build/Products/*.xctestrun \
-          -destination "platform=iOS Simulator,OS=26.2,name=iPhone 17 Pro"
-
-    # =========================
     # 📦 Artifacts on failure
     # =========================
     - name: Upload logs

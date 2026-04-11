@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-private struct ThemedBackground<Content: View>: View {
+public struct ThemedBackground<Content: View>: View {
 
     @Environment(\.theme) private var theme
     private let content: Content
@@ -17,7 +17,7 @@ private struct ThemedBackground<Content: View>: View {
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             theme.colors.background
                 .ignoresSafeArea()

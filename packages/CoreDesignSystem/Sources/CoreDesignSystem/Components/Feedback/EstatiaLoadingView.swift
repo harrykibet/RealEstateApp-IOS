@@ -33,3 +33,36 @@ public struct EstatiaLoadingView: View {
         .padding(FeedbackTokens.verticalPadding)
     }
 }
+
+#if DEBUG
+
+private struct LoadingViewPreviewContent: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            
+            EstatiaLoadingView()
+            
+            EstatiaLoadingView(message: "Loading properties...")
+            
+            EstatiaLoadingView(message: "Fetching recommendations...")
+        }
+    }
+}
+
+#Preview("Loading View - Light") {
+    Preview.light {
+        Preview.states {
+            LoadingViewPreviewContent()
+        }
+    }
+}
+
+#Preview("Loading View - Dark") {
+    Preview.dark {
+        Preview.states {
+            LoadingViewPreviewContent()
+        }
+    }
+}
+
+#endif

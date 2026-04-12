@@ -15,7 +15,7 @@ import Foundation
 /// - Makes swapping implementations easy (mock, test, etc.)
 ///
 /// This is your equivalent of a DI entry point.
-@available(iOS 13.0, *)
+    
 public enum PlayerEngineFactory {
     
     /// Creates a default player engine instance.

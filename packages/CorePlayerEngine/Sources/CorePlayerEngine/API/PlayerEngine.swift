@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - PlayerEngine
 
-@available(iOS 13.0, *)
+    
 public protocol PlayerEngine: AnyObject {
     
     // MARK: Lifecycle

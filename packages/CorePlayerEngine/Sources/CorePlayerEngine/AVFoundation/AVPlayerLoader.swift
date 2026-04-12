@@ -36,7 +36,7 @@ final class AVPlayerLoader {
 
     // MARK: - Public API
 
-    @available(iOS 13.0, *)
+        
     func load(_ source: MediaSource) async throws {
 
         let asset = try await createAsset(from: source)
@@ -100,7 +100,7 @@ private extension AVPlayerLoader {
         return AVURLAsset(url: source.url, options: options)
     }
 
-    @available(iOS 13.0, *)
+        
     func prepare(asset: AVURLAsset) async throws {
 
         let keys = ["playable", "duration", "tracks"]

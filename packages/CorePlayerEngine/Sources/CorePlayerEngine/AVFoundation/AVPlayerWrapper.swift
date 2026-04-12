@@ -10,7 +10,7 @@ import AVFoundation
 
 // MARK: - AVPlayerWrapper
 
-@available(iOS 13.0, *)
+    
 final class AVPlayerWrapper: @unchecked Sendable {
     // MARK: Callbacks (Bridged to Engine)
     
@@ -45,7 +45,7 @@ final class AVPlayerWrapper: @unchecked Sendable {
     }
 }
 
-@available(iOS 13.0, *)
+    
 extension AVPlayerWrapper {
     nonisolated(nonsending) func load(_ source: MediaSource) async throws {
         try await queue.sync {
@@ -83,7 +83,7 @@ extension AVPlayerWrapper {
     }
 }
 
-@available(iOS 13.0, *)
+    
 extension AVPlayerWrapper {
     
     func play() {
@@ -105,7 +105,7 @@ extension AVPlayerWrapper {
         }
     }
     
-    @available(iOS 13.0, *)
+        
     nonisolated(nonsending) func seek(to seconds: TimeInterval) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             queue.async { [weak self] in
@@ -128,7 +128,7 @@ extension AVPlayerWrapper {
     }
 }
 
-@available(iOS 13.0, *)
+    
 extension AVPlayerWrapper {
     
     func release() {
@@ -147,10 +147,10 @@ extension AVPlayerWrapper {
     }
 }
 
-@available(iOS 13.0, *)
+    
 private extension AVPlayerWrapper {
     
-    @available(iOS 13.0, *)
+        
     func dispatch(_ block: @MainActor @Sendable @escaping () -> Void) {
         Task { @MainActor [block] in
             block()

@@ -17,7 +17,7 @@
 
 import Foundation
 
-@available(iOS 13.0, *)
+    
 actor PlayerActor {
 
     // MARK: - Dependencies
@@ -65,7 +65,7 @@ actor PlayerActor {
     }
 }
 
-@available(iOS 13.0, *)
+    
 private extension PlayerActor {
 
     /// Consumes low-level PlayerEvent and maps to state transitions.
@@ -114,7 +114,7 @@ private extension PlayerActor {
     }
 }
 
-@available(iOS 13.0, *)
+    
 extension PlayerActor {
 
     /// Public API: external commands
@@ -178,7 +178,7 @@ extension PlayerActor {
 }
 
 
-@available(iOS 13.0, *)
+    
 private extension PlayerActor {
 
     /// Validates and applies state transitions

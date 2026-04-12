@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - PlayerEventEmitter
 
-@available(iOS 13.0, *)
+    
 public final class PlayerEventEmitter<T: Sendable> {
     
     // MARK: Internal Storage
@@ -28,7 +28,7 @@ public final class PlayerEventEmitter<T: Sendable> {
     public init() {}
 }
 
-@available(iOS 13.0, *)
+    
 public extension PlayerEventEmitter {
     
     var stream: AsyncStream<T> {
@@ -50,7 +50,7 @@ public extension PlayerEventEmitter {
     }
 }
 
-@available(iOS 13.0, *)
+    
 public extension PlayerEventEmitter {
     
     func emit(_ value: T) {
@@ -64,7 +64,7 @@ public extension PlayerEventEmitter {
     }
 }
 
-@available(iOS 13.0, *)
+    
 private extension PlayerEventEmitter {
     
     private func add(_ subscriber: Subscriber) {

@@ -121,7 +121,9 @@ private extension EstatiaCheckbox {
     func toggle() {
         guard !isDisabled else { return }
         
-        isChecked.toggle()
+        withAnimation(.easeInOut(duration: 0.15)) {
+            isChecked.toggle()
+        }
         onChanged?(isChecked)
     }
 }

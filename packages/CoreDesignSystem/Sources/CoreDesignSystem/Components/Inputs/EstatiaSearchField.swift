@@ -66,3 +66,53 @@ private extension EstatiaSearchField {
     }
 }
 
+private struct EstatiaSearchFieldPreviewWrapper: View {
+    
+    @State private var text: String
+    
+    init(initialText: String) {
+        _text = State(initialValue: initialText)
+    }
+    
+    var body: some View {
+        EstatiaSearchField(
+            text: $text
+        )
+    }
+}
+
+
+#if DEBUG
+
+#Preview("Search Field - Light") {
+    Preview.light {
+        searchFieldPreviewContent
+    }
+}
+
+#Preview("Search Field - Dark") {
+    Preview.dark {
+        searchFieldPreviewContent
+    }
+}
+
+// MARK: - Preview Content
+
+private var searchFieldPreviewContent: some View {
+    VStack(spacing: 16) {
+        
+        // Empty state
+        EstatiaSearchFieldPreviewWrapper(initialText: "")
+        
+        // With text (shows clear button)
+        EstatiaSearchFieldPreviewWrapper(initialText: "Nairobi apartments")
+        
+        // Long text (layout stress)
+        EstatiaSearchFieldPreviewWrapper(
+            initialText: "Luxury 3 bedroom apartment with parking and security"
+        )
+    }
+    .padding()
+}
+
+#endif

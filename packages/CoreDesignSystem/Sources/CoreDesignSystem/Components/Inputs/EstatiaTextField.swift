@@ -98,3 +98,87 @@ private extension EstatiaTextField {
     }
 }
 
+private struct EstatiaTextFieldPreviewWrapper: View {
+    
+    @State private var text: String
+    
+    private let placeholder: String
+    private let state: InputState
+    
+    init(
+        initialText: String,
+        placeholder: String,
+        state: InputState
+    ) {
+        _text = State(initialValue: initialText)
+        self.placeholder = placeholder
+        self.state = state
+    }
+    
+    var body: some View {
+        EstatiaTextField(
+            text: $text,
+            placeholder: placeholder,
+            state: state
+        )
+    }
+}
+
+#if DEBUG
+
+#Preview("TextField - Light") {
+    Preview.light {
+        textFieldPreviewContent
+    }
+}
+
+#Preview("TextField - Dark") {
+    Preview.dark {
+        textFieldPreviewContent
+    }
+}
+
+// MARK: - Preview Content
+
+private var textFieldPreviewContent: some View {
+    VStack(spacing: 20) {
+        
+        // Normal - empty
+        EstatiaTextFieldPreviewWrapper(
+            initialText: "",
+            placeholder: "Enter location",
+            state: .normal
+        )
+        
+        // Normal - filled
+        EstatiaTextFieldPreviewWrapper(
+            initialText: "Nairobi",
+            placeholder: "Enter location",
+            state: .normal
+        )
+        
+        // Error state
+        EstatiaTextFieldPreviewWrapper(
+            initialText: "Invalid input",
+            placeholder: "Enter location",
+            state: .error("Invalid location")
+        )
+        
+        // Disabled state
+        EstatiaTextFieldPreviewWrapper(
+            initialText: "Disabled",
+            placeholder: "Enter location",
+            state: .disabled
+        )
+        
+        // Focused state (visual validation)
+        EstatiaTextFieldPreviewWrapper(
+            initialText: "Focused",
+            placeholder: "Enter location",
+            state: .focused
+        )
+    }
+    .padding()
+}
+
+#endif

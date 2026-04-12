@@ -54,3 +54,48 @@ public struct EstatiaErrorView: View {
         .padding(FeedbackTokens.verticalPadding)
     }
 }
+
+#if DEBUG
+
+#Preview("Error View - Light") {
+    Preview.light {
+        errorViewPreviewContent
+    }
+}
+
+#Preview("Error View - Dark") {
+    Preview.dark {
+        errorViewPreviewContent
+    }
+}
+
+// MARK: - Preview Content
+
+private var errorViewPreviewContent: some View {
+    VStack(spacing: 24) {
+        
+        // Default error (with retry)
+        EstatiaErrorView(
+            message: "Unable to load data. Please check your connection and try again.",
+            onRetry: {}
+        )
+        
+        // Custom error without retry
+        EstatiaErrorView(
+            title: "Network Error",
+            message: "We couldn't connect to the server. Please try again later.",
+            retryTitle: nil,
+            onRetry: nil
+        )
+        
+        // Long message (layout stress test)
+        EstatiaErrorView(
+            title: "Something went wrong",
+            message: "An unexpected error occurred while processing your request. Please try again or contact support if the issue persists.",
+            onRetry: {}
+        )
+    }
+    .padding()
+}
+
+#endif

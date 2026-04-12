@@ -54,3 +54,49 @@ public struct EstatiaEmptyStateView: View {
         .padding(FeedbackTokens.verticalPadding)
     }
 }
+
+#if DEBUG
+
+#Preview("Empty State - Light") {
+    Preview.light {
+        emptyStatePreviewContent
+    }
+}
+
+#Preview("Empty State - Dark") {
+    Preview.dark {
+        emptyStatePreviewContent
+    }
+}
+
+// MARK: - Preview Content
+
+private var emptyStatePreviewContent: some View {
+    VStack(spacing: 24) {
+        
+        // No action
+        EstatiaEmptyStateView(
+            title: "No Results",
+            message: "We couldn’t find any properties matching your search."
+        )
+        
+        // With action
+        EstatiaEmptyStateView(
+            title: "No Favorites Yet",
+            message: "Start exploring and save properties you love.",
+            actionTitle: "Browse Properties",
+            action: {}
+        )
+        
+        // Long content (layout stress test)
+        EstatiaEmptyStateView(
+            title: "No Listings Available",
+            message: "There are currently no listings available in this area. Try adjusting your filters or searching in a different location.",
+            actionTitle: "Retry",
+            action: {}
+        )
+    }
+    .padding()
+}
+
+#endif

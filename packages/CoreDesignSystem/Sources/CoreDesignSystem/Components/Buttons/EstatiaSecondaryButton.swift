@@ -34,46 +34,37 @@ public struct EstatiaSecondaryButton: View {
     }
 }
 
-
 #if DEBUG
 
 #Preview("Secondary Button - Light") {
     Preview.light {
-        Preview.padded {
-            VStack(spacing: 16) {
-                
-                EstatiaSecondaryButton(
-                    title: "Filter",
-                    action: {}
-                )
-                
-                EstatiaSecondaryButton(
-                    title: "Disabled",
-                    isEnabled: false,
-                    action: {}
-                )
-            }
-        }
+        secondaryButtonPreviewContent
     }
 }
 
 #Preview("Secondary Button - Dark") {
     Preview.dark {
-        Preview.padded {
-            VStack(spacing: 16) {
-                
-                EstatiaSecondaryButton(
-                    title: "Filter",
-                    action: {}
-                )
-                
-                EstatiaSecondaryButton(
-                    title: "Disabled",
-                    isEnabled: false,
-                    action: {}
-                )
-            }
-        }
+        secondaryButtonPreviewContent
     }
 }
+
+// MARK: - Preview Content
+
+private var secondaryButtonPreviewContent: some View {
+    VStack(spacing: 16) {
+        
+        EstatiaSecondaryButton(
+            title: "Filter",
+            action: {}
+        )
+        
+        EstatiaSecondaryButton(
+            title: "Disabled",
+            isEnabled: false,
+            action: {}
+        )
+    }
+    .padding()
+}
+
 #endif

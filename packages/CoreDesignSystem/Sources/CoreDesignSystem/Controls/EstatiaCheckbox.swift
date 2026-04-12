@@ -125,3 +125,57 @@ private extension EstatiaCheckbox {
         onChanged?(isChecked)
     }
 }
+
+#if DEBUG
+
+private struct CheckboxPreviewContent: View {
+    
+    @State private var checked1 = false
+    @State private var checked2 = true
+    @State private var checked3 = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            
+            EstatiaCheckbox(
+                isChecked: $checked1,
+                label: "Accept Terms"
+            )
+            
+            EstatiaCheckbox(
+                isChecked: $checked2,
+                label: "Subscribe to newsletter"
+            )
+            
+            EstatiaCheckbox(
+                isChecked: $checked3,
+                label: "Disabled",
+                state: .disabled
+            )
+            
+            EstatiaCheckbox(
+                isChecked: .constant(true),
+                label: "Error state",
+                state: .error
+            )
+        }
+    }
+}
+
+#Preview("Checkbox - Light") {
+    Preview.light {
+        Preview.states {
+            CheckboxPreviewContent()
+        }
+    }
+}
+
+#Preview("Checkbox - Dark") {
+    Preview.dark {
+        Preview.states {
+            CheckboxPreviewContent()
+        }
+    }
+}
+
+#endif

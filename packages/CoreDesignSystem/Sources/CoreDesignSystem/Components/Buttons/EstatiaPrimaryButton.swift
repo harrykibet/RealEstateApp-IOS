@@ -42,53 +42,39 @@ public struct EstatiaPrimaryButton: View {
 
 #Preview("Primary Button - Light") {
     Preview.light {
-        Preview.states {
-            VStack(spacing: 16) {
-
-                EstatiaPrimaryButton(
-                    title: "Search Properties",
-                    action: {}
-                )
-
-                EstatiaPrimaryButton(
-                    title: "Loading...",
-                    isLoading: true,
-                    action: {}
-                )
-
-                EstatiaPrimaryButton(
-                    title: "Disabled",
-                    isEnabled: false,
-                    action: {}
-                )
-            }
-        }
+        primaryButtonPreviewContent
     }
 }
 
 #Preview("Primary Button - Dark") {
     Preview.dark {
-        Preview.states {
-            VStack(spacing: 16) {
-
-                EstatiaPrimaryButton(
-                    title: "Search Properties",
-                    action: {}
-                )
-
-                EstatiaPrimaryButton(
-                    title: "Loading...",
-                    isLoading: true,
-                    action: {}
-                )
-
-                EstatiaPrimaryButton(
-                    title: "Disabled",
-                    isEnabled: false,
-                    action: {}
-                )
-            }
-        }
+        primaryButtonPreviewContent
     }
 }
+
+// MARK: - Preview Content
+
+private var primaryButtonPreviewContent: some View {
+    VStack(spacing: 16) {
+        
+        EstatiaPrimaryButton(
+            title: "Search Properties",
+            action: {}
+        )
+        
+        EstatiaPrimaryButton(
+            title: "Loading...",
+            isLoading: true,
+            action: {}
+        )
+        
+        EstatiaPrimaryButton(
+            title: "Disabled",
+            isEnabled: false,
+            action: {}
+        )
+    }
+    .padding()
+}
+
 #endif

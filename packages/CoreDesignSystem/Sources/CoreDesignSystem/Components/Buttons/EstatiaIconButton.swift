@@ -39,51 +39,38 @@ public struct EstatiaIconButton: View {
 
 #Preview("Icon Button - Light") {
     Preview.light {
-        Preview.padded {
-            HStack(spacing: 16) {
-                
-                EstatiaIconButton(
-                    systemImage: "heart",
-                    action: {}
-                )
-                
-                EstatiaIconButton(
-                    systemImage: "magnifyingglass",
-                    action: {}
-                )
-                
-                EstatiaIconButton(
-                    systemImage: "bell",
-                    isEnabled: false,
-                    action: {}
-                )
-            }
-        }
+        iconButtonPreviewContent
     }
 }
 
 #Preview("Icon Button - Dark") {
     Preview.dark {
-        Preview.padded {
-            HStack(spacing: 16) {
-                
-                EstatiaIconButton(
-                    systemImage: "heart",
-                    action: {}
-                )
-                
-                EstatiaIconButton(
-                    systemImage: "magnifyingglass",
-                    action: {}
-                )
-                
-                EstatiaIconButton(
-                    systemImage: "bell",
-                    isEnabled: false,
-                    action: {}
-                )
-            }
-        }
+        iconButtonPreviewContent
     }
 }
+
+// MARK: - Preview Content
+
+private var iconButtonPreviewContent: some View {
+    HStack(spacing: 16) {
+        
+        EstatiaIconButton(
+            systemImage: "heart",
+            action: {}
+        )
+        
+        EstatiaIconButton(
+            systemImage: "magnifyingglass",
+            action: {}
+        )
+        
+        EstatiaIconButton(
+            systemImage: "bell",
+            isEnabled: false,
+            action: {}
+        )
+    }
+    .padding()
+}
+
 #endif

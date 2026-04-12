@@ -72,3 +72,39 @@ private extension EstatiaCard {
         style == .elevated ? CardTokens.elevation : 0
     }
 }
+
+#if DEBUG
+
+#Preview("Card - Light") {
+    Preview.light {
+        cardPreviewContent
+    }
+}
+
+#Preview("Card - Dark") {
+    Preview.dark {
+        cardPreviewContent
+    }
+}
+
+// MARK: - Preview Content (isolated for reuse & compiler sanity)
+
+private var cardPreviewContent: some View {
+    VStack(spacing: 16) {
+        
+        EstatiaCard(style: .elevated) {
+            Text("Elevated Card")
+        }
+        
+        EstatiaCard(style: .filled) {
+            Text("Filled Card")
+        }
+        
+        EstatiaCard(style: .outlined) {
+            Text("Outlined Card")
+        }
+    }
+    .padding()
+}
+
+#endif

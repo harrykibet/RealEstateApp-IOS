@@ -47,6 +47,102 @@ public struct EstatiaToggle: View {
                 thumb
                     .offset(x: thumbOffset(width: width, thumbSize: thumbSize))
             }
+            .frame(height: height)
+            .contentShape(Rectangle())
+            .gesture(dragGesture(width: width))
+            .onTapGesture {
+                toggle()
+            }
         }
+        .frame(width: 52, height: height)
+        .opacity(isDisabled ? 0.6 : 1.0)
+    }
+}
+
+// MARK: - Layout
+
+private extension EstatiaToggle {
+    
+    var height: CGFloat = 32
+    
+    func thumbOffset(width: CGFloat, thumbSize: CGFloat) -> CGFloat {
+        let base = isOn ? (width- thumbSize - 2) : 2
+        retun base + dragOffset
+    }
+}
+
+// MARK: - Subviews
+
+private extension EstatiaToggle {
+    
+    var track: some View {
+        RoundedRectangle(cornerRadius: height / 2)
+            .fill(trackColor)
+    }
+    
+    var thumb: some View {
+        Circle()
+            .fill(theme.colors.surface)
+            .frame(width: height - 4, height: height - 4)
+            .shadow(radius: 1)
+    }
+}
+
+// MARK: - Styling
+
+private extension EstatiaToggle {
+    
+    var isDisabled: Bool {
+        if case .disabled = state { return true }
+        return false
+    }
+    
+    var trackColor: Color {
+        isOn ? theme.colors.primary : theme.colors.surfaceVariant
+    }
+}
+
+//MARK: - Gestures
+
+private extension EstatiaToggle {
+    
+    func dragGesture(width: CGFloat) -> some Gesture {
+        DragGesture()
+            .updating($dragOffset) { value, state, _ in
+                guard !isDisabled else { return }
+                let translation = value.translation.width
+                state = clampDrag(translation, width: width)
+            }
+            .onEnded { value in
+                guard !isDisabled else { return }
+                
+                let threshold = width / 2
+                let shouldTurnOn = value.location.x > threshold
+                
+                setState(shouldTurnOn)
+            }
+    }
+    
+    func clampDrag(_ translation: CGFloat, width: CGFloat) -> CGFloat {
+        let maxOffset = width - height
+        return min(max(translation, -maxOffset), maxOffset)
+    }
+}
+
+// MARK: - Actions
+
+private extension EstatiaToggle {
+    
+    func toggle() {
+        guard !isDisabled else { return }
+        
+        setState(!isOn)
+    }
+    
+    func setState(_ newValue: Bool) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            isOn = newValue
+        }
+        onChanged?(newValue)
     }
 }

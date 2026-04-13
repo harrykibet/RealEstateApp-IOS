@@ -148,25 +148,16 @@ private struct EstatiaTogglePreviewContent: View {
     
     @State private var isOn1 = true
     @State private var isOn2 = false
-    @State private var isOn3 = true
     
     var body: some View {
         VStack(spacing: 16) {
             
             EstatiaToggle(
-                title: "Enable Notifications",
                 isOn: $isOn1
             )
             
             EstatiaToggle(
-                title: "Dark Mode",
                 isOn: $isOn2
-            )
-            
-            EstatiaToggle(
-                title: "Location Access",
-                isOn: $isOn3,
-                isEnabled: false
             )
         }
     }

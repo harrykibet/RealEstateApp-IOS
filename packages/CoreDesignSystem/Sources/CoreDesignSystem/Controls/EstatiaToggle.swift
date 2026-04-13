@@ -1,10 +1,3 @@
-//
-//  EstatiaToggle.swift
-//  CoreDesignSystem
-//
-//  Created by builder on 4/12/26.
-//
-
 import SwiftUI
 
 public struct EstatiaToggle: View {
@@ -28,7 +21,7 @@ public struct EstatiaToggle: View {
         state: ToggleState = .normal,
         onChanged: ((Bool) -> Void)? = nil
     ) {
-        self.isOn = isOn
+        self._isOn = isOn
         self.state = state
         self.onChanged = onChanged
     }
@@ -63,11 +56,11 @@ public struct EstatiaToggle: View {
 
 private extension EstatiaToggle {
     
-    var height: CGFloat = 32
+    var height: CGFloat { 32 }
     
     func thumbOffset(width: CGFloat, thumbSize: CGFloat) -> CGFloat {
-        let base = isOn ? (width- thumbSize - 2) : 2
-        retun base + dragOffset
+        let base = isOn ? (width - thumbSize - 2) : 2
+        return base + dragOffset
     }
 }
 
@@ -102,7 +95,7 @@ private extension EstatiaToggle {
     }
 }
 
-//MARK: - Gestures
+// MARK: - Gestures
 
 private extension EstatiaToggle {
     
@@ -110,6 +103,7 @@ private extension EstatiaToggle {
         DragGesture()
             .updating($dragOffset) { value, state, _ in
                 guard !isDisabled else { return }
+                
                 let translation = value.translation.width
                 state = clampDrag(translation, width: width)
             }

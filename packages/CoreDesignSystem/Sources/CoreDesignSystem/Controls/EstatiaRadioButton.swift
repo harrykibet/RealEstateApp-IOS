@@ -93,3 +93,45 @@ public struct EstatiaRadioButton<Value: Hashable>: View {
         selection = value
     }
 }
+
+#if DEBUG
+
+private struct EstatiaRadioButtonPreviewContent: View {
+    
+    @State private var selection = "A"
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            
+            EstatiaRadioButton(
+                selection: $selection,
+                value: "A",
+                title: "Option A"
+            )
+            
+            EstatiaRadioButton(
+                selection: $selection,
+                value: "B",
+                title: "Option B"
+            )
+        }
+    }
+}
+
+#Preview("Radio - Light") {
+    Preview.light {
+        Preview.padded {
+            EstatiaRadioButtonPreviewContent()
+        }
+    }
+}
+
+#Preview("Radio - Dark") {
+    Preview.dark {
+        Preview.padded {
+            EstatiaRadioButtonPreviewContent()
+        }
+    }
+}
+
+#endif

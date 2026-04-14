@@ -68,3 +68,51 @@ public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
         .buttonStyle(.plain)
     }
 }
+
+#if DEBUG
+
+private struct EstatiaSegmentedControlPreviewContent: View {
+    
+    @State private var selectedTab: AppTab = .home
+    
+    var body: some View {
+        VStack(spacing: 24) {
+            
+            // Default
+            EstatiaSegmentedControl(
+                selection: $selectedTab,
+                items: AppTab.allCases
+            ) { item, isSelected in
+                Text(item.title)
+                    .fontWeight(isSelected ? .semibold : .regular)
+                    .foregroundColor(
+                        isSelected
+                        ? Color.primary
+                        : Color.secondary
+                    )
+            }
+            
+            // Debug output (VERY useful)
+            Text("Selected: \(selectedTab.title)")
+                .font(.caption)
+        }
+    }
+}
+
+#Preview("Segmented - Light") {
+    Preview.light {
+        Preview.padded {
+            EstatiaSegmentedControlPreviewContent()
+        }
+    }
+}
+
+#Preview("Segmented - Dark") {
+    Preview.dark {
+        Preview.padded {
+            EstatiaSegmentedControlPreviewContent()
+        }
+    }
+}
+
+#endif

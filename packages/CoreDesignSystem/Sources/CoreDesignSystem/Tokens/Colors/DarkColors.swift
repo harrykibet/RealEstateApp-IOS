@@ -24,6 +24,10 @@ public extension SemanticColors {
         textSecondary: ColorPalette.Gray.medium,
         textDisabled: ColorPalette.Gray.secondary,
         
+        onSurface: ColorPalette.Base.white,
+        outline: ColorPalette.Gray.secondary,
+        disabled: ColorPalette.Gray.medium,
+        
         success: ColorPalette.Status.success,
         error: ColorPalette.Status.error,
         warning: ColorPalette.Status.warning,

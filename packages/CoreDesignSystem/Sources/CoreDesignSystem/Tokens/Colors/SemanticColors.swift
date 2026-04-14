@@ -26,6 +26,11 @@ public struct SemanticColors {
     public let textSecondary: Color
     public let textDisabled: Color
     
+    // MARK: - UI Roles 
+    public let onSurface: Color
+    public let outline: Color
+    public let disabled: Color
+    
     // MARK: - States
     public let success: Color
     public let error: Color

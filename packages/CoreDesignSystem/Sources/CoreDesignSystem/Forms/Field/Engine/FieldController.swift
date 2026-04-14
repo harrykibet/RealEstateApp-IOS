@@ -61,4 +61,25 @@ final class FieldController<Value>: ObservableObject {
         case .manual: return false
         }
     }
+    
+    private func validate() {
+        validationTask?.cancel()
+        
+        if let validator {
+            let result = validator(state.value)
+            apply(result)
+        }
+        
+        if let asyncValidator {
+            state.status = .validating
+            
+            validationTask = Task {
+                let result = await asyncValidator(state.value)
+                
+                await MainActor.run {
+                    self.apply(result)
+                }
+            }
+        }
+    }
 }

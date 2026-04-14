@@ -85,6 +85,13 @@ final class FieldController<Value>: ObservableObject {
         }
     }
     
+    private func apply(_ result: ValidationResult) {
+        FieldStateReducer.applyValidation(
+            state: &state,
+            result: result
+        )
+    }
+    
     func setExternalValue(_ value: Value) {
         state.value = value
     }

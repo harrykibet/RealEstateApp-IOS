@@ -5,7 +5,7 @@
 //  Created by builder on 4/14/26.
 //
 
-enum ValidationStrategy {
+public enum ValidationStrategy {
     
     case onChange
     

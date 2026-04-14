@@ -5,7 +5,7 @@
 //  Created by builder on 4/14/26.
 //
 
-struct FieldMeta {
+public struct FieldMeta {
     
     let isValid: Bool
     

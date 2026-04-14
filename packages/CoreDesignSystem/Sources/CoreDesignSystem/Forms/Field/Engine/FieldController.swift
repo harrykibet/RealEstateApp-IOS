@@ -5,6 +5,8 @@
 //  Created by builder on 4/14/26.
 //
 
+import Foundation
+
 final class FieldController<Value>: ObservableObject {
     
     @Published private(set) var state: FieldState<Value>
@@ -81,5 +83,9 @@ final class FieldController<Value>: ObservableObject {
                 }
             }
         }
+    }
+    
+    func setExternalValue(_ value: Value) {
+        state.value = value
     }
 }

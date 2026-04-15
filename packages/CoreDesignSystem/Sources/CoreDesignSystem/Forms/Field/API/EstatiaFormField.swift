@@ -74,7 +74,12 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
         content(binding, meta, $isFocused)
             .onChange(of: isFocused, perform: handleFocusChange)
             .onChange(of: externalValue.wrappedValue, perform: syncFromExternal)
-            .onAppear { formController.register(controller) }
+            .onAppear {
+                formController.register(controller, id: fieldID)
+            }
+            .onDisappear {
+                formController.unregister(id: fieldID)
+            }
     }
 
     private var binding: Binding<Value> {

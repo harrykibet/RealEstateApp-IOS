@@ -144,22 +144,27 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
 
 /*EstatiaForm { form in
     
-    VStack(spacing: 16) {
+    EstatiaFormField(
+        key: .init("password"),
+        value: $password
+    ) { binding, meta, focus in
         
-        EstatiaFormField(value: $email) { binding, meta, focus in
-            TextField("Email", text: binding)
-                .focused(focus)
-        }
+        SecureField("Password", text: binding)
+            .focused(focus)
+    }
+    
+    EstatiaFormField(
+        key: .init("confirm_password"),
+        value: $confirmPassword
+    ) { binding, meta, focus in
         
-        EstatiaFormField(value: $password) { binding, meta, focus in
-            SecureField("Password", text: binding)
-                .focused(focus)
-        }
-        
-        Button("Submit") {
-            form.submit {
-                await submitToAPI()
-            }
+        SecureField("Confirm Password", text: binding)
+            .focused(focus)
+    }
+    
+    Button("Submit") {
+        form.submit {
+            await submit()
         }
     }
 }*/

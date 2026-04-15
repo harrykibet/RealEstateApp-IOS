@@ -48,7 +48,7 @@ final class FormController: ObservableObject {
         for wrapper in fields.values {
             guard let field = wrapper.value else { continue }
             
-            let result = field.validate()
+            let result = field.forceValidate()
             if !result {
                 isValid = false
             }
@@ -60,6 +60,8 @@ final class FormController: ObservableObject {
     // MARK: - Submit
     
     func submit(action: @escaping () async throws -> Void) {
+        guard submissionState != .loading else { return }
+        
         let valid = validateAll()
         guard valid else { return }
         

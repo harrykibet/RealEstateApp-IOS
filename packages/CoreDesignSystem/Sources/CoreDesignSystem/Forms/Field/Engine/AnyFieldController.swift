@@ -7,7 +7,10 @@
 
 
 public protocol AnyFieldController {
+    
     func validate() -> Bool
+    
+    func forceValidate() -> Bool
 }
 
 
@@ -21,5 +24,15 @@ private extension FieldController: AnyFieldController {
         }
         
         return true
+    }
+    
+    func forceValidate() -> Bool {
+        // 🔥 Force touched
+        FieldStateReducer.reduce(
+            state: &state,
+            event: .onSubmit
+        )
+        
+        validate()
     }
 }

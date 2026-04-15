@@ -7,5 +7,7 @@
 
 
 struct CrossFieldValidator {
-    let validate: ([UUID: AnyFieldController]) -> [UUID: String]
+    
+    let validate: ([FieldKey: AnyFieldController]) -> [FieldKey: String]
+    
 }

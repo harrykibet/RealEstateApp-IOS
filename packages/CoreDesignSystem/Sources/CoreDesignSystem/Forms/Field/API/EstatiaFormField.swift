@@ -21,6 +21,10 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     
     @State private let fieldID = UUID()
     
+    // MARK: - Field Key
+    
+    private let key: FieldKey
+    
     // MARK: - Field Controller
     
     @StateObject private var controller: FieldController<Value>
@@ -44,6 +48,7 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     // MARK: - Init
     
     public init(
+        key: FieldKey,
         value: Binding<Value>,
         validator: Validator<Value>? = nil,
         asyncValidator: AsyncValidator<Value>? = nil,

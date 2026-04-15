@@ -46,6 +46,15 @@ final class FormController: ObservableObject {
         keyIndex.removeValue(forKey: key)
     }
     
+    // MARK: - Key-Based Lookup
+    
+    func field(for key: FieldKey) -> AnyFieldController? {
+        
+        guard let id = keyIndex[key] else { return nil }
+        
+        return fieldsByID[id]?.value
+    }
+    
     // MARK: - Clean Up
     
     private func cleanup() {
@@ -63,18 +72,21 @@ final class FormController: ObservableObject {
     private func runCrossValidation() {
         cleanup()
         
-        for validator in crossValidators {
-            let results = validator.validate(fields.compactMapValues { $0.value })
-            
-            for (id, message) in results {
-                fields[id]?.value?.setExternalError(message)
+        var fieldsByKeyMap: [FieldKey: AnyFieldController] = [:]
+        
+        for (_, wrapper) in fieldsByID {
+            if let field = wrapper.value {
+                fieldsByKeyMap[field.key] = field
             }
         }
         
-        return fields.values.allSatisfy {
-            guard let field = $0.value else { return true }
+        for validator in crossValidators {
+            let errors = validator.validate(fieldsByKeyMap)
             
-            return field.validate()
+            for (key, message) in errors {
+                let field = field(for: key)
+                field?.setExternalError(message)
+            }
         }
     }
     

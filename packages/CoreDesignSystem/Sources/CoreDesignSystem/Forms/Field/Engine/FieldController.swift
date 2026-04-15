@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 final class FieldController<Value>: ObservableObject {
     
     @Published private(set) var state: FieldState<Value>
@@ -69,23 +70,27 @@ final class FieldController<Value>: ObservableObject {
         
         if let validator {
             let result = validator(state.value)
-            apply(result)
+            applyValidation(result)
         }
         
-        if let asyncValidator {
-            state.status = .validating
+        guard let asyncValidator else { return }
+        
+        FieldStateReducer.setValidating(state: &state)
+        
+        let currentValue = state.value
+        
+        validationTask = Task { [weak self] in
+            guard let self else { return }
             
-            validationTask = Task {
-                let result = await asyncValidator(state.value)
-                
-                await MainActor.run {
-                    self.apply(result)
-                }
-            }
+            let result = await asyncValidator(currentValue)
+            
+            guard !Task.isCancelled else { return }
+            
+            self.applyValidation(result)
         }
     }
     
-    private func apply(_ result: ValidationResult) {
+    private func applyValidation(_ result: ValidationResult) {
         FieldStateReducer.applyValidation(
             state: &state,
             result: result

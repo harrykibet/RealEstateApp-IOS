@@ -12,7 +12,7 @@ final class FormController: ObservableObject {
     
     // MARK: - Registered Fields
     
-    private var fields: [AnyFieldController] = []
+    private var fields: [UUID: WeakFieldController] = [:]
     
     // MARK: - Submission State
     
@@ -20,16 +20,32 @@ final class FormController: ObservableObject {
     
     // MARK: - Registration
     
-    func register(_ field: AnyFieldController) {
-        fields.append(field)
+    func register(_ field: AnyFieldController, id: UUID) {
+        fields[id] = WeakFieldController(value: field, id: id)
+    }
+    
+    // MARK: - Unregistration
+    
+    func unregister(id: UUID) {
+        fields.removeValue(forKey: id)
+    }
+    
+    // MARK: - Clean Up
+    
+    private func cleanup() {
+        fields = fields.filter { $0.value.value != nil }
     }
     
     // MARK: - Validation
     
     func validateAll() -> Bool {
+        cleanup()
+        
         var isValid = true
         
-        for field in fields {
+        for wrapper in fields.values {
+            guard let field = wrapper.value else { continue }
+            
             let result = field.validate()
             if !result {
                 isValid = false

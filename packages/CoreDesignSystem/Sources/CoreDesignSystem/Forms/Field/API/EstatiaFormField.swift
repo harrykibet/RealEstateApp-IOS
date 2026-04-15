@@ -17,6 +17,10 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     
     private let externalValue: Binding<Value>
     
+    // MARK: - Field ID
+    
+    private let fieldID = UUID()
+    
     // MARK: - Field Controller
     
     @StateObject private var controller: FieldController<Value>
@@ -122,23 +126,24 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
 
 // MARK: - USAGE EXAMPLE
 
-/*EstatiaFormField(
- value: $email,
- validator: { value in
-     value.isEmpty
-     ? .invalid("Email required")
-     : .valid
- }
-) { binding, meta, focus in
- 
- VStack(alignment: .leading, spacing: 8) {
-     
-     TextField("Email", text: binding)
-         .focused(focus) // 🔥 attach focus here
-     
-     EstatiaFormValidationView(
-         meta: meta,
-         helperText: "Enter your email"
-     )
- }
+/*EstatiaForm { form in
+    
+    VStack(spacing: 16) {
+        
+        EstatiaFormField(value: $email) { binding, meta, focus in
+            TextField("Email", text: binding)
+                .focused(focus)
+        }
+        
+        EstatiaFormField(value: $password) { binding, meta, focus in
+            SecureField("Password", text: binding)
+                .focused(focus)
+        }
+        
+        Button("Submit") {
+            form.submit {
+                await submitToAPI()
+            }
+        }
+    }
 }*/

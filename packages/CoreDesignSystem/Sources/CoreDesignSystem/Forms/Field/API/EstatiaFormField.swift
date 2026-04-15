@@ -21,9 +21,17 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     
     @StateObject private var controller: FieldController<Value>
     
+    // MARK: - Focus
+    
+    @FocusState private var isFocused: Bool
+    
     // MARK: - Content
     
-    private let content: (Binding<Value>, FieldMeta) -> Content
+    private let content: (
+        Binding<Value>,
+        FieldMeta,
+        FocusState<Bool>.Binding
+    ) -> Content
     
     // MARK: - Init
     
@@ -32,7 +40,11 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
         validator: Validator<Value>? = nil,
         asyncValidator: AsyncValidator<Value>? = nil,
         strategy: ValidationStrategy = .onBlur,
-        @ViewBuilder content: @escaping (Binding<Value>, FieldMeta) -> Content
+        @ViewBuilder content: @escaping (
+            Binding<Value>,
+            FieldMeta,
+            FocusState<Bool>.Binding
+        ) -> Content
     ) {
         self.externalValue = value
         
@@ -51,10 +63,11 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     // MARK: - Body
     
     public var body: some View {
-        content(binding, meta)
+        content(binding, meta, $isFocused)
+            .onChange(of: isFocused, perform: handleFocusChange)
             .onChange(of: externalValue.wrappedValue, perform: syncFromExternal)
     }
-    
+
     private var binding: Binding<Value> {
         Binding(
             get: {
@@ -65,6 +78,14 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
                 externalValue.wrappedValue = newValue
             }
         )
+    }
+    
+    private func handleFocusChange(_ focused: Bool) {
+        if focused {
+            controller.handle(event: .onFocus)
+        } else {
+            controller.handle(event: .onBlur)
+        }
     }
     
     private func syncFromExternal(_ newValue: Value) {
@@ -93,3 +114,26 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
         )
     }
 }
+
+// MARK: - USAGE EXAMPLE
+
+/*EstatiaFormField(
+ value: $email,
+ validator: { value in
+     value.isEmpty
+     ? .invalid("Email required")
+     : .valid
+ }
+) { binding, meta, focus in
+ 
+ VStack(alignment: .leading, spacing: 8) {
+     
+     TextField("Email", text: binding)
+         .focused(focus) // 🔥 attach focus here
+     
+     EstatiaFormValidationView(
+         meta: meta,
+         helperText: "Enter your email"
+     )
+ }
+}*/

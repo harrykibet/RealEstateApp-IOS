@@ -68,7 +68,8 @@ final class FormController: ObservableObject {
         
         submissionState = .loading
         
-        Task {
+        Task { @MainActor in
+            
             await action()
             
             submissionState = .success

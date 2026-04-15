@@ -19,7 +19,7 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     
     // MARK: - Field ID
     
-    private let fieldID = UUID()
+    @State private let fieldID = UUID()
     
     // MARK: - Field Controller
     

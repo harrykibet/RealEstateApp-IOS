@@ -12,7 +12,11 @@ final class FormController: ObservableObject {
     
     // MARK: - Registered Fields
     
-    private var fields: [UUID: WeakFieldController] = [:]
+    private var fieldsByID: [UUID: WeakFieldController] = [:]
+    
+    // MARK: - Key Index
+    
+    private var keyIndex: [FieldKey: UUID] = [:]
     
     // MARK: - Cross Field Validators
     
@@ -24,22 +28,28 @@ final class FormController: ObservableObject {
     
     // MARK: - Registration
     
-    func register(_ field: AnyFieldController, id: UUID) {
+    func register(_ field: AnyFieldController, id: UUID, key: FieldKey) {
         
-        fields[id] = WeakFieldController(value: field, id: id)
+        // lifecycle map
+        fieldsByID[id] = WeakFieldController(value: field, id: id)
         
+        // logical map
+        keyIndex[key] = id
     }
     
     // MARK: - Unregistration
     
-    func unregister(id: UUID) {
-        fields.removeValue(forKey: id)
+    func unregister(id: UUID, key: FieldKey) {
+        
+        fieldsByID.removeValue(forKey: id)
+        
+        keyIndex.removeValue(forKey: key)
     }
     
     // MARK: - Clean Up
     
     private func cleanup() {
-        fields = fields.filter { $0.value.value != nil }
+        fieldsByID = fieldsByID.filter { $0.value.value != nil }
     }
     
     // MARK: - Add Validator
@@ -60,6 +70,12 @@ final class FormController: ObservableObject {
                 fields[id]?.value?.setExternalError(message)
             }
         }
+        
+        return fields.values.allSatisfy {
+            guard let field = $0.value else { return true }
+            
+            return field.validate()
+        }
     }
     
     // MARK: - Validation
@@ -69,7 +85,7 @@ final class FormController: ObservableObject {
         
         var isValid = true
         
-        for wrapper in fields.values {
+        for wrapper in fieldsByID.values {
             guard let field = wrapper.value else { continue }
             
             let result = field.forceValidate()

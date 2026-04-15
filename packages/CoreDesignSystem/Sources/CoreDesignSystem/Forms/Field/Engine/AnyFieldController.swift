@@ -9,6 +9,7 @@
 protocol AnyFieldController: AnyObject {
     
     var id: UUID { get }
+    var key: FieldKey { get }
     
     func validate() -> Bool
     func forceValidate() -> Bool

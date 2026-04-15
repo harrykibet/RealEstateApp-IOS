@@ -63,6 +63,8 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
         
         _controller = StateObject(
             wrappedValue: FieldController(
+                id: fieldID,
+                key: key,
                 initialValue: value.wrappedValue,
                 validator: validator,
                 asyncValidator: asyncValidator,

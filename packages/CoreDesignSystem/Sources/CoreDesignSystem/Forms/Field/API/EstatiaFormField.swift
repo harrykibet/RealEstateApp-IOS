@@ -80,10 +80,10 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
             .onChange(of: isFocused, perform: handleFocusChange)
             .onChange(of: externalValue.wrappedValue, perform: syncFromExternal)
             .onAppear {
-                formController.register(controller, id: fieldID)
+                formController.register(controller, id: fieldID, key: key)
             }
             .onDisappear {
-                formController.unregister(id: fieldID)
+                formController.unregister(id: fieldID, key: key)
             }
     }
 

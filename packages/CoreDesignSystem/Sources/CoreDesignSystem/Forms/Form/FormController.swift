@@ -61,18 +61,19 @@ final class FormController: ObservableObject {
     
     // MARK: - Submit
     
-    func submit(action: @escaping () async -> Void) {
+    func submit(action: @escaping () async throws -> Void) {
         let valid = validateAll()
-        
         guard valid else { return }
         
         submissionState = .loading
         
         Task { @MainActor in
-            
-            await action()
-            
-            submissionState = .success
+            do {
+                try await action()
+                submissionState = .success
+            } catch {
+                submissionState = .error(error.localizedDescription)
+            }
         }
     }
 }

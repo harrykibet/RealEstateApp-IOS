@@ -5,6 +5,8 @@
 //  Created by builder on 4/15/26.
 //
 
+import Foundation
+
 
 public final class WeakFieldController {
     

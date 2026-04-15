@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class FormController: ObservableObject {
+public final class FormController: ObservableObject {
     
     // MARK: - Registered Fields
     

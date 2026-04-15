@@ -6,13 +6,16 @@
 //
 
 
-public protocol AnyFieldController {
+protocol AnyFieldController: AnyObject {
+    
+    var id: UUID { get }
     
     func validate() -> Bool
-    
     func forceValidate() -> Bool
+    
+    func getValue() -> Any
+    func setExternalError(_ message: String?)
 }
-
 
 private extension FieldController: AnyFieldController {
     
@@ -34,5 +37,19 @@ private extension FieldController: AnyFieldController {
         )
         
         validate()
+    }
+    
+    func getValue() -> Any {
+        state.value
+    }
+    
+    func setExternalError(_ message: String?) {
+        if let message {
+            state.status = .error(message)
+        } else {
+            if case .error = state.status {
+                state.status = .valid
+            }
+        }
     }
 }

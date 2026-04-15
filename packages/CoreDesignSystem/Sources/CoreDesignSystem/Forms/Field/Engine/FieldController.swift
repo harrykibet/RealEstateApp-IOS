@@ -16,9 +16,12 @@ final class FieldController<Value>: ObservableObject {
     private let asyncValidator: AsyncValidator<Value>?
     private let strategy: ValidationStrategy
     
+    let id: UUID
+    
     private var validationTask: Task<Void, Never>?
     
     init(
+        id: UUID,
         initialValue: Value,
         validator: Validator<Value>? = nil,
         asyncValidator: AsyncValidator<Value>? = nil,

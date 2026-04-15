@@ -14,6 +14,10 @@ final class FormController: ObservableObject {
     
     private var fields: [UUID: WeakFieldController] = [:]
     
+    // MARK: - Cross Field Validators
+    
+    private var crossValidators: [CrossFieldValidator] = []
+    
     // MARK: - Submission State
     
     @Published private(set) var submissionState: FormSubmissionState = .idle
@@ -38,6 +42,26 @@ final class FormController: ObservableObject {
         fields = fields.filter { $0.value.value != nil }
     }
     
+    // MARK: - Add Validator
+    
+    func addValidator(_ validator: CrossFieldValidator) {
+        crossValidators.append(validator)
+    }
+    
+    // MARK: - Run Cross Validation
+    
+    private func runCrossValidation() {
+        cleanup()
+        
+        for validator in crossValidators {
+            let results = validator.validate(fields.compactMapValues { $0.value })
+            
+            for (id, message) in results {
+                fields[id]?.value?.setExternalError(message)
+            }
+        }
+    }
+    
     // MARK: - Validation
     
     func validateAll() -> Bool {
@@ -53,6 +77,8 @@ final class FormController: ObservableObject {
                 isValid = false
             }
         }
+        
+        runCrossValidation()
         
         return isValid
     }

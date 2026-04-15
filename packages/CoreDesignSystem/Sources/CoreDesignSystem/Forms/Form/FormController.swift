@@ -21,11 +21,9 @@ final class FormController: ObservableObject {
     // MARK: - Registration
     
     func register(_ field: AnyFieldController, id: UUID) {
-        if fields[id]?.value === field {
-            return
-        }
         
         fields[id] = WeakFieldController(value: field, id: id)
+        
     }
     
     // MARK: - Unregistration

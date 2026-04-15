@@ -111,8 +111,12 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     private var meta: FieldMeta {
         FieldMeta(
             isValid: {
-                if case .valid = controller.state.status { return true }
-                return false
+                switch controller.state.status {
+                case .valid: return true
+                case .error: return false
+                case .idle: return true   // important
+                case .validating: return false
+                }
             }(),
             error: {
                 if case .error(let message) = controller.state.status {

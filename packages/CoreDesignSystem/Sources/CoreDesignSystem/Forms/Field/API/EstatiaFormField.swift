@@ -17,13 +17,17 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     
     private let externalValue: Binding<Value>
     
-    // MARK: - Controller
+    // MARK: - Field Controller
     
     @StateObject private var controller: FieldController<Value>
     
     // MARK: - Focus
     
     @FocusState private var isFocused: Bool
+    
+    // MARK: - Form Controller
+    
+    @EnvironmentObject private var formController: FormController
     
     // MARK: - Content
     
@@ -66,6 +70,7 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
         content(binding, meta, $isFocused)
             .onChange(of: isFocused, perform: handleFocusChange)
             .onChange(of: externalValue.wrappedValue, perform: syncFromExternal)
+            .onAppear { formController.register(controller) }
     }
 
     private var binding: Binding<Value> {

@@ -114,7 +114,7 @@ public final class FormController: ObservableObject {
     // MARK: - Submit
     
     func submit(action: @escaping () async throws -> Void) {
-        guard submissionState != .loading else { return }
+        guard !submissionState.isLoading else { return }
         
         let valid = validateAll()
         guard valid else { return }

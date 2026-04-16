@@ -15,3 +15,11 @@ public enum FormSubmissionState {
     
     case error(String)
 }
+
+extension FormSubmissionState {
+    
+    var isLoading: Bool {
+        if case .loading = self { return true }
+        return false
+    }
+}

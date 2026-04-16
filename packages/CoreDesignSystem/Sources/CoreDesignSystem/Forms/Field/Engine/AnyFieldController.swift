@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 protocol AnyFieldController: AnyObject {
     
     var id: UUID { get }
@@ -20,8 +19,9 @@ protocol AnyFieldController: AnyObject {
     func setExternalError(_ message: String?)
 }
 
-private extension FieldController: AnyFieldController {
-    
+
+extension FieldController: AnyFieldController {
+        
     func validate() -> Bool {
         handle(event: .onSubmit)
         

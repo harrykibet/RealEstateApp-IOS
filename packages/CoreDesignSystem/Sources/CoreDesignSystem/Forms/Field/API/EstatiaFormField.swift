@@ -19,7 +19,7 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
     
     // MARK: - Field ID
     
-    @State private let fieldID = UUID()
+    @State private var fieldID = UUID()
     
     // MARK: - Field Key
     
@@ -59,11 +59,14 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
             FocusState<Bool>.Binding
         ) -> Content
     ) {
-        self.externalValue = value
+        
+        let id = UUID()
+            
+        self._fieldID = State(initialValue: id)
         
         _controller = StateObject(
             wrappedValue: FieldController(
-                id: fieldID,
+                id: id,
                 key: key,
                 initialValue: value.wrappedValue,
                 validator: validator,
@@ -72,6 +75,8 @@ public struct EstatiaFormField<Value: Equatable, Content: View>: View {
             )
         )
         
+        self.key = key
+        self.externalValue = value
         self.content = content
     }
     

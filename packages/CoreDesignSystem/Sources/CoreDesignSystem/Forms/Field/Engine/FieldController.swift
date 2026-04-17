@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class FieldController<Value>: ObservableObject {
+final class FieldController<Value: Equatable>: ObservableObject {
     
     @Published private(set) var state: FieldState<Value>
     
@@ -16,9 +16,9 @@ final class FieldController<Value>: ObservableObject {
     private let asyncValidator: AsyncValidator<Value>?
     private let strategy: ValidationStrategy
     
-    private let id: UUID
+    let id: UUID
     
-    private let key: FieldKey
+    let key: FieldKey
     
     private var validationTask: Task<Void, Never>?
     
@@ -64,6 +64,23 @@ final class FieldController<Value>: ObservableObject {
         }
     }
     
+    func applyExternalError(_ message: String?) {
+        if let message {
+            state.status = .error(message)
+        } else {
+            if case .error = state.status {
+                state.status = .valid
+            }
+        }
+    }
+    
+    func applyEvent(_ event: FieldEvent) {
+        FieldStateReducer.reduce(
+            state: &state,
+            event: event
+        )
+    }
+    
     private func shouldValidate(for event: FieldEvent) -> Bool {
         switch strategy {
         case .onChange: return event == .onChange
@@ -73,7 +90,7 @@ final class FieldController<Value>: ObservableObject {
         }
     }
     
-    private func validate() {
+    private func runValidation() {
         validationTask?.cancel()
         
         if let validator {
@@ -108,5 +125,39 @@ final class FieldController<Value>: ObservableObject {
     
     func setExternalValue(_ value: Value) {
         state.value = value
+    }
+}
+
+@MainActor
+extension FieldController: AnyFieldController {
+        
+    func validate() -> Bool {
+        handle(event: .onSubmit)
+        
+        if case .error = state.status {
+            return false
+        }
+        
+        return true
+    }
+    
+    func forceValidate() -> Bool {
+        handle(event: .onSubmit)
+        
+        if case .error = state.status {
+            return false
+        }
+        
+        return true
+    }
+    
+    func getValue() -> Any {
+        
+        state.value
+    }
+    
+    func setExternalError(_ message: String?) {
+        
+        applyExternalError(message)
     }
 }

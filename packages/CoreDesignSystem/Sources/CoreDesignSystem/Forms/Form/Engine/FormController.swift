@@ -61,6 +61,10 @@ public final class FormController: ObservableObject {
     
     private func cleanup() {
         fieldsByID = fieldsByID.filter { $0.value.value != nil }
+        
+        keyIndex = keyIndex.filter { key, id in
+            fieldsByID[id]?.value != nil
+        }
     }
     
     // MARK: - Add Validator

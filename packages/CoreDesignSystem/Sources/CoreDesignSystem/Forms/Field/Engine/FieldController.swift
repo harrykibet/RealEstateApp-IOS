@@ -86,13 +86,14 @@ final class FieldController<Value>: ObservableObject {
         FieldStateReducer.setValidating(state: &state)
         
         let currentValue = state.value
-        
+
         validationTask = Task { [weak self] in
             guard let self else { return }
             
             let result = await asyncValidator(currentValue)
             
             guard !Task.isCancelled else { return }
+            guard self.state.value == currentValue else { return } 
             
             self.applyValidation(result)
         }

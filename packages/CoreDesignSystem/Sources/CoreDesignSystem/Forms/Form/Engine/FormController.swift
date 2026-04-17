@@ -33,6 +33,8 @@ public final class FormController: ObservableObject {
         // lifecycle map
         fieldsByID[id] = WeakFieldController(value: field, id: id)
         
+        assert(keyIndex[key] == nil, "Duplicate FieldKey registration: \(key.rawValue)")
+        
         // logical map
         keyIndex[key] = id
     }
@@ -83,9 +85,9 @@ public final class FormController: ObservableObject {
         for validator in crossValidators {
             let errors = validator.validate(fieldsByKeyMap)
             
-            for (key, message) in errors {
-                let field = field(for: key)
-                field?.setExternalError(message)
+            for (key, field) in fieldsByKeyMap {
+                let message = errors[key] 
+                field.setExternalError(message)
             }
         }
     }
@@ -108,7 +110,10 @@ public final class FormController: ObservableObject {
         
         runCrossValidation()
         
-        return isValid
+        return fieldsByID.values.allSatisfy {
+            guard let field = $0.value else { return true }
+            return field.validate()
+        }
     }
     
     // MARK: - Submit

@@ -52,20 +52,19 @@ public struct Typography {
 }
 
 public extension Typography {
-
-    static let estatia = Typography(
-        largeTitle: .system(size: 34, weight: .bold),
-        title1: .system(size: 28, weight: .bold),
-        title2: .system(size: 22, weight: .semibold),
-        title3: .system(size: 20, weight: .semibold),
-
-        headline: .system(size: 17, weight: .semibold),
-        body: .system(size: 17, weight: .regular),
-        callout: .system(size: 16, weight: .regular),
-
-        subheadline: .system(size: 15, weight: .regular),
-        footnote: .system(size: 13, weight: .regular),
-        caption: .system(size: 12, weight: .regular),
-        caption2: .system(size: 11, weight: .regular)
-    )
+    static var estatia: Typography {
+        Typography(
+            largeTitle: .largeTitle,
+            title1: .title,
+            title2: .title2,
+            title3: .title3,
+            headline: .headline,
+            body: .body,
+            callout: .callout,
+            subheadline: .subheadline,
+            footnote: .footnote,
+            caption: .caption,
+            caption2: .caption2
+        )
+    }
 }

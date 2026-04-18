@@ -118,3 +118,14 @@ private extension EstatiaProgressBar {
         }
     }
 }
+
+// MARK: - Accessibility
+
+private var accessibilityValue: String {
+    if isIndeterminate {
+        return "Loading"
+    }
+
+    let percent = Int((min(max(progress, 0), 1)) * 100)
+    return "\(percent) percent"
+}

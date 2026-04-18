@@ -38,3 +38,46 @@ public struct EstatiaChipGroup: View {
         }
     }
 }
+
+// MARK: - Selection Logic
+
+private extension EstatiaChipGroup {
+
+    func chipMode(for item: EstatiaChipItem) -> EstatiaChipMode {
+        
+        switch selectionMode {
+            
+        case .none:
+            return .action {}
+            
+        case .single:
+            return .selectable(
+                isSelected: selectedIDs.contains(item.id),
+                onToggle: { _ in
+                    selectedIDs = [item.id]
+                }
+            )
+            
+        case .multiple:
+            return .selectable(
+                isSelected: selectedIDs.contains(item.id),
+                onToggle: { isSelected in
+                    handleMultiSelection(item.id, isSelected)
+                }
+            )
+        }
+    }
+}
+
+// MARK: - Multi-Select Logic
+
+private extension EstatiaChipGroup {
+
+    func handleMultiSelection(_ id: String, _ isSelected: Bool) {
+        if isSelected {
+            selectedIDs.insert(id)
+        } else {
+            selectedIDs.remove(id)
+        }
+    }
+}

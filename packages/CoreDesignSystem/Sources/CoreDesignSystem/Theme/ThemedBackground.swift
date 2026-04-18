@@ -11,6 +11,7 @@ import SwiftUI
 public struct ThemedBackground<Content: View>: View {
 
     @Environment(\.theme) private var theme
+    
     private let content: Content
 
     init(@ViewBuilder content: () -> Content) {

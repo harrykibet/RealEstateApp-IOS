@@ -35,4 +35,39 @@ public struct EstatiaFlowLayout: Layout {
         cache.sizes = subviews.map { $0.sizeThatFits(.unspecified) }
     }
     
+    public func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout Cache
+    ) -> CGSize {
+        
+        let maxWidth = proposal.width ?? .infinity
+        
+        var currentRowWidth: CGFloat = 0
+        var currentRowHeight: CGFloat = 0
+        
+        var totalHeight: CGFloat = 0
+        var maxRowWidth: CGFloat = 0
+        
+        for size in cache.sizes {
+            
+            if currentRowWidth + size.width > maxWidth {
+                // move to next line
+                totalHeight += currentRowHeight + lineSpacing
+                maxRowWidth = max(maxRowWidth, currentRowWidth)
+                
+                currentRowWidth = size.width + spacing
+                currentRowHeight = size.height
+            } else {
+                currentRowWidth += size.width + spacing
+                currentRowHeight = max(currentRowHeight, size.height)
+            }
+        }
+        
+        // finalize last row
+        totalHeight += currentRowHeight
+        maxRowWidth = max(maxRowWidth, currentRowWidth)
+        
+        return CGSize(width: maxRowWidth, height: totalHeight)
+    }
 }

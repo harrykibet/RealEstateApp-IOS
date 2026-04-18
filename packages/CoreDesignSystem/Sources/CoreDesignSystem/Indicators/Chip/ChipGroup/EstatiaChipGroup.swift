@@ -26,18 +26,11 @@ public struct EstatiaChipGroup: View {
     }
 
     public var body: some View {
-        flowLayout {
+        EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
             ForEach(items) { item in
-                EstatiaChip(
-                    content: .init(
-                        title: item.title,
-                        leadingIcon: item.leadingIcon
-                    ),
-                    mode: chipMode(for: item)
-                )
+                EstatiaChip(...)
             }
-        }
-    }
+        }    }
 }
 
 // MARK: - Selection Logic

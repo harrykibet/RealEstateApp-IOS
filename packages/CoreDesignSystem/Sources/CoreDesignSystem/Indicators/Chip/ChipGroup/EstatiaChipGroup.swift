@@ -30,7 +30,8 @@ public struct EstatiaChipGroup: View {
             ForEach(items) { item in
                 EstatiaChip(...)
             }
-        }    }
+        }
+    }
 }
 
 // MARK: - Selection Logic

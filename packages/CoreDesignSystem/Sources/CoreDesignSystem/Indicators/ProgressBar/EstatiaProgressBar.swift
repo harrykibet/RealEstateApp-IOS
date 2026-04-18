@@ -75,3 +75,46 @@ public struct EstatiaProgressBar: View {
         }
     }
 }
+
+// MARK: - Background Layer
+
+private extension EstatiaProgressBar {
+    var backgroundLayer: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(background)
+    }
+}
+
+// MARK: - Determinate Mode
+
+private extension EstatiaProgressBar {
+    func determinateBar(width: CGFloat) -> some View {
+        let clamped = min(max(progress, 0), 1)
+
+        return RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(tint)
+            .frame(width: width * clamped)
+            .animation(.easeInOut(duration: 0.25), value: clamped)
+    }
+}
+
+// MARK: - Indeterminate Mode
+
+private extension EstatiaProgressBar {
+    func indeterminateBar(width: CGFloat) -> some View {
+        let barWidth = width * 0.35
+
+        return RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(tint)
+            .frame(width: barWidth)
+            .offset(x: indeterminateOffset * width)
+    }
+
+    func startIndeterminateAnimation() {
+        indeterminateOffset = -1
+
+        withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
+            indeterminateOffset = 1.2
+        }
+    }
+}

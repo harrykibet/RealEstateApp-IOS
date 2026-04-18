@@ -38,6 +38,8 @@ public struct EstatiaBadge: View {
     }
 }
 
+ // MARK: - Subviews
+
 private extension EstatiaBadge {
 
     @ViewBuilder
@@ -55,6 +57,8 @@ private extension EstatiaBadge {
     }
 }
 
+// MARK: - Count Formatting
+
 private extension EstatiaBadge {
 
     func formattedCount(_ count: Int) -> String {
@@ -68,6 +72,8 @@ private extension EstatiaBadge {
         }
     }
 }
+
+// MARK: - Styling System
 
 private extension EstatiaBadge {
 
@@ -95,6 +101,8 @@ private extension EstatiaBadge {
         }
     }
 }
+
+ // MARK: - Size System
 
 private extension EstatiaBadge {
 

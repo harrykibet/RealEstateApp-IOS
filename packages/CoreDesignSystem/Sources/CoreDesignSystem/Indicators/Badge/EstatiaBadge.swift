@@ -16,16 +16,20 @@ public struct EstatiaBadge: View {
     
     public var isDecorative: Bool = false
     
+    private let accessibilityOverride: String?
+    
     @Environment(\.theme) private var theme
     
     public init(
         content: EstatiaBadgeContent,
         style: EstatiaBadgeStyle = .primary,
-        size: EstatiaBadgeSize = .medium
+        size: EstatiaBadgeSize = .medium,
+        accessibilityLabel: String? = nil
     ) {
         self.content = content
         self.style = style
         self.size = size
+        self.accessibilityOverride = accessibilityLabel
     }
     
     public var body: some View {

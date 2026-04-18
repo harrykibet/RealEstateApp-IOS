@@ -42,7 +42,7 @@ public struct EstatiaBadge: View {
             .fixedSize()
             .lineLimit(1)
         
-        // Accessibility
+            // Accessibility
             .accessibilityElement(children: .ignore)
             .accessibilityHidden(isDecorative)
             .accessibilityLabel(accessibilityOverride ?? accessibilityLabelText)

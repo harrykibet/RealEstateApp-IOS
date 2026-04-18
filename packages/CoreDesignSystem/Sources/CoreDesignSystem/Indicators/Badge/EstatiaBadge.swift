@@ -40,11 +40,13 @@ public struct EstatiaBadge: View {
             .background(backgroundColor)
             .clipShape(Capsule())
             .fixedSize()
+            .lineLimit(1)
         
         // Accessibility
             .accessibilityElement(children: .ignore)
             .accessibilityHidden(isDecorative)
-            .accessibilityLabel(accessibilityLabelText)
+            .accessibilityLabel(accessibilityOverride ?? accessibilityLabelText)
+            .accessibilityAddTraits(.isStaticText)
     }
 }
 

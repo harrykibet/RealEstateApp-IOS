@@ -40,7 +40,8 @@ public struct EstatiaBadge: View {
             .background(backgroundColor)
             .clipShape(Capsule())
             .fixedSize()
-            .lineLimit(1)
+            .dynamicTypeSize(...DynamicTypeSize.large)
+            .minimumScaleFactor(0.8)
         
             // Accessibility
             .accessibilityElement(children: .ignore)

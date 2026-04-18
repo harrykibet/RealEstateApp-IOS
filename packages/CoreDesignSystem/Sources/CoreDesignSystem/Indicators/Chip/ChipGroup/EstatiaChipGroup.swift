@@ -8,13 +8,13 @@
 import SwiftUI
 
 public struct EstatiaChipGroup: View {
-
+    
     private let items: [EstatiaChipItem]
     private let selectionMode: EstatiaChipSelectionMode
     @Binding private var selectedIDs: Set<String>
-
+    
     @Environment(\.theme) private var theme
-
+    
     public init(
         items: [EstatiaChipItem],
         selectionMode: EstatiaChipSelectionMode,
@@ -24,15 +24,16 @@ public struct EstatiaChipGroup: View {
         self.selectionMode = selectionMode
         self._selectedIDs = selectedIDs
     }
-
+    
     public var body: some View {
         EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
             ForEach(items) { item in
                 EstatiaChip(
-                    content: .init(title: tag),
-                    mode: .removable {
-                        removeTag(tag)
-                    }
+                    content: .init(
+                        title: item.title,
+                        leadingIcon: item.leadingIcon
+                    ),
+                    mode: chipMode(for: item)
                 )
             }
         }
@@ -81,3 +82,84 @@ private extension EstatiaChipGroup {
         }
     }
 }
+
+#if DEBUG
+
+#Preview("ChipGroup - Light") {
+    Preview.light {
+        ChipGroupPreviewContainer()
+    }
+}
+
+#Preview("ChipGroup - Dark") {
+    Preview.dark {
+        ChipGroupPreviewContainer()
+    }
+}
+
+// MARK: - Container
+
+private struct ChipGroupPreviewContainer: View {
+    
+    @State private var singleSelection: Set<String> = ["2"]
+    @State private var multiSelection: Set<String> = ["2", "4"]
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                
+                // MARK: - Single Select
+                
+                section(title: "Single Selection") {
+                    EstatiaChipGroup(
+                        items: filterOptions,
+                        selectionMode: .single,
+                        selectedIDs: $singleSelection
+                    )
+                }
+                
+                Text("Selected: \(singleSelection.first ?? "None")")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                // MARK: - Multi Select
+                
+                section(title: "Multi Selection") {
+                    EstatiaChipGroup(
+                        items: filterOptions,
+                        selectionMode: .multiple,
+                        selectedIDs: $multiSelection
+                    )
+                }
+                
+                Text("Selected: \(multiSelection.joined(separator: ", "))")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                // MARK: - Stress
+                
+                section(title: "Large Dataset") {
+                    EstatiaChipGroup(
+                        items: largeDataset,
+                        selectionMode: .multiple,
+                        selectedIDs: $multiSelection
+                    )
+                }
+            }
+            .padding()
+        }
+    }
+}
+
+// MARK: - Data
+
+private var largeDataset: [EstatiaChipItem] {
+    (0..<60).map {
+        EstatiaChipItem(
+            id: "\($0)",
+            title: "Item \($0)"
+        )
+    }
+}
+
+#endif

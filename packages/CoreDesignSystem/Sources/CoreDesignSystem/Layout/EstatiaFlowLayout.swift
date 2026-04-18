@@ -103,4 +103,5 @@ public struct EstatiaFlowLayout: Layout {
             x += size.width + spacing
             rowHeight = max(rowHeight, size.height)
         }
-    }}
+    }
+}

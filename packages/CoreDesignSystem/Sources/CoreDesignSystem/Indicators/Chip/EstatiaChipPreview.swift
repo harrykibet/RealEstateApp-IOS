@@ -25,27 +25,31 @@ import SwiftUI
 
 private struct ChipPreviewContainer: View {
     
-    // MARK: - State (simulate ViewModel)
+    // MARK: - State
     
-    @State private var selectedFilters: Set<String> = ["2 Bedroom"]
-    @State private var tags: [String] = ["Nairobi", "Furnished", "Pet Friendly"]
+    @State private var selectedFilters: Set<String> = ["2"]
+    @State private var tags: [EstatiaChipItem] = [
+        .init(id: "nai", title: "Nairobi"),
+        .init(id: "fur", title: "Furnished"),
+        .init(id: "pet", title: "Pet Friendly")
+    ]
     @State private var actionCount: Int = 0
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 
-                // MARK: - Selectable Chips
+                // MARK: - Selectable
                 
                 section(title: "Selectable") {
-                    flowLayout {
-                        ForEach(filterOptions, id: \.self) { option in
+                    EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
+                        ForEach(filterOptions) { item in
                             EstatiaChip(
-                                content: .init(title: option),
+                                content: .init(title: item.title),
                                 mode: .selectable(
-                                    isSelected: selectedFilters.contains(option),
+                                    isSelected: selectedFilters.contains(item.id),
                                     onToggle: { isSelected in
-                                        handleSelection(option, isSelected)
+                                        handleSelection(item.id, isSelected)
                                     }
                                 )
                             )
@@ -53,37 +57,33 @@ private struct ChipPreviewContainer: View {
                     }
                 }
                 
-                // MARK: - Removable Chips
+                // MARK: - Removable
                 
                 section(title: "Removable") {
-                    flowLayout {
-                        ForEach(tags, id: \.self) { tag in
+                    EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
+                        ForEach(tags) { tag in
                             EstatiaChip(
-                                content: .init(title: tag),
+                                content: .init(title: tag.title),
                                 mode: .removable {
-                                    removeTag(tag)
+                                    removeTag(tag.id)
                                 }
                             )
                         }
                     }
                 }
                 
-                // MARK: - Action Chips
+                // MARK: - Action
                 
                 section(title: "Action") {
-                    flowLayout {
+                    EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
                         EstatiaChip(
                             content: .init(title: "Sort", leadingIcon: "arrow.up.arrow.down"),
-                            mode: .action {
-                                actionCount += 1
-                            }
+                            mode: .action { actionCount += 1 }
                         )
                         
                         EstatiaChip(
                             content: .init(title: "Filter", leadingIcon: "slider.horizontal.3"),
-                            mode: .action {
-                                actionCount += 1
-                            }
+                            mode: .action { actionCount += 1 }
                         )
                     }
                     
@@ -92,20 +92,20 @@ private struct ChipPreviewContainer: View {
                         .foregroundColor(.secondary)
                 }
                 
-                // MARK: - Stress Test
+                // MARK: - Stress
                 
-                section(title: "Stress Test (Rapid Toggle)") {
-                    flowLayout {
-                        ForEach(0..<20, id: \.self) { index in
-                            let title = "Chip \(index)"
+                section(title: "Stress Test") {
+                    EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
+                        ForEach(0..<30, id: \.self) { index in
+                            let id = "chip_\(index)"
                             
                             EstatiaChip(
-                                content: .init(title: title),
+                                content: .init(title: "Chip \(index)"),
                                 size: .small,
                                 mode: .selectable(
-                                    isSelected: selectedFilters.contains(title),
+                                    isSelected: selectedFilters.contains(id),
                                     onToggle: { isSelected in
-                                        handleSelection(title, isSelected)
+                                        handleSelection(id, isSelected)
                                     }
                                 )
                             )
@@ -118,48 +118,21 @@ private struct ChipPreviewContainer: View {
     }
 }
 
-private func section<Content: View>(
-    title: String,
-    @ViewBuilder content: () -> Content
-) -> some View {
-    VStack(alignment: .leading, spacing: 12) {
-        Text(title)
-            .font(.headline)
-        content()
-    }
-}
 
-private func flowLayout<Content: View>(
-    @ViewBuilder content: () -> Content
-) -> some View {
-    LazyVGrid(
-        columns: [GridItem(.adaptive(minimum: 80), spacing: 8)],
-        alignment: .leading,
-        spacing: 8
-    ) {
-        content()
-    }
-}
-
-private let filterOptions = [
-    "1 Bedroom", "2 Bedroom", "3 Bedroom",
-    "Furnished", "Unfurnished", "Pet Friendly"
-]
 
 private extension ChipPreviewContainer {
     
-    func handleSelection(_ option: String, _ isSelected: Bool) {
+    func handleSelection(_ id: String, _ isSelected: Bool) {
         if isSelected {
-            selectedFilters.insert(option)
+            selectedFilters.insert(id)
         } else {
-            selectedFilters.remove(option)
+            selectedFilters.remove(id)
         }
     }
     
-    func removeTag(_ tag: String) {
-        tags.removeAll { $0 == tag }
+    func removeTag(_ id: String) {
+        tags.removeAll { $0.id == id }
     }
 }
 
 #endif
-

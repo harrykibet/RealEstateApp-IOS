@@ -130,3 +130,27 @@ private extension EstatiaBadge {
         }
     }
 }
+
+private extension EstatiaBadge {
+
+    var accessibilityLabelText: String {
+        switch content {
+        case .text(let value):
+            return value
+
+        case .count(let count):
+            return "\(count) items"
+
+        case .icon(let systemName):
+            return iconAccessibilityDescription(systemName)
+        }
+    }
+
+    func iconAccessibilityDescription(_ systemName: String) -> String {
+        switch systemName {
+        case "star.fill": return "Favorite"
+        case "checkmark.seal.fill": return "Verified"
+        default: return "Badge"
+        }
+    }
+}

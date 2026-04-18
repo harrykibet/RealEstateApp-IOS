@@ -6,9 +6,15 @@
 //
 
 public struct EstatiaTheme: AppTheme {
+
     public let colors: SemanticColors
-    
-    public init(colors: SemanticColors) {
+    public let typography: Typography
+
+    public init(
+        colors: SemanticColors,
+        typography: Typography = .estatia
+    ) {
         self.colors = colors
+        self.typography = typography
     }
 }

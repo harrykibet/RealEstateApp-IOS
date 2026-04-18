@@ -110,7 +110,7 @@ private extension EstatiaBadge {
             return theme.colors.onSurface
 
         case .warning:
-            return theme.colors.onWarning
+            return theme.colors.warning
         }
     }
 }

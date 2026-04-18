@@ -70,4 +70,37 @@ public struct EstatiaFlowLayout: Layout {
         
         return CGSize(width: maxRowWidth, height: totalHeight)
     }
-}
+    
+    public func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout Cache
+    ) {
+        
+        let maxWidth = bounds.width
+        
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+        
+        for index in subviews.indices {
+            
+            let size = cache.sizes[index]
+            
+            if x + size.width > maxWidth {
+                // wrap to next line
+                x = 0
+                y += rowHeight + lineSpacing
+                rowHeight = 0
+            }
+            
+            subviews[index].place(
+                at: CGPoint(x: bounds.minX + x, y: bounds.minY + y),
+                proposal: ProposedViewSize(size)
+            )
+            
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+    }}

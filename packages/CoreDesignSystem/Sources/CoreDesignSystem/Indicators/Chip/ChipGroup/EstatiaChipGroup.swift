@@ -28,7 +28,12 @@ public struct EstatiaChipGroup: View {
     public var body: some View {
         EstatiaFlowLayout(spacing: 8, lineSpacing: 8) {
             ForEach(items) { item in
-                EstatiaChip(...)
+                EstatiaChip(
+                    content: .init(title: tag),
+                    mode: .removable {
+                        removeTag(tag)
+                    }
+                )
             }
         }
     }

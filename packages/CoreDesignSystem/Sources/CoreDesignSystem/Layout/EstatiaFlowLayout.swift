@@ -34,4 +34,5 @@ public struct EstatiaFlowLayout: Layout {
     public func updateCache(_ cache: inout Cache, subviews: Subviews) {
         cache.sizes = subviews.map { $0.sizeThatFits(.unspecified) }
     }
+    
 }

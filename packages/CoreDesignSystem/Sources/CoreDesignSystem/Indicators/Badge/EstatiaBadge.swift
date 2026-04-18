@@ -14,6 +14,8 @@ public struct EstatiaBadge: View {
     private let style: EstatiaBadgeStyle
     private let size: EstatiaBadgeSize
     
+    public var isDecorative: Bool = false
+    
     @Environment(\.theme) private var theme
     
     public init(
@@ -37,6 +39,7 @@ public struct EstatiaBadge: View {
         
         // Accessibility
             .accessibilityElement(children: .ignore)
+            .accessibilityHidden(isDecorative)
             .accessibilityLabel(accessibilityLabelText)
     }
 }

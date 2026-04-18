@@ -9,13 +9,13 @@
 import SwiftUI
 
 public struct EstatiaBadge: View {
-
+    
     private let content: EstatiaBadgeContent
     private let style: EstatiaBadgeStyle
     private let size: EstatiaBadgeSize
-
+    
     @Environment(\.theme) private var theme
-
+    
     public init(
         content: EstatiaBadgeContent,
         style: EstatiaBadgeStyle = .primary,
@@ -25,7 +25,7 @@ public struct EstatiaBadge: View {
         self.style = style
         self.size = size
     }
-
+    
     public var body: some View {
         contentView
             .font(font)
@@ -33,8 +33,11 @@ public struct EstatiaBadge: View {
             .padding(padding)
             .background(backgroundColor)
             .clipShape(Capsule())
-            .fixedSize() // prevents layout expansion bugs
-            .accessibilityElement(children: .combine)
+            .fixedSize()
+        
+        // Accessibility
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(accessibilityLabelText)
     }
 }
 

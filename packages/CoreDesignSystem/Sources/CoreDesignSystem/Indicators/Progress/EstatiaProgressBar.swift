@@ -80,12 +80,16 @@ public struct EstatiaProgressBar: View {
     }
 }
 
+// MARK: - Background
+
 private extension EstatiaProgressBar {
     var backgroundLayer: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .fill(theme.colors.progressBackground)
     }
 }
+
+// MARK: - Determinate
 
 private extension EstatiaProgressBar {
     func determinateBar(width: CGFloat, progress: Double) -> some View {
@@ -97,6 +101,8 @@ private extension EstatiaProgressBar {
             .animation(animation, value: clamped)
     }
 }
+
+// MARK: - Buffered
 
 private extension EstatiaProgressBar {
     func bufferedBar(width: CGFloat, progress: Double, buffer: Double) -> some View {
@@ -119,6 +125,7 @@ private extension EstatiaProgressBar {
         .animation(animation, value: progressClamped)
     }
 }
+// MARK: - Indeterminate
 
 private extension EstatiaProgressBar {
     func indeterminateBar(width: CGFloat) -> some View {
@@ -130,6 +137,8 @@ private extension EstatiaProgressBar {
             .offset(x: indeterminateOffset * width)
     }
 }
+
+// MARK: - Animation
 
 private extension EstatiaProgressBar {
 
@@ -153,6 +162,8 @@ private extension EstatiaProgressBar {
     }
 }
 
+// MARK: - Style
+
 private extension EstatiaProgressBar {
 
     var fillColor: Color {
@@ -166,6 +177,8 @@ private extension EstatiaProgressBar {
         }
     }
 }
+
+// MARK: - Accessibility
 
 private extension EstatiaProgressBar {
 
@@ -186,6 +199,8 @@ private extension EstatiaProgressBar {
         }
     }
 }
+
+// MARK: - Helpers
 
 private extension EstatiaProgressBar {
     func clamp(_ value: Double) -> Double {

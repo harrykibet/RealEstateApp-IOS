@@ -5,7 +5,6 @@
 //  Created by builder on 4/18/26.
 //
 
-
 import SwiftUI
 
 public struct EstatiaProgressBar: View {
@@ -60,28 +59,28 @@ public struct EstatiaProgressBar: View {
                 }
             }
             .frame(height: height)
-            .accessibilityValue(accessibilityValue)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text(label ?? "Progress"))
+            .accessibilityValue(Text(accessibilityValue))
         }
         .onAppear {
-            if isIndeterminate {
-                startIndeterminateAnimation()
-            }
+            handleAnimationState()
+        }
+        .onChange(of: isIndeterminate) { _, _ in
+            handleAnimationState()
         }
     }
 }
 
-// MARK: - Background Layer
+// MARK: - Rendering
 
 private extension EstatiaProgressBar {
+
     var backgroundLayer: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .fill(theme.colors.progressBackground)
     }
-}
 
-// MARK: - Determinate Mode
-
-private extension EstatiaProgressBar {
     func determinateBar(width: CGFloat) -> some View {
         let clamped = min(max(progress, 0), 1)
 
@@ -90,11 +89,7 @@ private extension EstatiaProgressBar {
             .frame(width: width * clamped)
             .animation(.easeInOut(duration: 0.25), value: clamped)
     }
-}
 
-// MARK: - Indeterminate Mode
-
-private extension EstatiaProgressBar {
     func indeterminateBar(width: CGFloat) -> some View {
         let barWidth = width * 0.35
 
@@ -105,13 +100,41 @@ private extension EstatiaProgressBar {
     }
 }
 
-// MARK: - Accessibility
+// MARK: - Animation
 
-private var accessibilityValue: String {
-    if isIndeterminate {
-        return "Loading"
+private extension EstatiaProgressBar {
+
+    func handleAnimationState() {
+        guard isIndeterminate else {
+            indeterminateOffset = -1
+            return
+        }
+
+        startIndeterminateAnimation()
     }
 
-    let percent = Int((min(max(progress, 0), 1)) * 100)
-    return "\(percent) percent"
+    func startIndeterminateAnimation() {
+        indeterminateOffset = -1
+
+        withAnimation(
+            .linear(duration: 1.1)
+            .repeatForever(autoreverses: false)
+        ) {
+            indeterminateOffset = 1.2
+        }
+    }
+}
+
+// MARK: - Accessibility
+
+private extension EstatiaProgressBar {
+
+    var accessibilityValue: String {
+        if isIndeterminate {
+            return "Loading"
+        }
+
+        let percent = Int((min(max(progress, 0), 1)) * 100)
+        return "\(percent) percent"
+    }
 }

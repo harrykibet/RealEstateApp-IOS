@@ -84,7 +84,7 @@ public struct SemanticColors {
     }
 }
 
-private extension SemanticColors {
+extension SemanticColors {
     func progressFill(for style: EstatiaProgressStyle) -> Color {
         switch style {
         case .primary: return progressFill

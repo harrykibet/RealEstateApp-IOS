@@ -31,6 +31,9 @@ public extension SemanticColors {
         success: ColorPalette.Status.success,
         error: ColorPalette.Status.error,
         warning: ColorPalette.Status.warning,
-        info: ColorPalette.Status.info
+        info: ColorPalette.Status.info,
+        
+        progressBackground: ColorPalette.Gray.secondary.opacity(0.25),
+        progressFill: ColorPalette.Blue.base
     )
 }

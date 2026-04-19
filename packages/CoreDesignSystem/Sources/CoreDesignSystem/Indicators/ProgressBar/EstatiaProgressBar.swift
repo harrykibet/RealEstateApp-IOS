@@ -10,14 +10,14 @@ import SwiftUI
 
 public struct EstatiaProgressBar: View {
 
+    @Environment(\.theme) private var theme
+
     private let progress: Double
     private let isIndeterminate: Bool
     private let height: CGFloat
     private let cornerRadius: CGFloat
     private let showLabel: Bool
     private let label: String?
-    private let tint: Color
-    private let background: Color
 
     @State private var indeterminateOffset: CGFloat = -1
 
@@ -27,9 +27,7 @@ public struct EstatiaProgressBar: View {
         height: CGFloat = 6,
         cornerRadius: CGFloat = 999,
         showLabel: Bool = false,
-        label: String? = nil,
-        tint: Color = .accentColor,
-        background: Color = Color.gray.opacity(0.2)
+        label: String? = nil
     ) {
         self.progress = progress
         self.isIndeterminate = isIndeterminate
@@ -37,8 +35,6 @@ public struct EstatiaProgressBar: View {
         self.cornerRadius = cornerRadius
         self.showLabel = showLabel
         self.label = label
-        self.tint = tint
-        self.background = background
     }
 
     public var body: some View {
@@ -64,8 +60,6 @@ public struct EstatiaProgressBar: View {
                 }
             }
             .frame(height: height)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(label ?? "Progress")
             .accessibilityValue(accessibilityValue)
         }
         .onAppear {
@@ -81,7 +75,7 @@ public struct EstatiaProgressBar: View {
 private extension EstatiaProgressBar {
     var backgroundLayer: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(background)
+            .fill(theme.colors.progressBackground)
     }
 }
 
@@ -92,7 +86,7 @@ private extension EstatiaProgressBar {
         let clamped = min(max(progress, 0), 1)
 
         return RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(tint)
+            .fill(theme.colors.progressFill)
             .frame(width: width * clamped)
             .animation(.easeInOut(duration: 0.25), value: clamped)
     }
@@ -105,17 +99,9 @@ private extension EstatiaProgressBar {
         let barWidth = width * 0.35
 
         return RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(tint)
+            .fill(theme.colors.progressFill)
             .frame(width: barWidth)
             .offset(x: indeterminateOffset * width)
-    }
-
-    func startIndeterminateAnimation() {
-        indeterminateOffset = -1
-
-        withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
-            indeterminateOffset = 1.2
-        }
     }
 }
 

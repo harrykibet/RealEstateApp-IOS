@@ -10,36 +10,34 @@ import SwiftUI
 public struct EstatiaProgressBar: View {
 
     @Environment(\.theme) private var theme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let progress: Double
-    private let isIndeterminate: Bool
+    private let state: EstatiaProgressState
+    private let style: EstatiaProgressStyle
     private let height: CGFloat
     private let cornerRadius: CGFloat
-    private let showLabel: Bool
     private let label: String?
 
     @State private var indeterminateOffset: CGFloat = -1
 
     public init(
-        progress: Double,
-        isIndeterminate: Bool = false,
+        state: EstatiaProgressState,
+        style: EstatiaProgressStyle = .primary,
         height: CGFloat = 6,
         cornerRadius: CGFloat = 999,
-        showLabel: Bool = false,
         label: String? = nil
     ) {
-        self.progress = progress
-        self.isIndeterminate = isIndeterminate
+        self.state = state
+        self.style = style
         self.height = height
         self.cornerRadius = cornerRadius
-        self.showLabel = showLabel
         self.label = label
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 6) {
 
-            if showLabel, let label {
+            if let label {
                 Text(label)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -51,10 +49,24 @@ public struct EstatiaProgressBar: View {
                 ZStack(alignment: .leading) {
                     backgroundLayer
 
-                    if isIndeterminate {
+                    switch state {
+                    case .idle:
+                        EmptyView()
+
+                    case .indeterminate:
                         indeterminateBar(width: width)
-                    } else {
-                        determinateBar(width: width)
+
+                    case .determinate(let value):
+                        determinateBar(width: width, progress: value)
+
+                    case .buffered(let value, let buffer):
+                        bufferedBar(width: width, progress: value, buffer: buffer)
+
+                    case .success:
+                        determinateBar(width: width, progress: 1.0)
+
+                    case .error:
+                        determinateBar(width: width, progress: 1.0)
                     }
                 }
             }
@@ -63,78 +75,120 @@ public struct EstatiaProgressBar: View {
             .accessibilityLabel(Text(label ?? "Progress"))
             .accessibilityValue(Text(accessibilityValue))
         }
-        .onAppear {
-            handleAnimationState()
-        }
-        .onChange(of: isIndeterminate) { _, _ in
-            handleAnimationState()
-        }
+        .onAppear { updateAnimation() }
+        .onChange(of: state) { _, _ in updateAnimation() }
     }
 }
 
-// MARK: - Rendering
-
 private extension EstatiaProgressBar {
-
     var backgroundLayer: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .fill(theme.colors.progressBackground)
     }
+}
 
-    func determinateBar(width: CGFloat) -> some View {
-        let clamped = min(max(progress, 0), 1)
+private extension EstatiaProgressBar {
+    func determinateBar(width: CGFloat, progress: Double) -> some View {
+        let clamped = clamp(progress)
 
         return RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(theme.colors.progressFill)
+            .fill(fillColor)
             .frame(width: width * clamped)
-            .animation(.easeInOut(duration: 0.25), value: clamped)
+            .animation(animation, value: clamped)
     }
+}
 
+private extension EstatiaProgressBar {
+    func bufferedBar(width: CGFloat, progress: Double, buffer: Double) -> some View {
+
+        let progressClamped = clamp(progress)
+        let bufferClamped = clamp(buffer)
+
+        return ZStack(alignment: .leading) {
+
+            // buffer layer
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(fillColor.opacity(0.3))
+                .frame(width: width * bufferClamped)
+
+            // actual progress
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(fillColor)
+                .frame(width: width * progressClamped)
+        }
+        .animation(animation, value: progressClamped)
+    }
+}
+
+private extension EstatiaProgressBar {
     func indeterminateBar(width: CGFloat) -> some View {
         let barWidth = width * 0.35
 
         return RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(theme.colors.progressFill)
+            .fill(fillColor)
             .frame(width: barWidth)
             .offset(x: indeterminateOffset * width)
     }
 }
 
-// MARK: - Animation
-
 private extension EstatiaProgressBar {
 
-    func handleAnimationState() {
-        guard isIndeterminate else {
+    func updateAnimation() {
+        guard case .indeterminate = state else {
             indeterminateOffset = -1
             return
         }
 
-        startIndeterminateAnimation()
-    }
+        guard !reduceMotion else { return }
 
-    func startIndeterminateAnimation() {
         indeterminateOffset = -1
 
-        withAnimation(
-            .linear(duration: 1.1)
-            .repeatForever(autoreverses: false)
-        ) {
+        withAnimation(.linear(duration: 1.1).repeatForever(autoreverses: false)) {
             indeterminateOffset = 1.2
+        }
+    }
+
+    var animation: Animation? {
+        reduceMotion ? nil : .easeInOut(duration: 0.25)
+    }
+}
+
+private extension EstatiaProgressBar {
+
+    var fillColor: Color {
+        switch state {
+        case .error:
+            return theme.colors.error
+        case .success:
+            return theme.colors.success
+        default:
+            return theme.colors.progressFill(for: style)
         }
     }
 }
 
-// MARK: - Accessibility
-
 private extension EstatiaProgressBar {
 
     var accessibilityValue: String {
-        if isIndeterminate {
+        switch state {
+        case .idle:
+            return "Idle"
+        case .indeterminate:
             return "Loading"
+        case .determinate(let value):
+            return "\(Int(clamp(value) * 100)) percent"
+        case .buffered(let value, _):
+            return "\(Int(clamp(value) * 100)) percent"
+        case .success:
+            return "Completed"
+        case .error:
+            return "Failed"
         }
+    }
+}
 
-        let percent = Int((min(max(progress, 0), 1)) * 100)
-        return "\(percent) percent"
+private extension EstatiaProgressBar {
+    func clamp(_ value: Double) -> Double {
+        min(max(value, 0), 1)
     }
 }

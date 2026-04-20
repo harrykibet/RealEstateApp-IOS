@@ -5,6 +5,8 @@
 //  Created by builder on 4/20/26.
 //
 
+import Foundation
+
 
 @MainActor
 final class ProgressViewModel: ObservableObject {

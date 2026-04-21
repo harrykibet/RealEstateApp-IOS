@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-public struct Typography {
+public struct AppTypography {
 
     public let largeTitle: Font
     public let title1: Font
@@ -51,9 +51,9 @@ public struct Typography {
     }
 }
 
-public extension Typography {
-    static var estatia: Typography {
-        Typography(
+public extension AppTypography {
+    static var estatia: AppTypography {
+        AppTypography(
             largeTitle: .largeTitle,
             title1: .title,
             title2: .title2,

@@ -7,12 +7,12 @@
 
 public struct EstatiaTheme: AppTheme {
 
-    public let colors: SemanticColors
-    public let typography: Typography
+    public let colors: AppSemanticColors
+    public let typography: AppTypography
 
     public init(
-        colors: SemanticColors,
-        typography: Typography = .estatia
+        colors: AppSemanticColors,
+        typography: AppTypography = .estatia
     ) {
         self.colors = colors
         self.typography = typography

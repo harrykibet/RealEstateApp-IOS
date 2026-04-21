@@ -9,6 +9,7 @@ import SwiftUI
 
 @MainActor
 public protocol AppTheme {
-    var colors: SemanticColors { get }
-    var typography: Typography { get }
+    var colors: AppSemanticColors { get }
+    var typography: AppTypography { get }
+    var dimensions: AppDimensions { get }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct SemanticColors {
+public struct AppSemanticColors {
     
     // MARK: - Core
     public let primary: Color
@@ -86,7 +86,7 @@ public struct SemanticColors {
     }
 }
 
-extension SemanticColors {
+extension AppSemanticColors {
     func progressFill(for style: EstatiaProgressStyle) -> Color {
         switch style {
         case .primary: return progressFill

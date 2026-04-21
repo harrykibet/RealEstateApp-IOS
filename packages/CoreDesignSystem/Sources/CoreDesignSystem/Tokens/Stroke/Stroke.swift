@@ -5,6 +5,7 @@
 //  Created by builder on 4/21/26.
 //
 
+import SwiftUI
 
 public struct Stroke {
     public let hairline: CGFloat = 0.5

@@ -36,6 +36,6 @@ public extension AppSemanticColors {
         progressBackground: ColorPalette.Gray.secondary.opacity(0.35),
         progressFill: ColorPalette.Blue.base,
         
-        separator: ColorPalette.Gray.medium
+        separator: Color.black.opacity(0.08)
     )
 }

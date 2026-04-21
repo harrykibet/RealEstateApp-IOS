@@ -5,6 +5,8 @@
 //  Created by builder on 4/1/26.
 //
 
+import SwiftUI
+
 public struct Spacing {
     public let xxs: CGFloat = 2
     public let xs: CGFloat = 4

@@ -5,6 +5,8 @@
 //  Created by builder on 4/12/26.
 //
 
+import SwiftUI
+
 public struct EstatiaList<Content: View>: View {
     
     let content: Content

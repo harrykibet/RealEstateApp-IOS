@@ -62,7 +62,8 @@ public struct AppSemanticColors {
         warning: Color,
         info: Color,
         progressBackground: Color,
-        progressFill: Color
+        progressFill: Color,
+        separator: Color
     ) {
         self.primary = primary
         self.onPrimary = onPrimary
@@ -83,6 +84,7 @@ public struct AppSemanticColors {
         self.info = info
         self.progressBackground = progressBackground
         self.progressFill = progressFill
+        self.separator = separator
     }
 }
 

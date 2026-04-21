@@ -21,3 +21,24 @@ public struct EstatiaTheme: AppTheme {
         self.typography = typography
     }
 }
+
+public extension EstatiaTheme {
+    
+    static func resolve(_ variant: EstatiaThemeVariant) -> EstatiaTheme {
+        switch variant {
+        case .light:
+            return EstatiaTheme(
+                colors: .light,
+                dimensions: .estatia,
+                typography: .estatia
+            )
+            
+        case .dark:
+            return EstatiaTheme(
+                colors: .dark,
+                dimensions: .estatia,
+                typography: .estatia
+            )
+        }
+    }
+}

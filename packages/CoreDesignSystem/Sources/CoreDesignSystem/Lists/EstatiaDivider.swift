@@ -15,7 +15,7 @@ public struct EstatiaDivider: View {
     public var body: some View {
         Rectangle()
             .fill(theme.colors.separator)
-            .frame(height: theme.dimensions.dividerThickness)
+            .frame(height: theme.dimensions.stroke.hairline)
             .padding(.leading, inset ?? 0)
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 private struct ThemeEnvironmentKey: @MainActor EnvironmentKey {
-    @MainActor static let defaultValue: AppTheme = EstatiaTheme(colors: .light)
+    @MainActor static let defaultValue: AppTheme = EstatiaTheme.resolve(.light)
 }
 
 @MainActor
@@ -40,9 +40,9 @@ public struct ThemeProvider<Content: View>: View {
     private var currentTheme: AppTheme {
         switch colorScheme {
         case .dark:
-            return EstatiaTheme(colors: .dark)
+            return EstatiaTheme.resolve(.dark)
         default:
-            return EstatiaTheme(colors: .light)
+            return EstatiaTheme.resolve(.light)
         }
     }
 }

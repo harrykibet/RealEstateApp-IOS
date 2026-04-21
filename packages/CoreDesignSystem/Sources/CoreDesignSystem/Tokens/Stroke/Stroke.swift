@@ -8,7 +8,11 @@
 import SwiftUI
 
 public struct Stroke {
-    public let hairline: CGFloat = 0.5
+    
+    public var hairline: CGFloat {
+        1 / UIScreen.main.scale
+    }
+    
     public let thin: CGFloat = 1
     public let medium: CGFloat = 2
 }

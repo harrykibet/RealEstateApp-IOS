@@ -69,6 +69,10 @@ public extension EstatiaCircularProgress {
             .stroke(theme.colors.progressBackground, lineWidth: lineWidth)
     }
     
+    private var progressAnimation: Animation? {
+        reduceMotion ? nil : .easeInOut(duration: 0.25)
+    }
+    
     private func determinateCircle(progress: Double) -> some View {
         Circle()
             .trim(from: 0, to: clamp(progress))
@@ -80,7 +84,7 @@ public extension EstatiaCircularProgress {
                 )
             )
             .rotationEffect(.degrees(-90))
-            .animation(animation, value: progress)
+            .animation(progressAnimation, value: progress)
     }
     
     private var indeterminateCircle: some View {

@@ -34,6 +34,8 @@ public extension SemanticColors {
         info: ColorPalette.Status.info,
         
         progressBackground: ColorPalette.Gray.secondary.opacity(0.25),
-        progressFill: ColorPalette.Blue.base
+        progressFill: ColorPalette.Blue.base,
+        
+        separator: ColorPalette.Gray.light
     )
 }

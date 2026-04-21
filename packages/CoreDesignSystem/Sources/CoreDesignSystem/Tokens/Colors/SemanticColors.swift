@@ -41,6 +41,8 @@ public struct SemanticColors {
     public let progressFill: Color
     public let progressBackground: Color
     
+    public let separator: Color
+    
     public init(
         primary: Color,
         onPrimary: Color,

@@ -34,10 +34,14 @@ public extension ProgressController {
             
             continuation.onTermination = { [weak self] _ in
                 Task {
-                    await self?.continuations.removeValue(forKey: id)
+                    await self?.removeContinuation(id)
                 }
             }
         }
+    }
+    
+    private func removeContinuation(_ id: UUID) {
+        continuations.removeValue(forKey: id)
     }
 }
 

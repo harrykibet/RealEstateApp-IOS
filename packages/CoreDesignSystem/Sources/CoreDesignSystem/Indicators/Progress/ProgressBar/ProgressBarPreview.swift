@@ -87,7 +87,7 @@ private struct ProgressPreviewContainer: View {
                         )
                         
                         EstatiaProgressBar(
-                            state: .error,
+                            state: .error(reason: nil),
                             style: .error,
                             label: "Failed"
                         )
@@ -211,7 +211,7 @@ private extension ProgressPreviewContainer {
     
     var simulatedState: EstatiaProgressState {
         if isError {
-            return .error
+            return .error(reason: nil)
         }
         
         if isSuccess {

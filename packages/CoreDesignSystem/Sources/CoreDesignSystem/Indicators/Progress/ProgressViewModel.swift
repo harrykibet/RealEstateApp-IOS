@@ -13,7 +13,7 @@ final class ProgressViewModel: ObservableObject {
 
     @Published var state: EstatiaProgressState = .idle
     
-    private let controller: ProgressController
+    let controller: ProgressController
     private var task: Task<Void, Never>?
 
     init(controller: ProgressController) {
@@ -23,12 +23,20 @@ final class ProgressViewModel: ObservableObject {
 
     private func bind() {
         task = Task {
-            for await state in controller.stream() {
-                self.state = state
+            let stream = await controller.stream()
+            
+            for await state in stream {
+                await MainActor.run {
+                    self.state = state
+                }
             }
         }
     }
-
+    
+    func fail() {
+        Task { await controller.fail(nil) }
+    }
+    
     deinit {
         task?.cancel()
     }

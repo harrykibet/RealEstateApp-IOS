@@ -84,7 +84,7 @@ private struct CircularProgressPreviewContainer: View {
                         )
                         
                         EstatiaCircularProgress(
-                            state: .error,
+                            state: .error(reason: nil),
                             style: .error,
                             size: 48
                         )

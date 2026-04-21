@@ -6,7 +6,7 @@
 //
 
 
-private struct ProgressReducer {
+public  struct ProgressReducer {
 
     static func reduce(
         state: EstatiaProgressState,

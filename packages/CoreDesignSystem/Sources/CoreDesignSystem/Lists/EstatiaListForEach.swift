@@ -30,10 +30,10 @@ where Data: RandomAccessCollection, ID: Hashable {
         let items = Array(data)
         let lastIndex = items.count - 1
         
-        ForEach(Array(items.enumerated()), id: \.element[keyPath: id]) { pair in
-            
-            let index = pair.offset
-            let element = pair.element
+        ForEach(
+            Array(zip(items.indices, items)),
+            id: { pair in pair.1[keyPath: id] }
+        ) { index, element in
             
             row(element)
             

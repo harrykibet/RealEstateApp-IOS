@@ -5,14 +5,16 @@
 //  Created by builder on 4/22/26.
 //
 
+import SwiftUI
+
 
 public struct EstatiaSwipeAction: Sendable {
     
     public let title: String
     public let role: Role
-    public let action: () -> Void
+    public let action: @Sendable () -> Void
     
-    public enum Role {
+    public enum Role : Sendable {
         case normal
         case destructive
     }

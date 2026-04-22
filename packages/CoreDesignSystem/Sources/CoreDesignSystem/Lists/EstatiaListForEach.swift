@@ -5,6 +5,8 @@
 //  Created by builder on 4/22/26.
 //
 
+import SwiftUI
+
 
 public struct EstatiaListForEach<Data, ID, Row: View>: View
 where Data: RandomAccessCollection, ID: Hashable {
@@ -24,11 +26,18 @@ where Data: RandomAccessCollection, ID: Hashable {
     }
     
     public var body: some View {
-        ForEach(Array(data.enumerated()), id: \.element[keyPath: id]) { index, element in
+        
+        let items = Array(data)
+        let lastIndex = items.count - 1
+        
+        ForEach(Array(items.enumerated()), id: \.element[keyPath: id]) { pair in
+            
+            let index = pair.offset
+            let element = pair.element
             
             row(element)
             
-            if index < data.count - 1 {
+            if index < lastIndex {
                 EstatiaDivider()
             }
         }

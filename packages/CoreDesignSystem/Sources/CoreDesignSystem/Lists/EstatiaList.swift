@@ -9,15 +9,10 @@ import SwiftUI
 
 public struct EstatiaList<Content: View>: View {
     
-    let content: Content
-    let showsDividers: Bool
+    private let content: Content
     
-    public init(
-        showsDividers: Bool = true,
-        @ViewBuilder content: () -> Content
-    ) {
+    public init(@ViewBuilder content: () -> Content) {
         self.content = content()
-        self.showsDividers = showsDividers
     }
     
     public var body: some View {

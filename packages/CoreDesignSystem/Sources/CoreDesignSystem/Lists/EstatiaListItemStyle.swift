@@ -13,14 +13,14 @@ public struct EstatiaListItemStyle: Sendable {
     public let showsChevron: Bool
     public let verticalPadding: CGFloat
     public let isDestructive: Bool
-    public let dividerInset: CGFloat?
+    public let dividerInset: DividerInset?
     
     public init(
         showsDivider: Bool = true,
         showsChevron: Bool = false,
         verticalPadding: CGFloat,
         isDestructive: Bool = false,
-        dividerInset : CGFloat? = nil
+        dividerInset : DividerInset = nil
     ) {
         self.showsDivider = showsDivider
         self.showsChevron = showsChevron
@@ -33,20 +33,24 @@ public struct EstatiaListItemStyle: Sendable {
 public extension EstatiaListItemStyle {
     
     static let standard = EstatiaListItemStyle(
-        verticalPadding: 12
+        verticalPadding: 12,
+        dividerInset: .leading
     )
     
     static let compact = EstatiaListItemStyle(
-        verticalPadding: 8
+        verticalPadding: 8,
+        dividerInset: .leading
     )
     
     static let navigation = EstatiaListItemStyle(
         showsChevron: true,
-        verticalPadding: 12
+        verticalPadding: 12,
+        dividerInset: .leading
     )
     
     static let destructive = EstatiaListItemStyle(
         verticalPadding: 12,
-        isDestructive: true
+        isDestructive: true,
+        dividerInset: .none
     )
 }

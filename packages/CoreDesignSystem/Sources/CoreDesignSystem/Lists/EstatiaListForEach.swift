@@ -13,6 +13,13 @@ private struct IndexedItem<Element, ID: Hashable>: Identifiable {
     let id: ID
 }
 
+private struct RenderItem<Element, ID: Hashable>: Identifiable {
+    let index: Int
+    let element: Element
+    let id: ID
+    let showsDivider: Bool
+}
+
 public struct EstatiaListForEach<Data, ID, Row: View>: View
 where Data: RandomAccessCollection, ID: Hashable {
     
@@ -43,12 +50,21 @@ where Data: RandomAccessCollection, ID: Hashable {
             )
         }
         
-        ForEach(indexedItems) { item in
+        let renderItems = indexedItems.map { item in
+            RenderItem(
+                element: item.element,
+                showsDivider: item.index < lastIndex
+            )
+        }
+        
+        ForEach(renderItems, id: \.element[keyPath: id]) { item in
             
             row(item.element)
             
-            if item.index < lastIndex {
-                EstatiaDivider(inset: dividerInset(for: item.element))
+            if item.showsDivider {
+                EstatiaDivider(
+                    inset: DividerInset(for: item.element)
+                )
             }
         }
     }

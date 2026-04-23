@@ -22,3 +22,5 @@ public struct EstatiaListItemModel<Element>: Identifiable {
         self.style = style
     }
 }
+
+extension EstatiaListItemModel: StyledListItem {}

@@ -6,7 +6,19 @@
 //
 
 
-public struct EstatiaListItemModel<Element> {
+public struct EstatiaListItemModel<Element>: Identifiable {
+    
+    public let id: AnyHashable
     public let element: Element
     public let style: EstatiaListItemStyle
+    
+    public init<ID: Hashable>(
+        id: ID,
+        element: Element,
+        style: EstatiaListItemStyle
+    ) {
+        self.id = AnyHashable(id)
+        self.element = element
+        self.style = style
+    }
 }

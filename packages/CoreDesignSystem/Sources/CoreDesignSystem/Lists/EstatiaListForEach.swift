@@ -33,7 +33,7 @@ where Model: Identifiable {
                let style = (item as? any StyledListItem)?.style,
                style.showsDivider {
                 
-                EstatiaDivider
+                EstatiaDivider(
                     inset: EstatiaList.resolveInset(for: style)
                 )
             }

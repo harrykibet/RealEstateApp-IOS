@@ -42,28 +42,16 @@ where Data: RandomAccessCollection, ID: Hashable {
         let items = Array(data)
         let lastIndex = items.count - 1
         
-        let indexedItems = items.enumerated().map {
-            IndexedItem(
-                index: $0.offset,
-                element: $0.element,
-                id: $0.element[keyPath: id]
-            )
-        }
-        
-        let renderItems = indexedItems.map { item in
-            RenderItem(
-                element: item.element,
-                showsDivider: item.index < lastIndex
-            )
-        }
-        
-        ForEach(renderItems, id: \.element[keyPath: id]) { item in
+        ForEach(Array(items.enumerated()), id: \.element[keyPath: id]) { pair in
             
-            row(item.element)
+            let index = pair.offset
+            let element = pair.element
             
-            if item.showsDivider {
+            row(element)
+            
+            if index < lastIndex {
                 EstatiaDivider(
-                    inset: DividerInset(for: item.element)
+                    inset: resolveInset(for: element)
                 )
             }
         }

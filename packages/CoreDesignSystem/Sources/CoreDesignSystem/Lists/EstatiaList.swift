@@ -41,6 +41,8 @@ extension EstatiaList {
             return value
         case .leading:
             return defaultInset(for: style)
+        case .automatic:
+            return defaultInset(for: style)
         }
     }
     

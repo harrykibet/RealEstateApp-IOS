@@ -20,7 +20,7 @@ public struct EstatiaListItemStyle: Sendable {
         showsChevron: Bool = false,
         verticalPadding: CGFloat,
         isDestructive: Bool = false,
-        dividerInset : DividerInset = nil
+        dividerInset : DividerInset? = nil
     ) {
         self.showsDivider = showsDivider
         self.showsChevron = showsChevron

@@ -5,9 +5,7 @@
 //  Created by builder on 4/23/26.
 //
 
-
 public struct EstatiaListItemModel<Element>: Identifiable {
-    
     public let id: AnyHashable
     public let element: Element
     public let style: EstatiaListItemStyle

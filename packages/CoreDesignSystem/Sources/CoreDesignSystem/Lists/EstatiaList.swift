@@ -26,7 +26,7 @@ public struct EstatiaList<Content: View>: View {
 
 extension EstatiaList {
     
-    func resolveInset(for style: EstatiaListItemStyle) -> CGFloat {
+    static func resolveInset(for style: EstatiaListItemStyle) -> CGFloat {
         
         guard style.showsDivider else { return 0 }
         
@@ -44,7 +44,7 @@ extension EstatiaList {
         }
     }
     
-    private func defaultInset(for style: EstatiaListItemStyle) -> CGFloat {
+    private static func defaultInset(for style: EstatiaListItemStyle) -> CGFloat {
         36
     }
 }

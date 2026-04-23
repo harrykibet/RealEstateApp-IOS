@@ -27,15 +27,18 @@ where Model: Identifiable {
         
         ForEach(Array(data.enumerated()), id: \.element.id) { index, item in
             
-            row(item)
-            
-            if index < lastIndex,
-               let style = (item as? any StyledListItem)?.style,
-               style.showsDivider {
+            VStack(spacing: 0) {
                 
-                EstatiaDivider(
-                    inset: EstatiaList.resolveInset(for: style)
-                )
+                row(item)
+                
+                if index < lastIndex,
+                   let styled = item as? any StyledListItem,
+                   styled.style.showsDivider {
+                    
+                    EstatiaDivider(
+                        inset: EstatiaList.resolveInset(for: styled.style)
+                    )
+                }
             }
         }
     }

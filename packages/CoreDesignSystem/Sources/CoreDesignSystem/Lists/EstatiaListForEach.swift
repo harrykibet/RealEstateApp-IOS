@@ -7,50 +7,34 @@
 
 import SwiftUI
 
-private struct IndexedItem<Element, ID: Hashable>: Identifiable {
-    let index: Int
-    let element: Element
-    let id: ID
-}
-
-
-public struct EstatiaListForEach<Data, ID, Row: View>: View
-where Data: RandomAccessCollection, ID: Hashable {
+public struct EstatiaListForEach<Model, Row: View>: View
+where Model: Identifiable {
     
-    private let data: Data
-    private let id: KeyPath<Data.Element, ID>
-    private let row: (Data.Element) -> Row
+    private let data: [Model]
+    private let row: (Model) -> Row
     
     public init(
-        _ data: Data,
-        id: KeyPath<Data.Element, ID>,
-        @ViewBuilder row: @escaping (Data.Element) -> Row
+        _ data: [Model],
+        @ViewBuilder row: @escaping (Model) -> Row
     ) {
         self.data = data
-        self.id = id
         self.row = row
     }
     
     public var body: some View {
         
-        let items = Array(data)
-        let lastIndex = items.count - 1
+        let lastIndex = data.count - 1
         
-        let indexedItems: [IndexedItem<Data.Element, ID>] = items.enumerated().map {
-            IndexedItem(
-                index: $0.offset,
-                element: $0.element,
-                id: $0.element[keyPath: id]
-            )
-        }
-        
-        return ForEach(indexedItems) { item in
+        ForEach(Array(data.enumerated()), id: \.element.id) { index, item in
             
-            row(item.element)
+            row(item)
             
-            if item.index < lastIndex {
+            if index < lastIndex,
+               let style = (item as? any StyledListItem)?.style,
+               style.showsDivider {
+                
                 EstatiaDivider(
-                    inset: EstatiaList.resolveInset(for: item.element)
+                    inset: EstatiaList.resolveInset(for: style)
                 )
             }
         }

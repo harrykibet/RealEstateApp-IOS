@@ -39,14 +39,12 @@ extension EstatiaList {
             return 0
         case .custom(let value):
             return value
-        case .leading:
-            return defaultInset(for: style)
-        case .automatic:
+        case .leading, .automatic:
             return defaultInset(for: style)
         }
     }
     
     private func defaultInset(for style: EstatiaListItemStyle) -> CGFloat {
-        36 // derived from icon + spacing tokens
+        36
     }
 }

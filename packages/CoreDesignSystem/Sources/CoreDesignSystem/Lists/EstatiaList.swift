@@ -44,7 +44,7 @@ extension EstatiaList {
         }
     }
     
-    private static func defaultInset(for style: EstatiaListItemStyle) -> CGFloat {
+    static func defaultInset(for style: EstatiaListItemStyle) -> CGFloat {
         36
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct EstatiaListForEach<Model, Row: View>: View
-where Model: Identifiable {
+where Model: Identifiable & StyledListItem {
     
     private let data: [Model]
     private let row: (Model) -> Row
@@ -31,12 +31,9 @@ where Model: Identifiable {
                 
                 row(item)
                 
-                if index < lastIndex,
-                   let styled = item as? any StyledListItem,
-                   styled.style.showsDivider {
-                    
+                if index < lastIndex && item.style.showsDivider {
                     EstatiaDivider(
-                        inset: EstatiaList.resolveInset(for: styled.style)
+                        inset: EstatiaList.resolveInset(for: item.style)
                     )
                 }
             }

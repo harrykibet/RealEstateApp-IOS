@@ -13,17 +13,20 @@ public struct EstatiaListItemStyle: Sendable {
     public let showsChevron: Bool
     public let verticalPadding: CGFloat
     public let isDestructive: Bool
+    public let dividerInset: CGFloat?
     
     public init(
         showsDivider: Bool = true,
         showsChevron: Bool = false,
         verticalPadding: CGFloat,
-        isDestructive: Bool = false
+        isDestructive: Bool = false,
+        dividerInset : CGFloat? = nil
     ) {
         self.showsDivider = showsDivider
         self.showsChevron = showsChevron
         self.verticalPadding = verticalPadding
         self.isDestructive = isDestructive
+        self.dividerInset = dividerInset
     }
 }
 

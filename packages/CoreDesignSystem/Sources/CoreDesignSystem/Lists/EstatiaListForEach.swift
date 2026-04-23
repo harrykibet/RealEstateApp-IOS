@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+private struct IndexedItem<Element, ID: Hashable>: Identifiable {
+    let index: Int
+    let element: Element
+    let id: ID
+}
 
 public struct EstatiaListForEach<Data, ID, Row: View>: View
 where Data: RandomAccessCollection, ID: Hashable {
@@ -30,15 +35,20 @@ where Data: RandomAccessCollection, ID: Hashable {
         let items = Array(data)
         let lastIndex = items.count - 1
         
-        ForEach(
-            Array(zip(items.indices, items)),
-            id: { pair in pair.1[keyPath: id] }
-        ) { index, element in
+        let indexedItems = items.enumerated().map {
+            IndexedItem(
+                index: $0.offset,
+                element: $0.element,
+                id: $0.element[keyPath: id]
+            )
+        }
+        
+        ForEach(indexedItems) { item in
             
-            row(element)
+            row(item.element)
             
-            if index < lastIndex {
-                EstatiaDivider()
+            if item.index < lastIndex {
+                EstatiaDivider(inset: dividerInset(for: item.element))
             }
         }
     }

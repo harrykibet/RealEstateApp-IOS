@@ -33,7 +33,7 @@ where Model: Identifiable & StyledListItem {
                 
                 if index < lastIndex && item.style.showsDivider {
                     EstatiaDivider(
-                        inset: EstatiaList.resolveInset(for: item.style)
+                        inset: EstatiaListLayout.resolveInset(for: item.style)
                     )
                 }
             }

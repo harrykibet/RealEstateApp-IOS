@@ -59,10 +59,10 @@ private extension EstatiaBadge {
     var contentView: some View {
         switch content {
         case .text(let value):
-            Text(value)
+            EstatiaText(value)
 
         case .count(let count):
-            Text(formattedCount(count))
+            EstatiaText(formattedCount(count))
 
         case .icon(let systemName):
             Image(systemName: systemName)

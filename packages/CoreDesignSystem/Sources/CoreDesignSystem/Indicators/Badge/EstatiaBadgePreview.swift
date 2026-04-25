@@ -29,8 +29,7 @@ private var badgePreviewContent: some View {
         // MARK: - Text Badges
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Text")
-                .font(.caption)
+            EstatiaText("Text", style: .caption)
             
             HStack(spacing: 12) {
                 EstatiaBadge(content: .text("New"), style: .primary)
@@ -45,8 +44,7 @@ private var badgePreviewContent: some View {
         // MARK: - Count Badges
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Count")
-                .font(.caption)
+            EstatiaText("Count", style: .caption)
             
             HStack(spacing: 12) {
                 EstatiaBadge(content: .count(5), style: .primary)
@@ -59,8 +57,7 @@ private var badgePreviewContent: some View {
         // MARK: - Icon Badges
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Icon")
-                .font(.caption)
+            EstatiaText("Icon", style: .caption)
             
             HStack(spacing: 12) {
                 EstatiaBadge(content: .icon(systemName: "star.fill"), style: .primary)
@@ -72,8 +69,7 @@ private var badgePreviewContent: some View {
         // MARK: - Sizes
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Sizes")
-                .font(.caption)
+            EstatiaText("Sizes", style: .caption)
             
             HStack(spacing: 12) {
                 EstatiaBadge(content: .text("Small"), size: .small)
@@ -85,8 +81,7 @@ private var badgePreviewContent: some View {
         // MARK: - Mixed (Real-world scenarios)
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("Real Use Cases")
-                .font(.caption)
+            EstatiaText("Real Use Cases", style: .caption)
             
             HStack(spacing: 12) {
                 EstatiaBadge(

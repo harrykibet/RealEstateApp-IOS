@@ -37,15 +37,13 @@ public struct EstatiaFormValidationView: View {
         VStack(alignment: .leading, spacing: 4) {
             
             if shouldShowError, let error = meta.error {
-                Text(error)
-                    .font(.caption)
+                EstatiaText(error, style: .caption)
                     .foregroundColor(theme.colors.error)
                     .transition(.opacity)
             }
             
             else if let helperText {
-                Text(helperText)
-                    .font(.caption)
+                EstatiaText(helperText, style: .caption)
                     .foregroundColor(theme.colors.textSecondary)
             }
         }

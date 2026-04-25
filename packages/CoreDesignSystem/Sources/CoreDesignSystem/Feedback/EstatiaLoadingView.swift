@@ -25,8 +25,7 @@ public struct EstatiaLoadingView: View {
                 .tint(theme.colors.primary)
             
             if let message {
-                Text(message)
-                    .font(.subheadline)
+                EstatiaText(message, style: .label)
                     .foregroundColor(theme.colors.textSecondary)
             }
         }

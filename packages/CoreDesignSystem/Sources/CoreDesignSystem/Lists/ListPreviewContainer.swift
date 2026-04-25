@@ -6,13 +6,6 @@
 //
 
 
-//
-//  EstatiaListPreview.swift
-//  CoreDesignSystem
-//
-//  Created by builder on 4/21/26.
-//
-
 import SwiftUI
 
 #if DEBUG

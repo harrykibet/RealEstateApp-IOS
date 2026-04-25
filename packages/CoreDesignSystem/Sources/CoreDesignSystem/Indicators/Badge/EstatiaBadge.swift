@@ -137,7 +137,7 @@ private extension EstatiaBadge {
         case .small:
             return theme.typography.caption
         case .medium:
-            return theme.typography.footnote
+            return theme.typography.label
         case .large:
             return theme.typography.body
         }

@@ -144,7 +144,7 @@ private extension EstatiaChip {
         case .small:
             return theme.typography.caption
         case .medium:
-            return theme.typography.footnote
+            return theme.typography.label
         }
     }
 }

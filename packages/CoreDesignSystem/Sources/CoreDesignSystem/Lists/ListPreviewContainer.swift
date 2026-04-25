@@ -73,7 +73,7 @@ private struct ListPreviewContainer: View {
                     } content: {
                         title("Notifications")
                     } trailing: {
-                        Toggle("", isOn: $isEnabled)
+                        EstatiaToggle(isOn: $isEnabled)
                             .labelsHidden()
                     }
                     
@@ -84,7 +84,7 @@ private struct ListPreviewContainer: View {
                     } content: {
                         title("Dark Mode")
                     } trailing: {
-                        Toggle("", isOn: .constant(true))
+                        EstatiaToggle(isOn: .constant(true))
                             .labelsHidden()
                     }
                 },

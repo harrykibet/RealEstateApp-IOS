@@ -25,7 +25,9 @@ where Model: Identifiable & StyledListItem {
         
         let lastIndex = data.count - 1
         
-        ForEach(Array(data.enumerated()), id: \.element.id) { index, item in
+        ForEach(data.indices, id: \.self) { index in
+            
+            let item = data[index]
             
             VStack(spacing: 0) {
                 

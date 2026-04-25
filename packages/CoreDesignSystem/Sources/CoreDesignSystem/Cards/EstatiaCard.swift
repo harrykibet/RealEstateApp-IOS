@@ -93,15 +93,15 @@ private var cardPreviewContent: some View {
     VStack(spacing: 16) {
         
         EstatiaCard(style: .elevated) {
-            Text("Elevated Card")
+            EstatiaText("Elevated Card")
         }
         
         EstatiaCard(style: .filled) {
-            Text("Filled Card")
+            EstatiaText("Filled Card")
         }
         
         EstatiaCard(style: .outlined) {
-            Text("Outlined Card")
+            EstatiaText("Outlined Card")
         }
     }
     .padding()

@@ -39,7 +39,7 @@ public struct EstatiaTextField: View {
             ZStack(alignment: .leading) {
                 
                 if shouldShowPlaceholder {
-                    Text(placeholder)
+                    EstatiaText(placeholder)
                         .foregroundColor(theme.colors.textDisabled)
                 }
                 
@@ -57,8 +57,7 @@ public struct EstatiaTextField: View {
             .clipShape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
             
             if case let .error(message) = state {
-                Text(message)
-                    .font(.caption)
+                EstatiaText(message, style: .caption)
                     .foregroundColor(theme.colors.error)
                     .accessibilityHint(message)
             }

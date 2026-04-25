@@ -35,12 +35,10 @@ public struct EstatiaErrorView: View {
                 .font(.system(size: FeedbackTokens.iconSize))
                 .foregroundColor(theme.colors.error)
             
-            Text(title)
-                .font(.headline)
+            EstatiaText(title, style: .subtitle)
                 .foregroundColor(theme.colors.textPrimary)
             
-            Text(message)
-                .font(.subheadline)
+            EstatiaText(message, style: .label)
                 .foregroundColor(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)
             

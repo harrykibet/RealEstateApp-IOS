@@ -35,12 +35,10 @@ public struct EstatiaEmptyStateView: View {
                 .font(.system(size: FeedbackTokens.iconSize))
                 .foregroundColor(theme.colors.textSecondary)
             
-            Text(title)
-                .font(.headline)
+            EstatiaText(title, style: .subtitle)
                 .foregroundColor(theme.colors.textPrimary)
             
-            Text(message)
-                .font(.subheadline)
+            EstatiaText(message, style: .label)
                 .foregroundColor(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)
             

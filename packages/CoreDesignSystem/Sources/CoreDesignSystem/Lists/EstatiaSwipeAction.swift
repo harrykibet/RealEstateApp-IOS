@@ -8,18 +8,31 @@
 import SwiftUI
 
 
-public struct EstatiaSwipeAction: Sendable {
+import SwiftUI
+
+@MainActor
+public struct EstatiaSwipeAction {
     
     public let title: String
     public let role: Role
-    public let action: @Sendable () -> Void
+    public let action: @MainActor () -> Void
     
-    public enum Role : Sendable {
+    public enum Role {
         case normal
         case destructive
     }
-}
     
+    public init(
+        title: String,
+        role: Role = .normal,
+        action: @escaping @MainActor () -> Void
+    ) {
+        self.title = title
+        self.role = role
+        self.action = action
+    }
+}
+
 public extension View {
     
     func estatiaSwipeActions(

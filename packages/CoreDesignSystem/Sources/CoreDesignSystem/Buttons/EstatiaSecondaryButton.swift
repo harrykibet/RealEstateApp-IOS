@@ -29,7 +29,7 @@ public struct EstatiaSecondaryButton: View {
             isEnabled: isEnabled,
             action: action
         ) {
-            Text(title).font(.headline)
+            EstatiaText(title, style: .title)
         }
     }
 }

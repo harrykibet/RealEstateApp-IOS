@@ -5,11 +5,6 @@
 //  Created by builder on 4/12/26.
 //
 
-//
-//  EstatiaSegmentedControl.swift
-//  CoreDesignSystem
-//
-
 import SwiftUI
 
 public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
@@ -83,7 +78,7 @@ private struct EstatiaSegmentedControlPreviewContent: View {
                 selection: $selectedTab,
                 items: AppTab.allCases
             ) { item, isSelected in
-                Text(item.title)
+                EstatiaText(item.title)
                     .fontWeight(isSelected ? .semibold : .regular)
                     .foregroundColor(
                         isSelected
@@ -93,8 +88,7 @@ private struct EstatiaSegmentedControlPreviewContent: View {
             }
             
             // Debug output (VERY useful)
-            Text("Selected: \(selectedTab.title)")
-                .font(.caption)
+            EstatiaText("Selected: \(selectedTab.title)", style: .caption)
         }
     }
 }

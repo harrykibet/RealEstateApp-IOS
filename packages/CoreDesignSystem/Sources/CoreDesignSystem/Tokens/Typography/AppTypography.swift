@@ -35,12 +35,12 @@ public struct AppTypography {
 public extension AppTypography {
     static var estatia: AppTypography {
         AppTypography(
-            display: .system(size: 32, weight: .bold),
-            title: .system(size: 20, weight: .semibold),
-            body: .system(size: 16, weight: .regular),
-            label: .system(size: 14, weight: .medium),
-            caption: .system(size: 12, weight: .regular),
-            button: .system(size: 16, weight: .semibold)
+            display: .system(.largeTitle, design: .default),
+            title: .system(.title3, design: .default),
+            body: .system(.body),
+            label: .system(.subheadline),
+            caption: .system(.caption),
+            button: .system(.body, weight: .semibold)
         )
     }
 }

@@ -70,7 +70,7 @@ private struct ListPreviewContainer: View {
                 },
                 content: {
                     EstatiaListItem {
-                        icon("bell")
+                        EstatiaIconButton(systemImage: "bell", action: {})
                     } content: {
                         title("Notifications")
                     } trailing: {
@@ -81,7 +81,7 @@ private struct ListPreviewContainer: View {
                     EstatiaDivider(inset: 56)
                     
                     EstatiaListItem {
-                        icon("moon")
+                        EstatiaIconButton(systemImage: "moon", action: {})
                     } content: {
                         title("Dark Mode")
                     } trailing: {

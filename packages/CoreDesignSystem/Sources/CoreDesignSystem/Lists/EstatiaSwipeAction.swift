@@ -8,25 +8,25 @@
 import SwiftUI
 
 
-import SwiftUI
-
-@MainActor
-public struct EstatiaSwipeAction {
+public struct EstatiaSwipeAction: Identifiable {
     
+    public let id: AnyHashable
     public let title: String
     public let role: Role
-    public let action: @MainActor () -> Void
+    public let action: @MainActor () async -> Void
     
     public enum Role {
         case normal
         case destructive
     }
     
-    public init(
+    public init<ID: Hashable>(
+        id: ID,
         title: String,
         role: Role = .normal,
-        action: @escaping @MainActor () -> Void
+        action: @escaping @MainActor () async -> Void
     ) {
+        self.id = AnyHashable(id)
         self.title = title
         self.role = role
         self.action = action
@@ -38,15 +38,25 @@ public extension View {
     func estatiaSwipeActions(
         _ actions: [EstatiaSwipeAction]
     ) -> some View {
-        self.swipeActions {
-            ForEach(actions.indices, id: \.self) { index in
-                let action = actions[index]
+        swipeActions {
+            ForEach(actions) { action in
                 
                 Button(action.title) {
-                    action.action()
+                    Task { @MainActor in
+                        await action.action()
+                    }
                 }
-                .tint(action.role == .destructive ? .red : .blue)
+                .tint(tint(for: action.role))
             }
+        }
+    }
+    
+    private func tint(for role: EstatiaSwipeAction.Role) -> Color {
+        switch role {
+        case .normal:
+            return .blue
+        case .destructive:
+            return .red
         }
     }
 }

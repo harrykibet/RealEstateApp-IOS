@@ -18,7 +18,7 @@ public struct EstatiaText: View {
     
     public init(
         _ content: String,
-        style: EstatiaTextStyle,
+        style: EstatiaTextStyle = .body,
         color: Color? = nil
     ) {
         self.content = content

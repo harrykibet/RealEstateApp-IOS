@@ -39,7 +39,7 @@ private struct ListPreviewContainer: View {
                 },
                 content: {
                     EstatiaListItem {
-                        icon("house")
+                        EstatiaIconButton(systemImage: "house", action: {})
                     } content: {
                         titleSubtitle("Home", "Primary destination")
                     } trailing: {
@@ -49,7 +49,8 @@ private struct ListPreviewContainer: View {
                     EstatiaDivider(inset: 56)
                     
                     EstatiaListItem {
-                        icon("heart")
+                        EstatiaIconButton(systemImage: "heart",
+                             action: {})
                     } content: {
                         titleSubtitle("Favorites", "Saved properties")
                     } trailing: {

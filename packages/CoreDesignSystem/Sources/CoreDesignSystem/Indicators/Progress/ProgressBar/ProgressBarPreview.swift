@@ -59,10 +59,10 @@ private struct ProgressPreviewContainer: View {
                     )
                     
                     VStack {
-                        Text("Progress")
+                        EstatiaText("Progress")
                         Slider(value: $progress, in: 0...1)
                         
-                        Text("Buffer")
+                        EstatiaText("Buffer")
                         Slider(value: $buffer, in: 0...1)
                     }
                 }
@@ -174,7 +174,7 @@ private struct ProgressPreviewContainer: View {
                         label: "Auto Progress"
                     )
                     
-                    Button("Animate") {
+                    Button( "Animate") {
                         animateProgress()
                     }
                 }

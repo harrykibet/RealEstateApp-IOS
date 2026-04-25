@@ -38,8 +38,7 @@ public struct EstatiaProgressBar: View {
         VStack(alignment: .leading, spacing: 6) {
 
             if let label {
-                Text(label)
-                    .font(.caption)
+                EstatiaText(label, style: .caption)
                     .foregroundStyle(.secondary)
             }
 

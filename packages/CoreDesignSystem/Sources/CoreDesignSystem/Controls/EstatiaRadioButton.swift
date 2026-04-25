@@ -5,11 +5,6 @@
 //  Created by builder on 4/12/26.
 //
 
-//
-//  EstatiaRadioButton.swift
-//  CoreDesignSystem
-//
-
 import SwiftUI
 
 public struct EstatiaRadioButton<Value: Hashable>: View {
@@ -44,7 +39,7 @@ public struct EstatiaRadioButton<Value: Hashable>: View {
             HStack(spacing: 12) {
                 radioCircle
                 if let title {
-                    Text(title)
+                    EstatiaText(title)
                         .foregroundColor(foregroundColor)
                 }
             }

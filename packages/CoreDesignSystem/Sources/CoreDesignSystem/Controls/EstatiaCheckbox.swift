@@ -40,7 +40,7 @@ public struct EstatiaCheckbox: View {
             checkbox
             
             if let label {
-                Text(label)
+                EstatiaText(label)
                     .foregroundColor(labelColor)
             }
         }

@@ -118,8 +118,7 @@ private struct ChipGroupPreviewContainer: View {
                     )
                 }
                 
-                Text("Selected: \(singleSelection.first ?? "None")")
-                    .font(.caption)
+                EstatiaText("Selected: \(singleSelection.first ?? "None")", style: .caption)
                     .foregroundColor(.secondary)
                 
                 // MARK: - Multi Select
@@ -132,8 +131,7 @@ private struct ChipGroupPreviewContainer: View {
                     )
                 }
                 
-                Text("Selected: \(multiSelection.joined(separator: ", "))")
-                    .font(.caption)
+                EstatiaText("Selected: \(multiSelection.joined(separator: ", "))", style: .caption)
                     .foregroundColor(.secondary)
                 
                 // MARK: - Stress

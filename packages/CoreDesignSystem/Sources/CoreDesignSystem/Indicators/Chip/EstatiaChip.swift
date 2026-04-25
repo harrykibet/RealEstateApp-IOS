@@ -36,7 +36,7 @@ public struct EstatiaChip: View {
                 Image(systemName: leading)
             }
             
-            Text(content.title)
+            EstatiaText(content.title, style: .title)
             
             if let trailing = trailingIcon {
                 Image(systemName: trailing)

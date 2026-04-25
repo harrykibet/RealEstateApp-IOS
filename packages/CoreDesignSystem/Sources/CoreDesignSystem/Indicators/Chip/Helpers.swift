@@ -14,7 +14,7 @@ func section<Content: View>(
     @ViewBuilder content: () -> Content
 ) -> some View {
     VStack(alignment: .leading, spacing: 12) {
-        Text(title).font(.headline)
+        EstatiaText(title, style: .subtitle)
         content()
     }
 }

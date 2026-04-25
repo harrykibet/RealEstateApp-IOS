@@ -87,8 +87,7 @@ private struct ChipPreviewContainer: View {
                         )
                     }
                     
-                    Text("Actions triggered: \(actionCount)")
-                        .font(.caption)
+                    EstatiaText("Actions triggered: \(actionCount)", style: .caption)
                         .foregroundColor(.secondary)
                 }
                 

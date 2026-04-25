@@ -14,6 +14,7 @@ public struct AppTypography {
     public let label: Font
     public let caption: Font
     public let button: Font
+    public let subtitle: Font
     
     public init(
         display: Font,
@@ -21,7 +22,8 @@ public struct AppTypography {
         body: Font,
         label: Font,
         caption: Font,
-        button: Font
+        button: Font,
+        subtitle: Font
     ) {
         self.display = display
         self.title = title
@@ -29,6 +31,7 @@ public struct AppTypography {
         self.label = label
         self.caption = caption
         self.button = button
+        self.subtitle = subtitle
     }
 }
 
@@ -40,7 +43,8 @@ public extension AppTypography {
             body: .system(.body),
             label: .system(.subheadline),
             caption: .system(.caption),
-            button: .system(.body, weight: .semibold)
+            button: .system(.body, weight: .semibold),
+            subtitle: .system(.headline)
         )
     }
 }

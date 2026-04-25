@@ -45,6 +45,7 @@ private extension EstatiaText {
         case .label:   return theme.typography.label
         case .caption: return theme.typography.caption
         case .button:  return theme.typography.button
+        case .subtitle: return theme.typography.subtitle
         }
     }
 }

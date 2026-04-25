@@ -13,4 +13,5 @@ public enum EstatiaTextStyle {
     case label
     case caption
     case button
+    case subtitle
 }

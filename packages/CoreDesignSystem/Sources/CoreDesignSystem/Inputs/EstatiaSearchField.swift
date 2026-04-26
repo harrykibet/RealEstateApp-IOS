@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+ 
 public struct EstatiaSearchField: View {
     
     @Binding private var text: String
@@ -30,12 +30,14 @@ public struct EstatiaSearchField: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(theme.colors.textSecondary)
             
-            TextField(placeholder, text: $text)
-                .focused($isFocused)
-                .foregroundColor(theme.colors.textPrimary)
+            EstatiaInputField(
+                text: $text,
+                placeholder: placeholder
+            )
+            .focused($isFocused)
             
             if !text.isEmpty {
-                Button(action: clearText) {
+                Button(action: { text = "" }) {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(theme.colors.textSecondary)
                 }
@@ -47,12 +49,7 @@ public struct EstatiaSearchField: View {
         .overlay(border)
         .clipShape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
     }
-    
-    private func clearText() {
-        text = ""
-    }
 }
-
 // MARK: - Styling
 
 private extension EstatiaSearchField {

@@ -50,6 +50,16 @@ public struct EstatiaTextField: View {
     }
 }
 
+private extension EstatiaTextField {
+    
+    var isDisabled: Bool {
+        if case .disabled = state {
+            return true
+        }
+        return false
+    }
+}
+
 #if DEBUG
 
 private struct EstatiaTextFieldPreviewContainer: View {

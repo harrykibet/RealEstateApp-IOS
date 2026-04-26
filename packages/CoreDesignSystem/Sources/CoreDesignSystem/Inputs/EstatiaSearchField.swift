@@ -32,7 +32,8 @@ public struct EstatiaSearchField: View {
             
             EstatiaInputField(
                 text: $text,
-                placeholder: placeholder
+                placeholder: placeholder,
+                isFocused: $isFocused
             )
             .focused($isFocused)
             
@@ -50,6 +51,8 @@ public struct EstatiaSearchField: View {
         .clipShape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
     }
 }
+
+
 // MARK: - Styling
 
 private extension EstatiaSearchField {
@@ -57,7 +60,9 @@ private extension EstatiaSearchField {
     var border: some View {
         RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
             .stroke(
-                isFocused ? theme.colors.primary : theme.colors.surfaceVariant,
+                isFocused
+                ? theme.colors.primary
+                : theme.colors.surfaceVariant,
                 lineWidth: InputTokens.borderWidth
             )
     }

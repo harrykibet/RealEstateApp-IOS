@@ -12,7 +12,7 @@ struct EstatiaInputField: View {
     @Binding var text: String
     let placeholder: String
     
-    @FocusState private var isFocused: Bool
+    var isFocused: FocusState<Bool>.Binding
     
     @Environment(\.theme) private var theme
     
@@ -25,7 +25,7 @@ struct EstatiaInputField: View {
             }
             
             TextField("", text: $text)
-                .focused($isFocused)
+                .focused(isFocused)
                 .foregroundColor(theme.colors.textPrimary)
         }
     }

@@ -21,7 +21,8 @@ public struct EstatiaTextField: View {
             
             EstatiaInputField(
                 text: $text,
-                placeholder: placeholder
+                placeholder: placeholder,
+                isFocused: $isFocused
             )
             .focused($isFocused)
             .disabled(isDisabled)
@@ -36,5 +37,36 @@ public struct EstatiaTextField: View {
                     .foregroundColor(theme.colors.error)
             }
         }
+    }
+}
+
+// MARK: - Derived State (Single Source of Truth)
+private extension EstatiaTextField {
+    
+    var isDisabled: Bool {
+        if case .disabled = state { return true }
+        return false
+    }
+    
+    var backgroundColor: Color {
+        switch state {
+        case .disabled:
+            return theme.colors.surfaceVariant
+        default: return theme.colors.surface
+        }
+    }
+    
+    var borderColor: Color {
+        // Priority: error > focus > default
+        if case .error = state { return theme.colors.error }
+        
+        if isFocused { return theme.colors.primary }
+        
+        return theme.colors.surfaceVariant
+    }
+    
+    var border: some View {
+        RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
+            .stroke(borderColor, lineWidth: InputTokens.borderWidth)
     }
 }

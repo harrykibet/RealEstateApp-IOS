@@ -217,15 +217,15 @@ private struct ControllerDrivenCircularPreview: View {
             )
             
             HStack(spacing: 12) {
-                Button("Start") {
+                EstatiaIconButton(systemImage: "play") {
                     runFlow()
                 }
                 
-                Button("Fail") {
+                EstatiaIconButton(systemImage: "xmark.circle") {
                     Task { await vm.controller.fail(nil) }
                 }
                 
-                Button("Reset") {
+                EstatiaIconButton(systemImage: "arrow.clockwise") {
                     Task { await vm.controller.reset() }
                 }
             }

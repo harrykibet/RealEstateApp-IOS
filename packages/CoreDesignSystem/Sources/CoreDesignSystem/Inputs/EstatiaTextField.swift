@@ -31,7 +31,7 @@ public struct EstatiaTextField: View {
             
             EstatiaInputField(
                 text: $text,
-                placeholder: placeholder,
+                placeholder: placeholder, kind: .text,
                 isFocused: $isFocused
             )
             .focused($isFocused)

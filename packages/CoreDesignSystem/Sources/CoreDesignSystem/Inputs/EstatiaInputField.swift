@@ -11,6 +11,7 @@ struct EstatiaInputField: View {
     
     @Binding var text: String
     let placeholder: String
+    let kind: InputKind
     
     var isFocused: FocusState<Bool>.Binding
     
@@ -24,9 +25,45 @@ struct EstatiaInputField: View {
                     .foregroundColor(theme.colors.textDisabled)
             }
             
-            TextField("", text: $text)
+            inputView
                 .focused(isFocused)
                 .foregroundColor(theme.colors.textPrimary)
+        }
+    }
+}
+
+private extension EstatiaInputField {
+    
+    @ViewBuilder
+    var inputView: some View {
+        switch kind {
+        case .password:
+            SecureField("", text: $text)
+                .keyboardType(keyboardType)
+                .textContentType(textContentType)
+            
+        default:
+            TextField("", text: $text)
+                .keyboardType(keyboardType)
+                .textContentType(textContentType)
+        }
+    }
+    
+    var keyboardType: UIKeyboardType {
+        switch kind {
+        case .email: return .emailAddress
+        case .number: return .numberPad
+        case .phone: return .phonePad
+        default: return .default
+        }
+    }
+    
+    var textContentType: UITextContentType? {
+        switch kind {
+        case .email: return .emailAddress
+        case .password: return .password
+        case .phone: return .telephoneNumber
+        default: return nil
         }
     }
     

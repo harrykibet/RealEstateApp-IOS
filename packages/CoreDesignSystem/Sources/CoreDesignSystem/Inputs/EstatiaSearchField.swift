@@ -32,7 +32,7 @@ public struct EstatiaSearchField: View {
             
             EstatiaInputField(
                 text: $text,
-                placeholder: placeholder,
+                placeholder: placeholder, kind: .search,
                 isFocused: $isFocused
             )
             .focused($isFocused)

@@ -25,48 +25,47 @@ public struct EstatiaSearchField: View {
     }
     
     public var body: some View {
-        HStack(spacing: 8) {
-            
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(theme.colors.textSecondary)
-            
-            EstatiaInputField(
-                text: $text,
-                placeholder: placeholder, kind: .search,
-                isFocused: $isFocused
-            )
-            .focused($isFocused)
-            
-            if !text.isEmpty {
-                Button(action: { text = "" }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(theme.colors.textSecondary)
+        EstatiaInputContainer(
+            state: .normal, // search typically doesn't use validation state
+            isFocused: isFocused
+        ) {
+            HStack(spacing: 8) {
+                
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(theme.colors.textSecondary)
+                
+                EstatiaInputField(
+                    text: $text,
+                    placeholder: placeholder,
+                    kind: .search,
+                    isFocused: $isFocused
+                )
+                
+                if !text.isEmpty {
+                    Button(action: clearText) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(theme.colors.textSecondary)
+                    }
                 }
             }
         }
-        .padding(.horizontal, InputTokens.horizontalPadding)
-        .padding(.vertical, InputTokens.verticalPadding)
-        .background(theme.colors.surface)
-        .overlay(border)
-        .clipShape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
     }
 }
 
-
-// MARK: - Styling
+// MARK: - Actions
 
 private extension EstatiaSearchField {
     
-    var border: some View {
-        RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
-            .stroke(
-                isFocused
-                ? theme.colors.primary
-                : theme.colors.surfaceVariant,
-                lineWidth: InputTokens.borderWidth
-            )
+    func clearText() {
+        text = ""
+        
+        // Preserve focus after clearing
+        DispatchQueue.main.async {
+            isFocused = true
+        }
     }
 }
+
 
 private struct EstatiaSearchFieldPreviewWrapper: View {
     

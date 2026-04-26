@@ -19,8 +19,8 @@ public struct EstatiaTextField: View {
     public init(
         text: Binding<String>,
         placeholder: String,
-        state: InputState = .normal)
-    {
+        state: InputState = .normal
+    ) {
         self._text = text
         self.placeholder = placeholder
         self.state = state
@@ -29,55 +29,24 @@ public struct EstatiaTextField: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: InputTokens.spacing) {
             
-            EstatiaInputField(
-                text: $text,
-                placeholder: placeholder, kind: .text,
-                isFocused: $isFocused
-            )
-            .focused($isFocused)
-            .disabled(isDisabled)
-            .padding(.horizontal, InputTokens.horizontalPadding)
-            .padding(.vertical, InputTokens.verticalPadding)
-            .background(backgroundColor)
-            .overlay(border)
-            .clipShape(RoundedRectangle(cornerRadius: InputTokens.cornerRadius))
+            EstatiaInputContainer(
+                state: state,
+                isFocused: isFocused
+            ) {
+                EstatiaInputField(
+                    text: $text,
+                    placeholder: placeholder,
+                    kind: .text,
+                    isFocused: $isFocused
+                )
+                .disabled(isDisabled)
+            }
             
             if case let .error(message) = state {
                 EstatiaText(message, style: .caption)
                     .foregroundColor(theme.colors.error)
             }
         }
-    }
-}
-
-// MARK: - Derived State (Single Source of Truth)
-private extension EstatiaTextField {
-    
-    var isDisabled: Bool {
-        if case .disabled = state { return true }
-        return false
-    }
-    
-    var backgroundColor: Color {
-        switch state {
-        case .disabled:
-            return theme.colors.surfaceVariant
-        default: return theme.colors.surface
-        }
-    }
-    
-    var borderColor: Color {
-        // Priority: error > focus > default
-        if case .error = state { return theme.colors.error }
-        
-        if isFocused { return theme.colors.primary }
-        
-        return theme.colors.surfaceVariant
-    }
-    
-    var border: some View {
-        RoundedRectangle(cornerRadius: InputTokens.cornerRadius)
-            .stroke(borderColor, lineWidth: InputTokens.borderWidth)
     }
 }
 

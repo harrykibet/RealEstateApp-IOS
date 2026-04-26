@@ -1,5 +1,5 @@
 //
-//  TextField.swift
+//  EstatiaTextField.swift
 //  CoreDesignSystem
 //
 //  Created by builder on 4/1/26.
@@ -15,6 +15,16 @@ public struct EstatiaTextField: View {
     @FocusState private var isFocused: Bool
     
     @Environment(\.theme) private var theme
+    
+    public init(
+        text: Binding<String>,
+        placeholder: String,
+        state: InputState = .normal)
+    {
+        self._text = text
+        self.placeholder = placeholder
+        self.state = state
+    }
     
     public var body: some View {
         VStack(alignment: .leading, spacing: InputTokens.spacing) {
@@ -70,3 +80,117 @@ private extension EstatiaTextField {
             .stroke(borderColor, lineWidth: InputTokens.borderWidth)
     }
 }
+
+#if DEBUG
+
+private struct EstatiaTextFieldPreviewContainer: View {
+    
+    // MARK: - State
+    
+    @State private var emptyText: String = ""
+    @State private var validText: String = "Nairobi"
+    @State private var invalidText: String = "In"
+    @State private var longText: String = "Luxury 3 bedroom apartment with parking and security"
+    @State private var disabledText: String = "Disabled"
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                
+                // MARK: - Empty State
+                
+                section(title: "Empty") {
+                    EstatiaTextField(
+                        text: $emptyText,
+                        placeholder: "Enter location",
+                        state: .normal
+                    )
+                }
+                
+                // MARK: - Valid Input
+                
+                section(title: "Valid Input") {
+                    EstatiaTextField(
+                        text: $validText,
+                        placeholder: "Enter location",
+                        state: .normal
+                    )
+                }
+                
+                // MARK: - Validation (Derived)
+                
+                section(title: "Validation (Dynamic)") {
+                    EstatiaTextField(
+                        text: $invalidText,
+                        placeholder: "Enter location",
+                        state: validationState(for: invalidText)
+                    )
+                }
+                
+                // MARK: - Long Text (Layout Stress)
+                
+                section(title: "Long Text") {
+                    EstatiaTextField(
+                        text: $longText,
+                        placeholder: "Enter location",
+                        state: .normal
+                    )
+                }
+                
+                // MARK: - Disabled
+                
+                section(title: "Disabled") {
+                    EstatiaTextField(
+                        text: $disabledText,
+                        placeholder: "Enter location",
+                        state: .disabled
+                    )
+                }
+            }
+            .padding()
+        }
+    }
+    
+    // MARK: - Section Helper
+    
+    @ViewBuilder
+    private func section(
+        title: String,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            EstatiaText(title, style: .label)
+            content()
+        }
+    }
+    
+    // MARK: - Validation
+    
+    private func validationState(for text: String) -> InputState {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if trimmed.isEmpty {
+            return .normal
+        }
+        
+        if trimmed.count < 3 {
+            return .error("Minimum 3 characters")
+        }
+        
+        return .normal
+    }
+}
+
+#Preview("TextField - Light") {
+    Preview.light {
+        EstatiaTextFieldPreviewContainer()
+    }
+}
+
+#Preview("TextField - Dark") {
+    Preview.dark {
+        EstatiaTextFieldPreviewContainer()
+    }
+}
+
+#endif

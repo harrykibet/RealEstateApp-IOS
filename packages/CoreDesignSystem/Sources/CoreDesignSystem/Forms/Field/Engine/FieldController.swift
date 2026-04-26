@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class FieldController<Value: Equatable>: ObservableObject {
+final class FieldController<Value: Equatable & Sendable>: ObservableObject {
     
     @Published private(set) var state: FieldState<Value>
     
@@ -161,3 +161,4 @@ extension FieldController: AnyFieldController {
         applyExternalError(message)
     }
 }
+

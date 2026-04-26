@@ -11,7 +11,7 @@
 
 import SwiftUI
 
-public struct EstatiaFormField<Value: Equatable, Content: View>: View {
+public struct EstatiaFormField<Value: Equatable & Sendable, Content: View>: View {
     
     // MARK: - External Binding
     

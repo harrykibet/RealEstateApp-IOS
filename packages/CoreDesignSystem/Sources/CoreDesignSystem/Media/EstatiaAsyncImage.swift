@@ -34,13 +34,13 @@ public struct EstatiaAsyncImage: View {
     private var content: some View {
         switch loader.state {
         case .idle, .loading:
-            placeholder
+            EstatiaLoadingView()
             
         case .success(let image):
             EstatiaImage(image: image, contentMode: contentMode)
             
         case .failure:
-            errorView
+            EstatiaErrorView(message: "Error loading image")
         }
     }
 }

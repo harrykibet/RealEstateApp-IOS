@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-public struct ImageRequest: Hashable, Sendable & Equatable {
+public struct ImageRequest: Hashable, Sendable {
     public let url: URL
     public let targetSize: CGSize?
     public let contentMode: ContentMode

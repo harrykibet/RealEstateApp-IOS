@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "CoreImagePipeline",
+    platforms: [
+        .iOS(.v18)
+    ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
@@ -12,15 +15,23 @@ let package = Package(
             targets: ["CoreImagePipeline"]
         ),
     ],
+    dependencies: [
+        .package(path: "../CoreMedia")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "CoreImagePipeline"
+            name: "CoreImagePipeline",
+            dependencies: [
+                .product(name: "CoreMedia", package: "CoreMedia")
+            ]
         ),
         .testTarget(
             name: "CoreImagePipelineTests",
-            dependencies: ["CoreImagePipeline"]
+            dependencies: [
+                "CoreImagePipeline",
+                .product(name: "CoreMedia", package: "CoreMedia")]
         ),
     ],
     swiftLanguageModes: [.v6]

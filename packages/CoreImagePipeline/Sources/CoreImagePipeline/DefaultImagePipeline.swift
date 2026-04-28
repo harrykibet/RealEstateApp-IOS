@@ -29,11 +29,47 @@ public actor DefaultImagePipeline: ImagePipeline {
         self.scheduler = scheduler
     }
     
+    private func applyWritePolicy(
+        data: Data,
+        image: UIImage,
+        for request: ImageRequest
+    ) async {
+        
+        switch request.cachePolicy.write {
+            
+        case .none:
+            break
+            
+        case .memory:
+            memoryCache.set(image, for: request)
+            
+        case .disk:
+            await diskCache.set(data, for: request)
+            
+        case .memoryAndDisk:
+            memoryCache.set(image, for: request)
+            await diskCache.set(data, for: request)
+        }
+    }
+    
+    private func shouldWriteToMemory(_ policy: MediaCachePolicy.Write) -> Bool {
+        switch policy {
+        case .memory, .memoryAndDisk:
+            return true
+        default:
+            return false
+        }
+    }
+    
     public func load(_ request: ImageRequest) async throws -> UIImage {
         
-        // 1. Memory cache (FAST PATH)
-        if let cached = memoryCache.get(for: request) {
-            return cached
+        // 1. Memory cache
+        if request.cachePolicy.read == .memory ||
+           request.cachePolicy.read == .memoryThenDisk {
+            
+            if let cached = memoryCache.get(for: request) {
+                return cached
+            }
         }
         
         // 2. Deduplication
@@ -41,31 +77,33 @@ public actor DefaultImagePipeline: ImagePipeline {
             return try await existingTask.value
         }
         
-        // 3. Create new task
         let task = Task<UIImage, Error> {
             defer { await self.removeTask(for: request) }
             
-            // Disk cache
-            if let data = try? await diskCache.get(for: request),
-               let image = try? decoder.decode(data, targetSize: request.targetSize) {
+            // 3. Disk cache
+            if request.cachePolicy.read == .disk ||
+               request.cachePolicy.read == .memoryThenDisk {
                 
-                memoryCache.set(image, for: request)
-                return image
+                if let data = try? await diskCache.get(for: request),
+                   let image = try? decoder.decode(data, targetSize: request.targetSize) {
+                    
+                    // Promote to memory ONLY if policy allows
+                    if shouldWriteToMemory(request.cachePolicy.write) {
+                        memoryCache.set(image, for: request)
+                    }
+                    
+                    return image
+                }
             }
             
-            // Network
+            // 4. Network
             let (data, _) = try await network.fetch(request.url)
             
-            // Store to disk (async, non-blocking)
-            Task.detached {
-                await self.diskCache.set(data, for: request)
-            }
-            
-            // Decode
+            // 5. Decode
             let image = try decoder.decode(data, targetSize: request.targetSize)
             
-            // Store to memory
-            memoryCache.set(image, for: request)
+            // 6. Apply write policy (FIXED)
+            await applyWritePolicy(data: data, image: image, for: request)
             
             return image
         }

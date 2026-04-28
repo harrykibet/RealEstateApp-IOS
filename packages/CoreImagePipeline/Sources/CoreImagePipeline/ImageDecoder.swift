@@ -5,6 +5,10 @@
 //  Created by builder on 4/28/26.
 //
 
+import Foundation
+import SwiftUI
+import UIKit
+
 
 public protocol ImageDecoder {
     func decode(_ data: Data, targetSize: CGSize?) throws -> UIImage

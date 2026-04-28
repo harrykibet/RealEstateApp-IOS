@@ -5,6 +5,9 @@
 //  Created by builder on 4/27/26.
 //
 
+import Foundation
+import UIKit
+
 public final class ImageMemoryCache {
     
     private let cache = NSCache<WrappedKey, UIImage>()

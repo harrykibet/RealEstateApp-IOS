@@ -5,6 +5,9 @@
 //  Created by builder on 4/28/26.
 //
 
+import Foundation
+import SwiftUI
+
 
 actor ImageDiskCache {
     

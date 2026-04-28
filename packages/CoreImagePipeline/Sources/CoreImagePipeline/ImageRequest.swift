@@ -14,14 +14,14 @@ public struct ImageRequest: Hashable, Sendable {
     public let targetSize: CGSize?
     public let contentMode: ContentMode
     public let priority: MediaPriority
-    public let cachePolicy: CachePolicy
+    public let cachePolicy: MediaCachePolicy
     
     public init(
         url: URL,
         targetSize: CGSize? = nil,
         contentMode: ContentMode = .fill,
         priority: MediaPriority = .normal,
-        cachePolicy: CachePolicy = .default
+        cachePolicy: MediaCachePolicy = .default
     ) {
         self.url = url
         self.targetSize = targetSize

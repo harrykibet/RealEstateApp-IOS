@@ -6,20 +6,78 @@
 //
 
 import Foundation
-import SwiftUI
+import CoreMedia
+import CoreSecurity
 
-
-actor ImageDiskCache {
+public actor ImageDiskCache {
     
     private let directory: URL
+    private let fileManager: FileManager
     
-    func get(for request: ImageRequest) async throws -> Data? {
-        let url = fileURL(for: request)
-        return try? Data(contentsOf: url)
+    // MARK: - Init
+    
+    public init(
+        directory: URL? = nil,
+        fileManager: FileManager = .default
+    ) {
+        self.fileManager = fileManager
+        
+        if let directory {
+            self.directory = directory
+        } else {
+            let base = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+            self.directory = base.appendingPathComponent("image_cache", isDirectory: true)
+        }
+        
+        createDirectoryIfNeeded()
     }
     
-    func set(_ data: Data, for request: ImageRequest) async {
+    private func createDirectoryIfNeeded() {
+        if !fileManager.fileExists(atPath: directory.path) {
+            try? fileManager.createDirectory(
+                at: directory,
+                withIntermediateDirectories: true
+            )
+        }
+    }
+    
+    private func fileURL(for request: ImageRequest) -> URL {
+        let key = cacheKey(for: request)
+        return directory.appendingPathComponent(key)
+    }
+    
+    private func cacheKey(for request: ImageRequest) -> String {
+        var key = request.url.absoluteString
+        
+        if let size = request.targetSize {
+            key += "_\(Int(size.width))x\(Int(size.height))"
+        }
+        
+        // Hash it to make it filesystem-safe
+        return sha256(key)
+    }
+    
+    public func get(for request: ImageRequest) async throws -> Data? {
         let url = fileURL(for: request)
-        try? data.write(to: url)
+        
+        guard fileManager.fileExists(atPath: url.path) else {
+            return nil
+        }
+        
+        do {
+            return try Data(contentsOf: url)
+        } catch {
+            throw MediaError.cacheReadFailed
+        }
+    }
+    
+    public func set(_ data: Data, for request: ImageRequest) async throws {
+        let url = fileURL(for: request)
+        
+        do {
+            try data.write(to: url, options: .atomic)
+        } catch {
+            throw MediaError.cacheWriteFailed
+        }
     }
 }

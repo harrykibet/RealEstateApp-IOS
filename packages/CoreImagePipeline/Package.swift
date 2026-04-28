@@ -16,7 +16,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../CoreMedia")
+        .package(path: "../CoreMedia"),
+        .package(path: "../CoreSecurity")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,14 +25,17 @@ let package = Package(
         .target(
             name: "CoreImagePipeline",
             dependencies: [
-                .product(name: "CoreMedia", package: "CoreMedia")
+                .product(name: "CoreMedia", package: "CoreMedia"),
+                .product(name: "CoreSecurity", package: "CoreSecurity")
             ]
         ),
         .testTarget(
             name: "CoreImagePipelineTests",
             dependencies: [
                 "CoreImagePipeline",
-                .product(name: "CoreMedia", package: "CoreMedia")]
+                .product(name: "CoreMedia", package: "CoreMedia"),
+                .product(name: "CoreSecurity", package: "CoreSecurity")
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

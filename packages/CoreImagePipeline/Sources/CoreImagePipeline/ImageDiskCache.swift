@@ -29,15 +29,25 @@ public actor ImageDiskCache {
             self.directory = base.appendingPathComponent("image_cache", isDirectory: true)
         }
         
-        createDirectoryIfNeeded()
+        createDirectoryIfNeeded(
+            at: self.directory,
+            fileManager: self.fileManager
+        )
     }
     
-    private func createDirectoryIfNeeded() {
+    nonisolated private func createDirectoryIfNeeded(
+        at directory: URL,
+        fileManager: FileManager
+    ) {
         if !fileManager.fileExists(atPath: directory.path) {
-            try? fileManager.createDirectory(
-                at: directory,
-                withIntermediateDirectories: true
-            )
+            do {
+                try fileManager.createDirectory(
+                    at: directory,
+                    withIntermediateDirectories: true
+                )
+            } catch {
+                assertionFailure("Failed to create disk cache directory: \(error)")
+            }
         }
     }
     

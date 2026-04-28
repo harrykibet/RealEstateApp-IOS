@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreMedia
 
 
 public struct ImageRequest: Hashable, Sendable {

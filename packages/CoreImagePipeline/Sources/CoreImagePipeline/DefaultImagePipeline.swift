@@ -5,6 +5,9 @@
 //  Created by builder on 4/27/26.
 //
 
+import UIKit
+import CoreMedia
+
 public actor DefaultImagePipeline: ImagePipeline {
     
     private var inFlightTasks: [ImageRequest: Task<UIImage, Error>] = [:]

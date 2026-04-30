@@ -7,23 +7,24 @@
 
 import Foundation
 
-public struct MediaCachePolicy: Sendable, Equatable {
+public struct MediaCachePolicy: Sendable, Equatable, Hashable {
     
-    public enum Read: Sendable, Equatable {
+    public enum Read: Sendable, Equatable, Hashable
+    {
         case none                // Skip all caches
         case memory              // Memory only
         case disk                // Disk only
         case memoryThenDisk      // Default fast path
     }
     
-    public enum Write: Sendable, Equatable {
+    public enum Write: Sendable, Equatable, Hashable {
         case none
         case memory
         case disk
         case memoryAndDisk
     }
     
-    public enum Expiration: Sendable, Equatable {
+    public enum Expiration: Sendable, Equatable, Hashable {
         case never
         case seconds(TimeInterval)
         case date(Date)

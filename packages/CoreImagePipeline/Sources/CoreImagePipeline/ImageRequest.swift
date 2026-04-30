@@ -13,14 +13,14 @@ import CoreMedia
 public struct ImageRequest: Hashable, Sendable {
     public let url: URL
     public let targetSize: CGSize?
-    public let contentMode: ContentMode
+    public let contentMode: ImageContentMode
     public let priority: MediaPriority
     public let cachePolicy: MediaCachePolicy
     
     public init(
         url: URL,
         targetSize: CGSize? = nil,
-        contentMode: ContentMode = .fill,
+        contentMode: ImageContentMode = .fill,
         priority: MediaPriority = .normal,
         cachePolicy: MediaCachePolicy = .default
     ) {

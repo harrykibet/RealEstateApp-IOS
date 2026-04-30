@@ -17,7 +17,8 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../CoreMedia"),
-        .package(path: "../CoreSecurity")
+        .package(path: "../CoreSecurity"),
+        .package(path: "../CoreNetwork")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -26,7 +27,8 @@ let package = Package(
             name: "CoreImagePipeline",
             dependencies: [
                 .product(name: "CoreMedia", package: "CoreMedia"),
-                .product(name: "CoreSecurity", package: "CoreSecurity")
+                .product(name: "CoreSecurity", package: "CoreSecurity"),
+                .product(name: "CoreNetwork", package: "CoreNetwork")
             ]
         ),
         .testTarget(
@@ -34,7 +36,8 @@ let package = Package(
             dependencies: [
                 "CoreImagePipeline",
                 .product(name: "CoreMedia", package: "CoreMedia"),
-                .product(name: "CoreSecurity", package: "CoreSecurity")
+                .product(name: "CoreSecurity", package: "CoreSecurity"),
+                .product(name: "CoreNetwork", package: "CoreNetwork")
             ]
         ),
     ],

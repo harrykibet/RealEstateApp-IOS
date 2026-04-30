@@ -37,7 +37,7 @@ public actor DefaultImagePipeline: ImagePipeline {
         data: Data,
         image: UIImage,
         for request: ImageRequest
-    ) async {
+    ) async throws {
         
         switch request.cachePolicy.write {
             
@@ -48,11 +48,11 @@ public actor DefaultImagePipeline: ImagePipeline {
             memoryCache.set(image, for: request)
             
         case .disk:
-            await diskCache.set(data, for: request)
+            try await diskCache.set(data, for: request)
             
         case .memoryAndDisk:
             memoryCache.set(image, for: request)
-            await diskCache.set(data, for: request)
+            try await diskCache.set(data, for: request)
         }
     }
     
@@ -107,7 +107,7 @@ public actor DefaultImagePipeline: ImagePipeline {
             let image = try decoder.decode(data, targetSize: request.targetSize)
             
             // 6. Apply write policy (FIXED)
-            await applyWritePolicy(data: data, image: image, for: request)
+            try await applyWritePolicy(data: data, image: image, for: request)
             
             return image
         }
@@ -115,6 +115,19 @@ public actor DefaultImagePipeline: ImagePipeline {
         inFlightTasks[request] = task
         
         return try await scheduler.schedule(task, priority: request.priority)
+    }
+   
+    public func prefetch(_ requests: [ImageRequest]) {
+        for request in requests {
+            Task {
+                _ = try? await load(request)
+            }
+        }
+    }
+
+    public func cancel(_ request: ImageRequest) {
+        inFlightTasks[request]?.cancel()
+        inFlightTasks[request] = nil
     }
     
     private func removeTask(for request: ImageRequest) {

@@ -71,7 +71,7 @@ public actor DefaultImagePipeline: ImagePipeline {
         return try await scheduler.schedule(task, priority: request.priority)
     }
     
-    public func prefetch(_ requests: [ImageRequest]) {
+    public func prefetch(_ requests: [ImageRequest]) async {
         for request in requests {
             Task {
                 _ = try? await load(request)
@@ -79,7 +79,7 @@ public actor DefaultImagePipeline: ImagePipeline {
         }
     }
     
-    public func cancel(_ request: ImageRequest) {
+    public func cancel(_ request: ImageRequest) async {
         inFlightTasks[request]?.cancel()
         inFlightTasks[request] = nil
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreImagePipeline
 
 public struct EstatiaAvatar: View {
     

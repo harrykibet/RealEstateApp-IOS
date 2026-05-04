@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreImagePipeline
 
 final class Loader: ObservableObject {
     

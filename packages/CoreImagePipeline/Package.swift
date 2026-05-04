@@ -16,7 +16,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../CoreMedia"),
+        .package(path: "../CoreMediaPipeline"),
         .package(path: "../CoreSecurity"),
         .package(path: "../CoreNetwork")
     ],
@@ -26,7 +26,7 @@ let package = Package(
         .target(
             name: "CoreImagePipeline",
             dependencies: [
-                .product(name: "CoreMedia", package: "CoreMedia"),
+                .product(name: "CoreMediaPipeline", package: "CoreMediaPipeline"),
                 .product(name: "CoreSecurity", package: "CoreSecurity"),
                 .product(name: "CoreNetwork", package: "CoreNetwork")
             ]
@@ -34,10 +34,7 @@ let package = Package(
         .testTarget(
             name: "CoreImagePipelineTests",
             dependencies: [
-                "CoreImagePipeline",
-                .product(name: "CoreMedia", package: "CoreMedia"),
-                .product(name: "CoreSecurity", package: "CoreSecurity"),
-                .product(name: "CoreNetwork", package: "CoreNetwork")
+                "CoreImagePipeline"
             ]
         ),
     ],

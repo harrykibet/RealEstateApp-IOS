@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreMedia
+import CoreMediaPipeline
 import CoreSecurity
 
 public actor ImageDiskCache {

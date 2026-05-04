@@ -5,7 +5,7 @@
 
 import UIKit
 import CoreNetwork
-import CoreMedia
+import CoreMediaPipeline
 
 public actor DefaultImagePipeline: ImagePipeline {
     

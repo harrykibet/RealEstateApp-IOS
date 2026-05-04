@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreMedia
+import CoreMediaPipeline
 
 
 public struct ImageRequest: Hashable, Sendable {

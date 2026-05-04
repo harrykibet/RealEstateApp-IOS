@@ -5,7 +5,7 @@
 //  Created by builder on 4/28/26.
 //
 
-import CoreMedia
+import CoreMediaPipeline
 
 
 public actor PriorityScheduler {

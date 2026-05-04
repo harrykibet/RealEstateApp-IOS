@@ -28,7 +28,7 @@
 		5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694522DC62E2800245881 /* FirebaseStorage */; };
 		5A1694572DC62E2800245881 /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5A1694562DC62E2800245881 /* FirebaseVertexAI */; };
 		5A28EE872F9FF66B00E22494 /* CoreImagePipeline in Frameworks */ = {isa = PBXBuildFile; productRef = 5A28EE862F9FF66B00E22494 /* CoreImagePipeline */; };
-		5A28EE8A2F9FF74F00E22494 /* CoreMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 5A28EE892F9FF74F00E22494 /* CoreMedia */; };
+		5A2EC0EF2FA9249300486424 /* CoreMediaPipeline in Frameworks */ = {isa = PBXBuildFile; productRef = 5A2EC0EE2FA9249300486424 /* CoreMediaPipeline */; };
 		5A68DF142F7D9DBF0057E1DD /* CoreDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */; };
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 		5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD692F6F172800F773A3 /* CoreAnalytics */; };
@@ -118,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A2EC0EF2FA9249300486424 /* CoreMediaPipeline in Frameworks */,
 				5AEDBD702F6F17A300F773A3 /* CoreData in Frameworks */,
 				5AEDBD8B2F6F19A800F773A3 /* CoreUI in Frameworks */,
 				5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */,
@@ -152,7 +153,6 @@
 				5A1694472DC62E2800245881 /* FirebaseInAppMessaging-Beta in Frameworks */,
 				5A1694392DC62E2800245881 /* FirebaseCrashlytics in Frameworks */,
 				5AEDBD852F6F194400F773A3 /* CoreSecurity in Frameworks */,
-				5A28EE8A2F9FF74F00E22494 /* CoreMedia in Frameworks */,
 				5A28EE872F9FF66B00E22494 /* CoreImagePipeline in Frameworks */,
 				5A16944B2DC62E2800245881 /* FirebaseMLModelDownloader in Frameworks */,
 				5A1694532DC62E2800245881 /* FirebaseStorage in Frameworks */,
@@ -276,6 +276,7 @@
 				5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */,
 				5A28EE862F9FF66B00E22494 /* CoreImagePipeline */,
 				5A28EE892F9FF74F00E22494 /* CoreMedia */,
+				5A2EC0EE2FA9249300486424 /* CoreMediaPipeline */,
 			);
 			productName = estatia;
 			productReference = 5AA8A6532DC3952000F71CEF /* estatia.app */;
@@ -389,7 +390,7 @@
 				5AEDBDB32F6F1D5D00F773A3 /* XCLocalSwiftPackageReference "packages/FeatureSettings" */,
 				5A68DF122F7D9DBF0057E1DD /* XCLocalSwiftPackageReference "packages/CoreDesignSystem" */,
 				5A28EE852F9FF66B00E22494 /* XCLocalSwiftPackageReference "packages/CoreImagePipeline" */,
-				5A28EE882F9FF74F00E22494 /* XCLocalSwiftPackageReference "packages/CoreMedia" */,
+				5A2EC0ED2FA9249300486424 /* XCLocalSwiftPackageReference "packages/CoreMediaPipeline" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5AA8A6542DC3952000F71CEF /* Products */;
@@ -759,9 +760,9 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/CoreImagePipeline;
 		};
-		5A28EE882F9FF74F00E22494 /* XCLocalSwiftPackageReference "packages/CoreMedia" */ = {
+		5A2EC0ED2FA9249300486424 /* XCLocalSwiftPackageReference "packages/CoreMediaPipeline" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = packages/CoreMedia;
+			relativePath = packages/CoreMediaPipeline;
 		};
 		5A68DF122F7D9DBF0057E1DD /* XCLocalSwiftPackageReference "packages/CoreDesignSystem" */ = {
 			isa = XCLocalSwiftPackageReference;
@@ -992,6 +993,10 @@
 		5A28EE892F9FF74F00E22494 /* CoreMedia */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreMedia;
+		};
+		5A2EC0EE2FA9249300486424 /* CoreMediaPipeline */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreMediaPipeline;
 		};
 		5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;

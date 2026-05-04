@@ -30,8 +30,7 @@ let package = Package(
         .testTarget(
             name: "CoreDesignSystemTests",
             dependencies: [
-                "CoreDesignSystem",
-                .product(name: "CoreImagePipeline", package: "CoreImagePipeline")]
+                "CoreDesignSystem"]
         ),
     ]
 )

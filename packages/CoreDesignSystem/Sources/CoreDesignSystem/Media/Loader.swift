@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreImagePipeline
+import CoreMediaPipeline
+import SwiftUI
 
 final class Loader: ObservableObject {
     
@@ -22,24 +24,36 @@ final class Loader: ObservableObject {
         self.pipeline = pipeline
     }
     
-    func load() {
+    func load(targetSize: CGSize? = nil,
+              contentMode: ImageContentMode = .fill,
+              priority: MediaPriority = .normal,
+              cachePolicy: MediaCachePolicy = .default) {
+        
         guard let url, task == nil else { return }
-        
+
         state = .loading
-        
+
+        let request = ImageRequest(
+            url: url,
+            targetSize: targetSize,
+            contentMode: contentMode,
+            priority: priority,
+            cachePolicy: cachePolicy
+        )
+
         task = Task {
             do {
-                let image = try await pipeline.loadImage(from: url)
-                
+                let image = try await pipeline.load(request)
+
                 if Task.isCancelled { return }
-                
+
                 await MainActor.run {
-                    self.state = .success(image)
+                    self.state = .success(Image(uiImage: image))
                 }
-                
+
             } catch {
                 if Task.isCancelled { return }
-                
+
                 await MainActor.run {
                     self.state = .failure(error)
                 }

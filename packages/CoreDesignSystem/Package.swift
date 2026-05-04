@@ -16,7 +16,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../CoreImagePipeline")
+        .package(path: "../CoreImagePipeline"),
+        .package(path: "../CoreMediaPipeline")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,7 +25,8 @@ let package = Package(
         .target(
             name: "CoreDesignSystem",
             dependencies: [
-                .product(name: "CoreImagePipeline", package: "CoreImagePipeline")
+                .product(name: "CoreImagePipeline", package: "CoreImagePipeline"),
+                .product(name: "CoreMediaPipeline", package: "CoreMediaPipeline")
             ]
         ),
         .testTarget(

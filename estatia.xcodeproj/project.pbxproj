@@ -275,7 +275,6 @@
 				5AEDBDB42F6F1D5D00F773A3 /* FeatureSettings */,
 				5A68DF132F7D9DBF0057E1DD /* CoreDesignSystem */,
 				5A28EE862F9FF66B00E22494 /* CoreImagePipeline */,
-				5A28EE892F9FF74F00E22494 /* CoreMedia */,
 				5A2EC0EE2FA9249300486424 /* CoreMediaPipeline */,
 			);
 			productName = estatia;
@@ -367,7 +366,6 @@
 				5AEDBD6E2F6F17A300F773A3 /* XCLocalSwiftPackageReference "packages/CoreData" */,
 				5AEDBD712F6F17DB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDatabase" */,
 				5AEDBD742F6F181A00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDomain" */,
-				5AEDBD772F6F185900F773A3 /* XCLocalSwiftPackageReference "packages/CoreModel" */,
 				5AEDBD7A2F6F18AB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreNetwork" */,
 				5AEDBD7D2F6F18DF00F773A3 /* XCLocalSwiftPackageReference "packages/CorePlayerEngine" */,
 				5AEDBD802F6F191400F773A3 /* XCLocalSwiftPackageReference "packages/CorePlayerUI" */,
@@ -788,10 +786,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/CoreDomain;
 		};
-		5AEDBD772F6F185900F773A3 /* XCLocalSwiftPackageReference "packages/CoreModel" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = packages/CoreModel;
-		};
 		5AEDBD7A2F6F18AB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreNetwork" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/CoreNetwork;
@@ -879,8 +873,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.12.0;
+				kind = exactVersion;
+				version = 12.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -989,10 +983,6 @@
 		5A28EE862F9FF66B00E22494 /* CoreImagePipeline */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreImagePipeline;
-		};
-		5A28EE892F9FF74F00E22494 /* CoreMedia */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoreMedia;
 		};
 		5A2EC0EE2FA9249300486424 /* CoreMediaPipeline */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -23,7 +23,7 @@ import CoreDatabase
 import CoreSecurity
 import CoreCommon
 import CoreTesting
-import CoreData
+import CoreAppData
 import CoreDomain
 import CoreUI
 import CoreModel

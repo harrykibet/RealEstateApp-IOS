@@ -10,13 +10,13 @@ let package = Package(
         .library(name: "FeatureFavorites", targets: ["FeatureFavorites"]),
     ],
     dependencies: [
-        .package(path: "../CoreData")
+        .package(path: "../CoreAppData")
     ],
     targets: [
         .target(
             name: "FeatureFavorites",
             dependencies: [
-                .product(name: "CoreData", package: "CoreData")
+                .product(name: "CoreAppData", package: "CoreAppData")
             ]
         ),
         .testTarget(

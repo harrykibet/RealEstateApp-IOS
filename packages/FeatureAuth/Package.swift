@@ -10,13 +10,13 @@ let package = Package(
         .library(name: "FeatureAuth", targets: ["FeatureAuth"]),
     ],
     dependencies: [
-        .package(path: "../CoreData")
+        .package(path: "../CoreAppData")
     ],
     targets: [
         .target(
             name: "FeatureAuth",
             dependencies: [
-                .product(name: "CoreData", package: "CoreData")
+                .product(name: "CoreAppData", package: "CoreAppData")
             ],
             path: "Sources/FeatureAuth"
         ),

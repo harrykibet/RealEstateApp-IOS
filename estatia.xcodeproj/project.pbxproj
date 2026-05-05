@@ -30,7 +30,6 @@
 		5A9B9D972DCF93C700835345 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9B9D962DCF93C700835345 /* Launch Screen.storyboard */; };
 		5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD692F6F172800F773A3 /* CoreAnalytics */; };
 		5AEDBD6D2F6F176600F773A3 /* CoreCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD6C2F6F176600F773A3 /* CoreCommon */; };
-		5AEDBD702F6F17A300F773A3 /* CoreData in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD6F2F6F17A300F773A3 /* CoreData */; };
 		5AEDBD732F6F17DB00F773A3 /* CoreDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD722F6F17DB00F773A3 /* CoreDatabase */; };
 		5AEDBD762F6F181A00F773A3 /* CoreDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD752F6F181A00F773A3 /* CoreDomain */; };
 		5AEDBD792F6F185900F773A3 /* CoreModel in Frameworks */ = {isa = PBXBuildFile; productRef = 5AEDBD782F6F185900F773A3 /* CoreModel */; };
@@ -117,7 +116,6 @@
 			files = (
 				5A4FF8DA2FA934CD00B45A74 /* (null) in Frameworks */,
 				5A2EC0EF2FA9249300486424 /* CoreMediaPipeline in Frameworks */,
-				5AEDBD702F6F17A300F773A3 /* CoreData in Frameworks */,
 				5AEDBD8B2F6F19A800F773A3 /* CoreUI in Frameworks */,
 				5AEDBD6A2F6F172800F773A3 /* CoreAnalytics in Frameworks */,
 				5A1694432DC62E2800245881 /* FirebaseFunctions in Frameworks */,
@@ -240,7 +238,6 @@
 				5A1694522DC62E2800245881 /* FirebaseStorage */,
 				5AEDBD692F6F172800F773A3 /* CoreAnalytics */,
 				5AEDBD6C2F6F176600F773A3 /* CoreCommon */,
-				5AEDBD6F2F6F17A300F773A3 /* CoreData */,
 				5AEDBD722F6F17DB00F773A3 /* CoreDatabase */,
 				5AEDBD752F6F181A00F773A3 /* CoreDomain */,
 				5AEDBD782F6F185900F773A3 /* CoreModel */,
@@ -353,7 +350,6 @@
 				5A1694272DC62E2800245881 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5AEDBD682F6F172800F773A3 /* XCLocalSwiftPackageReference "packages/CoreAnalytics" */,
 				5AEDBD6B2F6F176600F773A3 /* XCLocalSwiftPackageReference "packages/CoreCommon" */,
-				5AEDBD6E2F6F17A300F773A3 /* XCLocalSwiftPackageReference "packages/CoreData" */,
 				5AEDBD712F6F17DB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDatabase" */,
 				5AEDBD742F6F181A00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDomain" */,
 				5AEDBD7A2F6F18AB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreNetwork" */,
@@ -764,10 +760,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/CoreCommon;
 		};
-		5AEDBD6E2F6F17A300F773A3 /* XCLocalSwiftPackageReference "packages/CoreData" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = packages/CoreData;
-		};
 		5AEDBD712F6F17DB00F773A3 /* XCLocalSwiftPackageReference "packages/CoreDatabase" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = packages/CoreDatabase;
@@ -969,10 +961,6 @@
 		5AEDBD6C2F6F176600F773A3 /* CoreCommon */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreCommon;
-		};
-		5AEDBD6F2F6F17A300F773A3 /* CoreData */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoreData;
 		};
 		5AEDBD722F6F17DB00F773A3 /* CoreDatabase */ = {
 			isa = XCSwiftPackageProductDependency;

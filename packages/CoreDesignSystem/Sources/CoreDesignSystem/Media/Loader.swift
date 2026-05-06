@@ -10,6 +10,7 @@ import CoreImagePipeline
 import CoreMediaPipeline
 import SwiftUI
 
+@MainActor
 final class Loader: ObservableObject {
     
     @Published private(set) var state: EstatiaAsyncImageState = .idle
@@ -24,11 +25,12 @@ final class Loader: ObservableObject {
         self.pipeline = pipeline
     }
     
-    func load(targetSize: CGSize? = nil,
-              contentMode: ImageContentMode = .fill,
-              priority: MediaPriority = .normal,
-              cachePolicy: MediaCachePolicy = .default) {
-        
+    func load(
+        targetSize: CGSize? = nil,
+        contentMode: ImageContentMode = .fill,
+        priority: MediaPriority = .normal,
+        cachePolicy: MediaCachePolicy = .default
+    ) {
         guard let url, task == nil else { return }
 
         state = .loading
@@ -45,18 +47,14 @@ final class Loader: ObservableObject {
             do {
                 let image = try await pipeline.load(request)
 
-                if Task.isCancelled { return }
+                guard !Task.isCancelled else { return }
 
-                await MainActor.run {
-                    self.state = .success(Image(uiImage: image))
-                }
+                state = .success(Image(uiImage: image))
 
             } catch {
-                if Task.isCancelled { return }
+                guard !Task.isCancelled else { return }
 
-                await MainActor.run {
-                    self.state = .failure(error)
-                }
+                state = .failure(error)
             }
         }
     }

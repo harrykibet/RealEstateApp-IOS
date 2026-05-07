@@ -5,7 +5,7 @@
 //  Created by builder on 5/7/26.
 //
 
-import Foundation
+import SwiftUI
 
 @MainActor
 public final class OverlayManager:
@@ -20,30 +20,49 @@ public final class OverlayManager:
     public func present(
         _ entry: OverlayEntry
     ) {
-        overlays.append(entry)
-        
-        overlays.sort {
-            $0.priority < $1.priority
+        withAnimation(
+            .spring(
+                response: 0.35,
+                dampingFraction: 0.85
+            )
+        ) {
+            overlays.append(entry)
+            
+            overlays.sort {
+                
+                if $0.priority == $1.priority {
+                    return $0.id.rawValue.uuidString <
+                           $1.id.rawValue.uuidString
+                }
+                
+                return $0.priority < $1.priority
+            }
         }
     }
     
     public func dismiss(
         id: OverlayID
     ) {
-        overlays.removeAll {
-            $0.id == id
+        withAnimation(
+            .spring(
+                response: 0.35,
+                dampingFraction: 0.85
+            )
+        ) {
+            overlays.removeAll {
+                $0.id == id
+            }
         }
     }
     
     public func dismissAll() {
-        overlays.removeAll()
-    }
-    
-    public func contains(
-        id: OverlayID
-    ) -> Bool {
-        overlays.contains {
-            $0.id == id
+        withAnimation(
+            .spring(
+                response: 0.35,
+                dampingFraction: 0.85
+            )
+        ) {
+            overlays.removeAll()
         }
     }
 }

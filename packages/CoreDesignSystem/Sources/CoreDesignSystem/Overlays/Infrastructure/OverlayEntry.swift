@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct OverlayEntry:
-    Identifiable
+    Identifiable 
 {
     
     public let id: OverlayID

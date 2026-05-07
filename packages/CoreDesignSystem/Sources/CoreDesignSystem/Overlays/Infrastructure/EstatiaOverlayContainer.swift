@@ -45,12 +45,5 @@ private extension EstatiaOverlayContainer {
                 OverlayHost(entry: entry)
             }
         }
-        .animation(
-            .spring(
-                response: 0.35,
-                dampingFraction: 0.85
-            ),
-            value: overlayManager.overlays
-        )
     }
 }

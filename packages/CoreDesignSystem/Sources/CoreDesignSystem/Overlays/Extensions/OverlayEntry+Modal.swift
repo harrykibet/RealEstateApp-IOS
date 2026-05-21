@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 public extension OverlayEntry {
 
     static func modal<Content: View>(

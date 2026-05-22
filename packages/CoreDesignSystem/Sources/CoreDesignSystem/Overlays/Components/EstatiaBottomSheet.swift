@@ -54,3 +54,121 @@ private extension EstatiaBottomSheet {
             }
     }
 }
+
+#if DEBUG
+
+private struct EstatiaBottomSheetPreviewContainer: View {
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 32) {
+                
+                // MARK: - Standard
+                
+                section(title: "Standard Bottom Sheet") {
+                    sheetContainer {
+                        
+                        EstatiaBottomSheet(
+                            model: BottomSheetModel()
+                        ) {
+                            
+                            VStack(spacing: 16) {
+                                Text("Bottom Sheet Content")
+                                
+                                Text("Interactive drag preview.")
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding()
+                        }
+                    }
+                }
+                
+                // MARK: - Long Content
+                
+                section(title: "Scrollable Content Stress Test") {
+                    sheetContainer {
+                        
+                        EstatiaBottomSheet(
+                            model: BottomSheetModel(
+                                initialDetent: .large
+                            )
+                        ) {
+                            
+                            ScrollView {
+                                VStack(spacing: 12) {
+                                    
+                                    ForEach(0..<20) { index in
+                                        Text("Sheet Item \(index)")
+                                            .frame(maxWidth: .infinity)
+                                            .padding()
+                                            .background(
+                                                Color.gray.opacity(0.1)
+                                            )
+                                            .clipShape(
+                                                RoundedRectangle(
+                                                    cornerRadius: 12
+                                                )
+                                            )
+                                    }
+                                }
+                                .padding()
+                            }
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+    
+    // MARK: - Sheet Container
+    
+    @ViewBuilder
+    private func sheetContainer(
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        
+        ZStack(alignment: .bottom) {
+            
+            Color.black.opacity(0.1)
+                .frame(height: 500)
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 24)
+                )
+            
+            content()
+        }
+    }
+    
+    // MARK: - Section
+    
+    @ViewBuilder
+    private func section(
+        title: String,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+            
+            content()
+        }
+    }
+}
+
+// MARK: - Previews
+
+#Preview("Bottom Sheet - Light") {
+    Preview.light {
+        EstatiaBottomSheetPreviewContainer()
+    }
+}
+
+#Preview("Bottom Sheet - Dark") {
+    Preview.dark {
+        EstatiaBottomSheetPreviewContainer()
+    }
+}
+
+#endif

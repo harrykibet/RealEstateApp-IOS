@@ -68,3 +68,112 @@ private extension EstatiaToast {
         }
     }
 }
+
+#if DEBUG
+
+private struct EstatiaToastPreviewContainer: View {
+    
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                
+                // MARK: - Info
+                
+                section(title: "Info Toast") {
+                    EstatiaToast(
+                        model: ToastModel(
+                            title: "Information",
+                            message: "This is an informational toast.",
+                            style: .info
+                        )
+                    )
+                }
+                
+                // MARK: - Success
+                
+                section(title: "Success Toast") {
+                    EstatiaToast(
+                        model: ToastModel(
+                            title: "Success",
+                            message: "Property uploaded successfully.",
+                            style: .success
+                        )
+                    )
+                }
+                
+                // MARK: - Warning
+                
+                section(title: "Warning Toast") {
+                    EstatiaToast(
+                        model: ToastModel(
+                            title: "Network Warning",
+                            message: "Your internet connection is unstable.",
+                            style: .warning
+                        )
+                    )
+                }
+                
+                // MARK: - Error
+                
+                section(title: "Error Toast") {
+                    EstatiaToast(
+                        model: ToastModel(
+                            title: "Upload Failed",
+                            message: "An unexpected server error occurred.",
+                            style: .error
+                        )
+                    )
+                }
+                
+                // MARK: - Layout Stress
+                
+                section(title: "Long Content Stress Test") {
+                    EstatiaToast(
+                        model: ToastModel(
+                            title: "Very Long Toast Title For Layout Validation",
+                            message: """
+                            This toast intentionally contains a very long message \
+                            to validate multiline layout behavior, spacing stability, \
+                            and clipping resistance across dynamic type sizes.
+                            """,
+                            style: .info
+                        )
+                    )
+                }
+            }
+            .padding()
+        }
+    }
+    
+    // MARK: - Section
+    
+    @ViewBuilder
+    private func section(
+        title: String,
+        @ViewBuilder content: () -> some View
+    ) -> some View {
+        
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+            
+            content()
+        }
+    }
+}
+
+// MARK: - Previews
+
+#Preview("Toast - Light") {
+    Preview.light {
+        EstatiaToastPreviewContainer()
+    }
+}
+
+#Preview("Toast - Dark") {
+    Preview.dark {
+        EstatiaToastPreviewContainer()
+    }
+}
+
+#endif

@@ -68,7 +68,7 @@ public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
 
 private struct EstatiaSegmentedControlPreviewContent: View {
     
-    @State private var selectedTab: AppTab = .home
+    @State private var selectedTab: AppTabID = .home
     
     var body: some View {
         VStack(spacing: 24) {
@@ -76,7 +76,7 @@ private struct EstatiaSegmentedControlPreviewContent: View {
             // Default
             EstatiaSegmentedControl(
                 selection: $selectedTab,
-                items: AppTab.allCases
+                items: AppTabID.allCases
             ) { item, isSelected in
                 EstatiaText(item.title)
                     .fontWeight(isSelected ? .semibold : .regular)

@@ -68,7 +68,7 @@ public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
 
 private struct EstatiaSegmentedControlPreviewContent: View {
     
-    @State private var selectedTab: AppTabID = .home
+    @State private var s
     
     var body: some View {
         VStack(spacing: 24) {

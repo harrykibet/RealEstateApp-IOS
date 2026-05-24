@@ -6,19 +6,42 @@
 //
 
 import SwiftUI
+import CoreAppData
 
 
 public struct AuthRootView: View {
     
+    // MARK: - State
+    
     @State private var path: [AuthDestination] = []
     
+    // MARK: - Dependencies
+    
+    private let authRepository: AuthRepository
+    
+    // MARK: - Global Navigation
+    
     @Environment(\.navigation) private var navigation
+    
+    // MARK: - Init
+    
+    public init(
+        authRepository: AuthRepository
+    ) {
+        self.authRepository = authRepository
+    }
+    
+    // MARK: - Body
     
     public var body: some View {
         
         NavigationStack(path: $path) {
             
             LoginView(
+                
+                viewModel: LoginViewModel(
+                    authRepository: authRepository
+                ),
                 
                 onLoginResult: handleLoginResult,
                 
@@ -38,7 +61,6 @@ public struct AuthRootView: View {
         }
     }
 }
-
 extension AuthRootView {
     
     private func handleLoginResult(

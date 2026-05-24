@@ -16,6 +16,6 @@ public final class NavigationState: ObservableObject {
     @Published var selectedTab: AppTabID = .home
     
     @Published var homePath = NavigationPath()
-    @Published var explorePath = NavigationPath()
+    @Published var searchPath = NavigationPath()
     @Published var profilePath = NavigationPath()
 }

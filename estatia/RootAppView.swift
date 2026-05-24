@@ -15,29 +15,33 @@ import FeatureProfile
 struct RootAppView: View {
     
     @StateObject private var state = NavigationState()
-    private let router: AppRouter
+    
+    private let navigationController: AppNavigationController
     
     init() {
         let state = NavigationState()
         self._state = StateObject(wrappedValue: state)
-        self.router = AppRouter(state: state)
+        self.navigationController = AppNavigationController(state: state)
     }
     
     var body: some View {
+        let actions = navigationController.makeActions()
+        
         TabView(selection: $state.selectedTab) {
             
-            HomeRootView(router: router)
+            HomeRootView()
                 .tabItem { Text("Home") }
                 .tag(AppTabID.home)
             
-            SearchRootView(router: router)
+            SearchRootView()
                 .tabItem { Text("Search") }
                 .tag(AppTabID.search)
             
-            ProfileRootView(router: router)
+            ProfileRootView()
                 .tabItem { Text("Profile") }
                 .tag(AppTabID.profile)
         }
+        .environment(\.navigation, actions)
         .environmentObject(state)
     }
 }

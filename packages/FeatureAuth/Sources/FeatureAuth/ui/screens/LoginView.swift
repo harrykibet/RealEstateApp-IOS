@@ -7,23 +7,49 @@
 
 import SwiftUI
 
-struct LoginView: View {
+import SwiftUI
+
+public struct LoginView: View {
+    
+    // MARK: - State
     
     @StateObject private var viewModel: LoginViewModel
     
-    let onLoginResult: (LoginResult) -> Void
+    // MARK: - Actions
     
-    let onSignupTapped: () -> Void
+    private let onLoginResult: (LoginResult) -> Void
     
-    let onForgotPasswordTapped: () -> Void
+    private let onSignupTapped: () -> Void
     
-    var body: some View {
+    private let onForgotPasswordTapped: () -> Void
+    
+    // MARK: - Init
+    
+    public init(
+        viewModel: LoginViewModel,
+        onLoginResult: @escaping (LoginResult) -> Void,
+        onSignupTapped: @escaping () -> Void,
+        onForgotPasswordTapped: @escaping () -> Void
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel
+        )
+        
+        self.onLoginResult = onLoginResult
+        self.onSignupTapped = onSignupTapped
+        self.onForgotPasswordTapped = onForgotPasswordTapped
+    }
+    
+    // MARK: - Body
+    
+    public var body: some View {
         
         VStack {
             
             Button("Login") {
                 
                 Task {
+                    
                     guard let result = await viewModel.login()
                     else { return }
                     

@@ -8,22 +8,96 @@
 import SwiftUI
 
 
-struct AuthRootView: View {
+public struct AuthRootView: View {
+    
+    @State private var path: [AuthDestination] = []
     
     @Environment(\.navigation) private var navigation
     
-    var body: some View {
-        LoginView(
+    public var body: some View {
+        
+        NavigationStack(path: $path) {
             
-            viewModel: LoginViewModel(coordinator: coordinator),
+            LoginView(
+                
+                onLoginResult: handleLoginResult,
+                
+                onSignupTapped: {
+                    path.append(.signup)
+                },
+                
+                onForgotPasswordTapped: {
+                    path.append(.forgotPassword)
+                }
+            )
             
-            onLoginSuccess: {
-                navigation.authCompleted()   // GLOBAL NAV
-            },
+            .navigationDestination(
+                for: AuthDestination.self,
+                destination: destinationView
+            )
+        }
+    }
+}
+
+extension AuthRootView {
+    
+    private func handleLoginResult(
+        _ result: LoginResult
+    ) {
+        switch result {
             
-            onTapSignup: {
-                // LOCAL NAV (internal stack push)
-            }
-        )
+        case .authenticated:
+            navigation.authCompleted()
+            
+        case .requiresEmailVerification(let email):
+            path.append(
+                .emailVerification(email: email)
+            )
+            
+        case .requiresPhoneVerification(let phone):
+            path.append(
+                .phoneVerification(phone: phone)
+            )
+        }
+    }
+}
+
+extension AuthRootView {
+    
+    @ViewBuilder
+    private func destinationView(
+        for destination: AuthDestination
+    ) -> some View {
+        
+        switch destination {
+            
+        case .signup:
+                
+            SignupView(
+                onSignupCompleted: handleSignupCompleted
+            )
+            
+        case .forgotPassword:
+                
+            ForgotPasswordView()
+            
+        case .phoneVerification(let phone):
+                
+            PhoneVerificationView(
+                phone: phone,
+                onVerificationSuccess: {
+                    navigation.authCompleted()
+                }
+            )
+            
+        case .emailVerification(let email):
+                
+            EmailVerificationView(
+                email: email,
+                onVerificationSuccess: {
+                    navigation.authCompleted()
+                }
+            )
+        }
     }
 }

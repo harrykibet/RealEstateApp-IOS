@@ -11,7 +11,7 @@ import SwiftUI
 
 
 @MainActor
-public final class NavigationState: ObservableObject {
+final class NavigationState: ObservableObject {
     
     @Published var selectedTab: AppTabID = .home
     

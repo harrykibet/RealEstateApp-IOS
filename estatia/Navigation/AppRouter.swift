@@ -12,7 +12,7 @@ import FeatureSearch
 
 
 @MainActor
-public final class AppRouter {
+final class AppRouter {
     
     private let state: NavigationState
     

@@ -74,9 +74,7 @@ public struct EstatiaSegmentedControl<
 
 private let tabPresentation: [AppTabID: TabPresentation] = [
     .home: .init(titleKey: "Home"),
-    .explore: .init(titleKey: "Explore"),
-    .saved: .init(titleKey: "Saved"),
-    .inbox: .init(titleKey: "Inbox"),
+    .search: .init(titleKey: "Search"),
     .profile: .init(titleKey: "Profile")
 ]
 

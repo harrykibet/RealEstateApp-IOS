@@ -6,6 +6,9 @@
 //
 
 import CoreDesignSystem
+import FeatureHome
+import FeatureProfile
+import FeatureSearch
 
 
 @MainActor
@@ -35,16 +38,8 @@ extension AppRouter {
             state.selectedTab = .profile
             ProfileRouter.push(route, into: &state.profilePath)
             
-        case .inbox(let route):
-            state.selectedTab = .inbox
-            InboxRouter.push(route, into: &state.inboxPath)
-            
-        case .saved(let route):
-            state.selectedTab = .saved
-            SavedRouter.push(route, into: &state.savedPath)
-            
-        case .explore(let route):
-            state.selectedTab = .explore
+        case .search(let route):
+            state.selectedTab = .search
             ExploreRouter.push(route, into: &state.explorePath)
         }
     }

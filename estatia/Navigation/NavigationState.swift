@@ -17,7 +17,5 @@ final class NavigationState: ObservableObject {
     
     @Published var homePath = NavigationPath()
     @Published var explorePath = NavigationPath()
-    @Published var savedPath = NavigationPath()
-    @Published var inboxPath = NavigationPath()
     @Published var profilePath = NavigationPath()
 }

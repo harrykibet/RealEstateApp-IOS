@@ -23,6 +23,12 @@ struct RootAppView: View {
             .tabItem { Text("Home") }
             .tag(AppTabID.home)
             
+            NavigationStack(path: $state.$explorePath) {
+                SearchRootView(router: router)
+            }
+            .tabItem { Text("Search") }
+            .tag(AppTabID.search)
+            
             NavigationStack(path: $state.profilePath) {
                 ProfileRootView(router: router)
             }

@@ -8,9 +8,7 @@
 public enum AppTabID: String, CaseIterable, Hashable, Sendable, Identifiable {
     
     case home
-    case explore
-    case saved
-    case inbox
+    case search
     case profile
     
     public var id: Self {

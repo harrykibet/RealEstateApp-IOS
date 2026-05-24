@@ -5,6 +5,8 @@
 //  Created by builder on 5/24/26.
 //
 
+import SwiftUI
+
 
 struct AuthRootView: View {
     
@@ -12,6 +14,8 @@ struct AuthRootView: View {
     
     var body: some View {
         LoginView(
+            
+            viewModel: LoginViewModel(coordinator: coordinator),
             
             onLoginSuccess: {
                 navigation.authCompleted()   // GLOBAL NAV

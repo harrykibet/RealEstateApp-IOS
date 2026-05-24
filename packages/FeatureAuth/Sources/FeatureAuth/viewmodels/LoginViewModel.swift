@@ -7,50 +7,72 @@
 
 
 import Foundation
+import CoreAppData
 
 @MainActor
 public final class LoginViewModel: ObservableObject {
     
-    //Login Form State
+    // MARK: - Published State
+    
     @Published public var form = LoginFormState()
     
-    //Login UI State
-    @Published public var uiState: LoginUiState = .idle
-
-    private let coordinator: AuthCoordinatorViewModel
-
-    public init(coordinator: AuthCoordinatorViewModel) {
-        self.coordinator = coordinator
+    @Published public private(set) var uiState: LoginUiState = .idle
+    
+    // MARK: - Dependencies
+    
+    private let authRepository: AuthRepository
+    
+    // MARK: - Init
+    
+    public init(
+        authRepository: AuthRepository
+    ) {
+        self.authRepository = authRepository
     }
-
-    public func login() async {
+    
+    // MARK: - Login
+    
+    public func login() async -> LoginResult? {
+        
         guard form.isValid else {
             uiState = .error("Email and password are required")
-            return
+            return nil
         }
-
+        
         uiState = .loading
-
-        do {
-            // TODO: call auth repository
-            try await Task.sleep(nanoseconds: 1_000_000_000)
-
-            coordinator.loginSucceeded(
-                needsEmailVerification: true,
-                needsPhoneVerification: false
-            )
-        } catch {
-            uiState = .error("Login failed")
+        
+        defer {
+            if case .loading = uiState {
+                uiState = .idle
+            }
         }
-
-        uiState = .idle
-    }
-
-    public func goToSignup() {
-        coordinator.goToSignup()
-    }
-
-    public func goToForgotPassword() {
-        coordinator.goToForgotPassword()
+        
+        do {
+            
+            let result = try await authRepository.signIn(
+                email: form.email,
+                password: form.password
+            )
+            
+            switch result {
+                
+            case .authenticated:
+                return .authenticated
+                
+            case .requiresEmailVerification(let email):
+                return .requiresEmailVerification(email: email)
+                
+            case .requiresPhoneVerification(let phone):
+                return .requiresPhoneVerification(phone: phone)
+            }
+            
+        } catch {
+            
+            uiState = .error(
+                error.localizedDescription
+            )
+            
+            return nil
+        }
     }
 }

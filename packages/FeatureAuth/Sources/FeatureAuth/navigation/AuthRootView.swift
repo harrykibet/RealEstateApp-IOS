@@ -11,27 +11,25 @@ import CoreAppData
 
 public struct AuthRootView: View {
     
-    // MARK: - State
-    
     @State private var path: [AuthDestination] = []
     
-    // MARK: - Dependencies
+    @StateObject private var loginViewModel: LoginViewModel
     
     private let authRepository: AuthRepository
     
-    // MARK: - Global Navigation
-    
     @Environment(\.navigation) private var navigation
-    
-    // MARK: - Init
     
     public init(
         authRepository: AuthRepository
     ) {
         self.authRepository = authRepository
+        
+        _loginViewModel = StateObject(
+            wrappedValue: LoginViewModel(
+                authRepository: authRepository
+            )
+        )
     }
-    
-    // MARK: - Body
     
     public var body: some View {
         
@@ -39,9 +37,7 @@ public struct AuthRootView: View {
             
             LoginView(
                 
-                viewModel: LoginViewModel(
-                    authRepository: authRepository
-                ),
+                viewModel: loginViewModel,
                 
                 onLoginResult: handleLoginResult,
                 
@@ -61,6 +57,7 @@ public struct AuthRootView: View {
         }
     }
 }
+
 extension AuthRootView {
     
     private func handleLoginResult(

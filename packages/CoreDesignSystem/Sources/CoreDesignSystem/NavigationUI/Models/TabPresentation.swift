@@ -9,7 +9,18 @@ import SwiftUI
 
 
 public struct TabPresentation: Sendable, Hashable {
-    public let title: LocalizedStringKey
-    public let icon: ImageResource
-    public let selectedIcon: ImageResource?
+    
+    public let titleKey: String
+    public let iconName: String?
+    public let selectedIconName: String?
+    
+    public init(
+        titleKey: String,
+        iconName: String? = nil,
+        selectedIconName: String? = nil
+    ) {
+        self.titleKey = titleKey
+        self.iconName = iconName
+        self.selectedIconName = selectedIconName
+    }
 }

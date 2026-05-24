@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
-    
-    // MARK: - Properties
+
+public struct EstatiaSegmentedControl<
+    Value: Identifiable & Hashable,
+    Content: View
+>: View {
     
     @Binding private var selection: Value
+    
     private let items: [Value]
     private let content: (Value, Bool) -> Content
     
     @Environment(\.theme) private var theme
-    
-    // MARK: - Init
     
     public init(
         selection: Binding<Value>,
@@ -29,11 +30,9 @@ public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
         self.content = content
     }
     
-    // MARK: - Body
-    
     public var body: some View {
         HStack(spacing: 4) {
-            ForEach(items, id: \.self) { item in
+            ForEach(items) { item in
                 segment(for: item)
             }
         }
@@ -42,13 +41,14 @@ public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
     
-    // MARK: - Segment
-    
     private func segment(for item: Value) -> some View {
+        
         let isSelected = item == selection
         
         return Button {
-            selection = item
+            withAnimation(.smooth(duration: 0.2)) {
+                selection = item
+            }
         } label: {
             content(item, isSelected)
                 .frame(maxWidth: .infinity)
@@ -56,43 +56,61 @@ public struct EstatiaSegmentedControl<Value: Hashable, Content: View>: View {
                 .background(
                     isSelected
                     ? theme.colors.surface
-                    : Color.clear
+                    : .clear
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(
+            isSelected
+            ? [.isSelected]
+            : []
+        )
     }
 }
 
+
 #if DEBUG
+
+private let tabPresentation: [AppTabID: TabPresentation] = [
+    .home: .init(titleKey: "Home"),
+    .explore: .init(titleKey: "Explore"),
+    .saved: .init(titleKey: "Saved"),
+    .inbox: .init(titleKey: "Inbox"),
+    .profile: .init(titleKey: "Profile")
+]
+
 
 private struct EstatiaSegmentedControlPreviewContent: View {
     
-    @State private var s
+    @State private var selectedTab: AppTabID = .home
     
     var body: some View {
         VStack(spacing: 24) {
             
-            // Default
             EstatiaSegmentedControl(
                 selection: $selectedTab,
                 items: AppTabID.allCases
             ) { item, isSelected in
-                EstatiaText(item.title)
+                
+                let presentation = tabPresentation[item]
+                
+                EstatiaText(presentation?.titleKey ?? "")
                     .fontWeight(isSelected ? .semibold : .regular)
-                    .foregroundColor(
+                    .foregroundStyle(
                         isSelected
                         ? Color.primary
                         : Color.secondary
                     )
             }
             
-            // Debug output (VERY useful)
-            EstatiaText("Selected: \(selectedTab.title)", style: .caption)
+            EstatiaText(
+                "Selected: \(tabPresentation[selectedTab]?.titleKey ?? "")",
+                style: .caption
+            )
         }
     }
 }
-
 #Preview("Segmented - Light") {
     Preview.light {
         Preview.padded {

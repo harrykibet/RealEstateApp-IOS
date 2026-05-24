@@ -7,7 +7,7 @@
 
 
 public enum ProfileDestination: Hashable, Sendable {
-    case view(id: String)
+    case view(userID: String)
     case edit
     case settings
 }

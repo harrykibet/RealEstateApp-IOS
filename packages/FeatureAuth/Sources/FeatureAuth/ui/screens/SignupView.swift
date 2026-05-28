@@ -93,3 +93,15 @@ public struct SignupView: View {
         .padding()
     }
 }
+
+extension SignupView {
+    
+    private func handleSignup() async {
+        
+        guard let result = await viewModel.signup() else {
+            return
+        }
+        
+        onSignupCompleted(result)
+    }
+}

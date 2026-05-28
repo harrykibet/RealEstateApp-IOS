@@ -19,6 +19,9 @@ public struct AuthRootView: View {
     @StateObject
     private var loginViewModel: LoginViewModel
     
+    @StateObject
+    private var signupViewModel: SignupViewModel
+    
     // MARK: - Dependencies
     
     private let authRepository: AuthRepository
@@ -38,6 +41,12 @@ public struct AuthRootView: View {
         
         _loginViewModel = StateObject(
             wrappedValue: LoginViewModel(
+                authRepository: authRepository
+            )
+        )
+        
+        _signupViewModel = StateObject(
+            wrappedValue: SignupViewModel(
                 authRepository: authRepository
             )
         )
@@ -111,8 +120,17 @@ extension AuthRootView {
             
         case .signup:
             
+        case .signup:
+            
             SignupView(
-                onSignupCompleted: handleSignupCompleted
+                
+                viewModel: signupViewModel,
+                
+                onSignupCompleted: handleSignupCompleted,
+                
+                onBackToLoginTapped: {
+                    path.removeLast()
+                }
             )
             
         case .forgotPassword:

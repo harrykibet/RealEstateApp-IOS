@@ -3,21 +3,21 @@ import CoreModel
 import CoreNetwork
 
 public protocol AuthRepository: Repository {
+    
     func signIn(
         email: String,
         password: String
-    ) async throws -> AuthenticationResult
+    ) async throws -> AuthSession
     
     func signUp(
         email: String,
         password: String,
         displayName: String?
-    ) async throws -> AuthenticationResult
+    ) async throws -> AuthSession
     
     func signOut() async throws
     
-    func currentAuthenticationState()
-    async throws -> AuthenticationState
+    func currentSession() async throws -> AuthSession?
 }
 
 public final class RemoteAuthRepository: AuthRepository {
@@ -27,11 +27,11 @@ public final class RemoteAuthRepository: AuthRepository {
         self.remote = remote
     }
     
-    public func signIn(email: String, password: String) async throws -> AuthenticationResult {
+    public func signIn(email: String, password: String) async throws -> AuthSession {
         try await remote.signIn(email: email, password: password)
     }
     
-    public func signUp(email: String, password: String, displayName: String?) async throws -> AuthenticationResult {
+    public func signUp(email: String, password: String, displayName: String?) async throws -> AuthSession {
         try await remote.signUp(email: email, password: password, displayName: displayName)
     }
     
@@ -39,12 +39,7 @@ public final class RemoteAuthRepository: AuthRepository {
         try await remote.signOut()
     }
     
-    public func currentUser() async throws -> User? {
-        try await remote.currentUser()
-    }
-    
-    func currentAuthenticationState()
-    async throws -> AuthenticationState {
-        try await remote.currentAuthenticationState()
+    public func currentSession() async throws -> AuthSession? {
+        try await remote.currentSession()
     }
 }

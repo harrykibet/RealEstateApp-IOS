@@ -1,48 +1,94 @@
 //
 //  SignupViewModel.swift
-//  auth
+//  FeatureAuth
 //
 //  Created by builder on 1/31/26.
 //
 
-
 import Foundation
+import CoreAppData
+import CoreModel
 
 @MainActor
 public final class SignupViewModel: ObservableObject {
     
-    //Sign Up Form State
-    @Published public var form = SignupFormState()
+    // MARK: - Form State
     
-    // Sign Up UI State
-    @Published public var uiState: SignupUiState = .idle
-
-    private let coordinator: AuthCoordinatorViewModel
-
-    public init(coordinator: AuthCoordinatorViewModel) {
-        self.coordinator = coordinator
+    @Published
+    public var form = SignupFormState()
+    
+    // MARK: - UI State
+    
+    @Published
+    public var uiState: SignupUiState = .idle
+    
+    // MARK: - Dependencies
+    
+    private let authRepository: AuthRepository
+    
+    // MARK: - Init
+    
+    public init(
+        authRepository: AuthRepository
+    ) {
+        self.authRepository = authRepository
     }
-
-    public func signup() async {
-        guard form.isFormValid else {
-            uiState = .error("Passwords do not match")
-            return
+    
+    // MARK: - Signup
+    
+    public func signup() async -> AuthenticationResult? {
+        
+        guard validateForm() else {
+            return nil
         }
-
+        
         uiState = .loading
-
-        do {
-            // TODO: signup API
-            try await Task.sleep(nanoseconds: 1_000_000_000)
-            coordinator.signupSucceeded()
-        } catch {
-            uiState = .error("Signup failed")
+        
+        defer {
+            uiState = .idle
         }
-
-        uiState = .idle
+        
+        do {
+            
+            try await authRepository.signUp(
+                email: form.email,
+                password: form.password,
+                displayName: form.name)
+            
+            try await Task.sleep(
+                nanoseconds: 1_000_000_000
+            )
+            
+            // Example outcome
+            
+            return .requiresEmailVerification(
+                email: form.email
+            )
+            
+        } catch {
+            
+            uiState = .error(
+                "Signup failed"
+            )
+            
+            return nil
+        }
     }
+}
 
-    public func backToLogin() {
-        coordinator.goToLogin()
+extension SignupViewModel {
+    
+    private func validateForm() -> Bool {
+        
+        guard form.isFormValid else {
+            
+            uiState = .error(
+                "Passwords do not match"
+            )
+            
+            return false
+        }
+        
+        return true
     }
 }

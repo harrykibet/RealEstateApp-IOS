@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreModel
 
 public struct SignupView: View {
     

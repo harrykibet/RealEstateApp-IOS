@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreAppData
+import CoreModel
 
 @MainActor
 public final class LoginViewModel: ObservableObject {

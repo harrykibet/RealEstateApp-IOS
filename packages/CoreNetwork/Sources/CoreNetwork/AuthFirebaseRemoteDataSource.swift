@@ -6,34 +6,72 @@ public final class FirebaseAuthRemoteDataSource: AuthRemoteDataSource {
 
     public init() {}
 
-    public func signIn(email: String, password: String) async throws -> CoreModel.User {
-        let result = try await Auth.auth().signIn(withEmail: email, password: password)
-        return mapFirebaseUser(result.user)
+    public func signIn(
+        email: String,
+        password: String
+    ) async throws -> AuthenticationResult {
+        
+        let result = try await Auth.auth().signIn(
+            withEmail: email,
+            password: password
+        )
+        
+        return mapAuthenticationResult(
+            from: result.user
+        )
     }
-
-    public func signUp(email: String, password: String, displayName: String?) async throws -> CoreModel.User {
+    
+    public func signUp(
+        email: String,
+        password: String,
+        displayName: String?
+    ) async throws -> AuthenticationResult {
+        
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
 
         if let displayName, !displayName.isEmpty {
+            
             let changeRequest = result.user.createProfileChangeRequest()
             changeRequest.displayName = displayName
             try await changeRequest.commitChanges()
         }
 
-        return mapFirebaseUser(result.user)
+        return mapAuthenticationResult(from: result.user)
     }
 
     public func signOut() async throws {
         try Auth.auth().signOut()
     }
 
-    public func currentUser() async throws -> CoreModel.User? {
-        guard let firebaseUser: FirebaseAuth.User = Auth.auth().currentUser else {
-            return nil
+    public func currentAuthenticationState()
+    async throws -> AuthenticationState {
+        
+        guard let firebaseUser = Auth.auth().currentUser else {
+            return .unauthenticated
         }
-        return mapFirebaseUser(firebaseUser)
+        
+        let user = mapFirebaseUser(firebaseUser)
+        
+        if firebaseUser.isEmailVerified {
+            return .authenticated(user)
+        }
+        
+        return .requiresEmailVerification(user)
     }
-
+    
+    private func mapAuthenticationResult(
+        from user: FirebaseAuth.User
+    ) -> AuthenticationResult {
+        
+        if user.isEmailVerified {
+            return .authenticated
+        }
+        
+        return .requiresEmailVerification(
+            email: user.email ?? ""
+        )
+    }
+    
     private func mapFirebaseUser(_ user: FirebaseAuth.User) -> CoreModel.User {
         CoreModel.User(
             userId: user.uid,

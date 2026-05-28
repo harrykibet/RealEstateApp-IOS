@@ -14,7 +14,7 @@
 //
 import Foundation
 
-public enum UserType: String, Codable {
+public enum UserType: String, Codable, Sendable, Equatable {
     case tenant
     case landlord
     case admin

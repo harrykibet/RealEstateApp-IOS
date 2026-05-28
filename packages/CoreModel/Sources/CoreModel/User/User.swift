@@ -6,7 +6,7 @@
 //
 
 
-public struct User: Codable {
+public struct User: Codable, Sendable, Equatable {
     public var userId: String?
     public var name: String?
     public var email: String?

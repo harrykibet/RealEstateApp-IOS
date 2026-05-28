@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
 
 public struct LoginView: View {
     
@@ -17,7 +16,7 @@ public struct LoginView: View {
     
     // MARK: - Actions
     
-    private let onLoginResult: (LoginResult) -> Void
+    private let onLoginResult: (AuthenticationResult) -> Void
     
     private let onSignupTapped: () -> Void
     
@@ -27,7 +26,7 @@ public struct LoginView: View {
     
     public init(
         viewModel: LoginViewModel,
-        onLoginResult: @escaping (LoginResult) -> Void,
+        onLoginResult: @escaping (AuthenticationResult) -> Void,
         onSignupTapped: @escaping () -> Void,
         onForgotPasswordTapped: @escaping () -> Void
     ) {

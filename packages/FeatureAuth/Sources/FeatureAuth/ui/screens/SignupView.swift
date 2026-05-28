@@ -8,39 +8,74 @@
 import SwiftUI
 
 public struct SignupView: View {
-
-    @StateObject private var viewModel: SignupViewModel
-
-    public init(viewModel: SignupViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    
+    // MARK: - ViewModel
+    
+    @ObservedObject
+    private var viewModel: SignupViewModel
+    
+    // MARK: - Intents
+    
+    private let onSignupCompleted: (AuthenticationResult) -> Void
+    
+    private let onBackToLoginTapped: () -> Void
+    
+    // MARK: - Init
+    
+    public init(
+        viewModel: SignupViewModel,
+        onSignupCompleted: @escaping (AuthenticationResult) -> Void,
+        onBackToLoginTapped: @escaping () -> Void
+    ) {
+        self.viewModel = viewModel
+        self.onSignupCompleted = onSignupCompleted
+        self.onBackToLoginTapped = onBackToLoginTapped
     }
-
+    
+    // MARK: - Body
+    
     public var body: some View {
+        
         VStack(spacing: 16) {
-
+            
             Text("Create Account")
                 .font(.largeTitle.bold())
-
-            TextField("Email", text: $viewModel.form.email)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                .textFieldStyle(.roundedBorder)
-
-            SecureField("Password", text: $viewModel.form.password)
-                .textFieldStyle(.roundedBorder)
-
-            SecureField("Confirm Password", text: $viewModel.form.confirmPassword)
-                .textFieldStyle(.roundedBorder)
-
+            
+            TextField(
+                "Email",
+                text: $viewModel.form.email
+            )
+            .keyboardType(.emailAddress)
+            .autocapitalization(.none)
+            .textFieldStyle(.roundedBorder)
+            
+            SecureField(
+                "Password",
+                text: $viewModel.form.password
+            )
+            .textFieldStyle(.roundedBorder)
+            
+            SecureField(
+                "Confirm Password",
+                text: $viewModel.form.confirmPassword
+            )
+            .textFieldStyle(.roundedBorder)
+            
             if let error = viewModel.uiState.errorMessage {
+                
                 Text(error)
                     .foregroundColor(.red)
                     .font(.caption)
             }
-
+            
             Button {
-                Task { await viewModel.signup() }
+                
+                Task {
+                    await handleSignup()
+                }
+                
             } label: {
+                
                 if viewModel.uiState.isLoading {
                     ProgressView()
                 } else {
@@ -49,9 +84,9 @@ public struct SignupView: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(viewModel.uiState.isLoading)
-
+            
             Button("Back to Login") {
-                viewModel.backToLogin()
+                onBackToLoginTapped()
             }
             .font(.caption)
         }

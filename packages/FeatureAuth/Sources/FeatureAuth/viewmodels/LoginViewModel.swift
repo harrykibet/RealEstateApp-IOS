@@ -32,7 +32,7 @@ public final class LoginViewModel: ObservableObject {
     
     // MARK: - Login
     
-    public func login() async -> LoginResult? {
+    public func login() async -> AuthenticationResult? {
         
         guard form.isValid else {
             uiState = .error("Email and password are required")

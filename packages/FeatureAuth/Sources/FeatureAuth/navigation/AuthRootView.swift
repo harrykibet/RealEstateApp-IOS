@@ -8,21 +8,33 @@
 import SwiftUI
 import CoreAppData
 
-
 public struct AuthRootView: View {
+    
+    // MARK: - Navigation State
     
     @State private var path: [AuthDestination] = []
     
-    @StateObject private var loginViewModel: LoginViewModel
+    // MARK: - ViewModels
+    
+    @StateObject
+    private var loginViewModel: LoginViewModel
+    
+    // MARK: - Dependencies
     
     private let authRepository: AuthRepository
     
-    @Environment(\.navigation) private var navigation
+    // MARK: - Cross-Feature Intents
+    
+    private let onAuthenticated: () -> Void
+    
+    // MARK: - Init
     
     public init(
-        authRepository: AuthRepository
+        authRepository: AuthRepository,
+        onAuthenticated: @escaping () -> Void
     ) {
         self.authRepository = authRepository
+        self.onAuthenticated = onAuthenticated
         
         _loginViewModel = StateObject(
             wrappedValue: LoginViewModel(
@@ -30,6 +42,8 @@ public struct AuthRootView: View {
             )
         )
     }
+    
+    // MARK: - Body
     
     public var body: some View {
         
@@ -61,19 +75,24 @@ public struct AuthRootView: View {
 extension AuthRootView {
     
     private func handleLoginResult(
-        _ result: LoginResult
+        _ result: AuthenticationResult
     ) {
         switch result {
             
         case .authenticated:
-            navigation.authCompleted()
+            
+            // EMIT INTENT UPWARD
+            
+            onAuthenticated()
             
         case .requiresEmailVerification(let email):
+            
             path.append(
                 .emailVerification(email: email)
             )
             
         case .requiresPhoneVerification(let phone):
+            
             path.append(
                 .phoneVerification(phone: phone)
             )
@@ -91,32 +110,52 @@ extension AuthRootView {
         switch destination {
             
         case .signup:
-                
+            
             SignupView(
                 onSignupCompleted: handleSignupCompleted
             )
             
         case .forgotPassword:
-                
+            
             ForgotPasswordView()
             
         case .phoneVerification(let phone):
-                
+            
             PhoneVerificationView(
                 phone: phone,
                 onVerificationSuccess: {
-                    navigation.authCompleted()
+                    onAuthenticated()
                 }
             )
             
         case .emailVerification(let email):
-                
+            
             EmailVerificationView(
                 email: email,
                 onVerificationSuccess: {
-                    navigation.authCompleted()
+                    onAuthenticated()
                 }
             )
+        }
+    }
+    
+    private func handleSignupCompleted(
+        _ result: AuthenticationResult
+    ) {
+        switch result {
+            
+        case .requiresEmailVerification(let email):
+            path.append(
+                .emailVerification(email: email)
+            )
+            
+        case .requiresPhoneVerification(let phone):
+            path.append(
+                .phoneVerification(phone: phone)
+            )
+            
+        case .authenticated:
+            onAuthenticated()
         }
     }
 }

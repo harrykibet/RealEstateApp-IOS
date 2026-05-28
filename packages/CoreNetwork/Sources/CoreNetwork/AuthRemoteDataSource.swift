@@ -1,21 +1,23 @@
 import Foundation
 import CoreModel
 
+import Foundation
+import CoreModel
+
 public protocol AuthRemoteDataSource {
-    
+
     func signIn(
         email: String,
         password: String
-    ) async throws -> AuthenticationResult
-    
+    ) async throws -> AuthSession
+
     func signUp(
         email: String,
         password: String,
         displayName: String?
-    ) async throws -> AuthenticationResult
-    
+    ) async throws -> AuthSession
+
     func signOut() async throws
-    
-    func currentAuthenticationState()
-    async throws -> AuthenticationState
+
+    func currentSession() async throws -> AuthSession?
 }

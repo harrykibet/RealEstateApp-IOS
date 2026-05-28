@@ -6,9 +6,15 @@
 //
 
 
+import Foundation
+
 public enum AuthStatus: Sendable, Equatable {
+
     case authenticated
+
     case unauthenticated
+
     case pendingVerification(VerificationType)
+
     case restricted(Reason)
 }

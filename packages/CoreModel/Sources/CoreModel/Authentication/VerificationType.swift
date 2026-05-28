@@ -6,8 +6,13 @@
 //
 
 
+import Foundation
+
 public enum VerificationType: Sendable, Equatable {
+
     case email
+
     case phone
+
     case mfa
 }

@@ -3,8 +3,8 @@ import CoreModel
 import CoreNetwork
 
 public protocol AuthRepository: Repository {
-    func signIn(email: String, password: String) async throws -> User
-    func signUp(email: String, password: String, displayName: String?) async throws -> User
+    func signIn(email: String, password: String) async throws -> AuthenticationResult
+    func signUp(email: String, password: String, displayName: String?) async throws -> AuthenticationResult
     func signOut() async throws
     func currentUser() async throws -> User?
 }
@@ -16,11 +16,11 @@ public final class RemoteAuthRepository: AuthRepository {
         self.remote = remote
     }
 
-    public func signIn(email: String, password: String) async throws -> User {
+    public func signIn(email: String, password: String) async throws -> AuthenticationResult {
         try await remote.signIn(email: email, password: password)
     }
 
-    public func signUp(email: String, password: String, displayName: String?) async throws -> User {
+    public func signUp(email: String, password: String, displayName: String?) async throws -> AuthenticationResult {
         try await remote.signUp(email: email, password: password, displayName: displayName)
     }
 

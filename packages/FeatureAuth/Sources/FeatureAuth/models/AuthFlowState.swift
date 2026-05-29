@@ -7,7 +7,7 @@
 
 import CoreModel
 
-enum AuthFlowState {
+enum AuthFlowState: Sendable {
 
     case login
 

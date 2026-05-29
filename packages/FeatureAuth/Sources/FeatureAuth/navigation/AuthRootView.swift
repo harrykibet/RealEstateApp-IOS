@@ -6,174 +6,108 @@
 //
 
 import SwiftUI
+import CoreModel
 import CoreAppData
 
 public struct AuthRootView: View {
-    
-    // MARK: - Navigation State
-    
-    @State private var path: [AuthDestination] = []
-    
-    // MARK: - ViewModels
-    
-    @StateObject
-    private var loginViewModel: LoginViewModel
-    
-    @StateObject
-    private var signupViewModel: SignupViewModel
-    
+
+    // MARK: - State
+
+    @State private var authSession: AuthSession = .init(
+        user: .init(),
+        status: .unauthenticated
+    )
+
     // MARK: - Dependencies
-    
+
     private let authRepository: AuthRepository
-    
-    // MARK: - Cross-Feature Intents
-    
     private let onAuthenticated: () -> Void
-    
-    // MARK: - Init
-    
+
     public init(
         authRepository: AuthRepository,
         onAuthenticated: @escaping () -> Void
     ) {
         self.authRepository = authRepository
         self.onAuthenticated = onAuthenticated
-        
-        _loginViewModel = StateObject(
-            wrappedValue: LoginViewModel(
-                authRepository: authRepository
-            )
-        )
-        
-        _signupViewModel = StateObject(
-            wrappedValue: SignupViewModel(
-                authRepository: authRepository
-            )
-        )
     }
-    
-    // MARK: - Body
-    
-    public var body: some View {
-        
-        NavigationStack(path: $path) {
-            
-            LoginView(
-                
-                viewModel: loginViewModel,
-                
-                onLoginResult: handleLoginResult,
-                
-                onSignupTapped: {
-                    path.append(.signup)
-                },
-                
-                onForgotPasswordTapped: {
-                    path.append(.forgotPassword)
-                }
-            )
-            
-            .navigationDestination(
-                for: AuthDestination.self,
-                destination: destinationView
-            )
-        }
-    }
-}
 
-extension AuthRootView {
-    
-    private func handleLoginResult(
-        _ result: AuthenticationResult
-    ) {
-        switch result {
-            
-        case .authenticated:
-            
-            // EMIT INTENT UPWARD
-            
-            onAuthenticated()
-            
-        case .requiresEmailVerification(let email):
-            
-            path.append(
-                .emailVerification(email: email)
-            )
-            
-        case .requiresPhoneVerification(let phone):
-            
-            path.append(
-                .phoneVerification(phone: phone)
-            )
-        }
+    public var body: some View {
+        content
     }
 }
 
 extension AuthRootView {
     
     @ViewBuilder
-    private func destinationView(
-        for destination: AuthDestination
-    ) -> some View {
+    private var content: some View {
         
-        switch destination {
+        switch authSession.status {
             
-        case .signup:
+        case .unauthenticated:
+            loginView()
             
-        case .signup:
+        case .pendingVerification(let type):
+            verificationView(type)
             
-            SignupView(
-                
-                viewModel: signupViewModel,
-                
-                onSignupCompleted: handleSignupCompleted,
-                
-                onBackToLoginTapped: {
-                    path.removeLast()
-                }
-            )
-            
-        case .forgotPassword:
-            
-            ForgotPasswordView()
-            
-        case .phoneVerification(let phone):
-            
-            PhoneVerificationView(
-                phone: phone,
-                onVerificationSuccess: {
+        case .authenticated:
+            Color.clear
+                .onAppear {
                     onAuthenticated()
                 }
-            )
             
-        case .emailVerification(let email):
-            
-            EmailVerificationView(
-                email: email,
-                onVerificationSuccess: {
-                    onAuthenticated()
-                }
-            )
+        case .restricted:
+            Text("Account restricted")
         }
     }
     
-    private func handleSignupCompleted(
-        _ result: AuthenticationResult
-    ) {
+    private var loginView: some View {
+        LoginView(
+            viewModel: LoginViewModel(authRepository: authRepository),
+            onLoginResult: handleLoginResult,
+            onSignupTapped: {
+                authSession.status = .unauthenticated // stays in same state machine
+            },
+            onForgotPasswordTapped: {
+                authSession.status = .unauthenticated
+            }
+        )
+    }
+    
+    private func handleLoginResult(_ result: AuthenticationResult) {
+        
         switch result {
             
+        case .authenticated:
+            authSession.status = .authenticated
+            
         case .requiresEmailVerification(let email):
-            path.append(
-                .emailVerification(email: email)
-            )
+            authSession.status = .pendingVerification(.email)
             
         case .requiresPhoneVerification(let phone):
-            path.append(
-                .phoneVerification(phone: phone)
-            )
-            
-        case .authenticated:
-            onAuthenticated()
+            authSession.status = .pendingVerification(.phone)
         }
     }
-}
+    
+    @ViewBuilder
+    private func verificationView(_ type: VerificationType) -> some View {
+
+        switch type {
+
+        case .email:
+            EmailVerificationView(
+                onVerificationSuccess: {
+                    authSession.status = .authenticated
+                }
+            )
+
+        case .phone:
+            PhoneVerificationView(
+                onVerificationSuccess: {
+                    authSession.status = .authenticated
+                }
+            )
+
+        case .mfa:
+            Text("MFA not implemented")
+        }
+    }}

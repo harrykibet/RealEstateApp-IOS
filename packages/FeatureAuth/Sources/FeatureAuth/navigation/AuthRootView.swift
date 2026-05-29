@@ -44,7 +44,7 @@ extension AuthRootView {
         switch authSession.status {
             
         case .unauthenticated:
-            loginView()
+            loginView
             
         case .pendingVerification(let type):
             verificationView(type)

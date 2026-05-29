@@ -2,19 +2,26 @@
 //  AuthStatus.swift
 //  CoreModel
 //
-//  Created by builder on 5/28/26.
+//  Created by builder on 5/29/26.
 //
-
 
 import Foundation
 
 public enum AuthStatus: Sendable, Equatable {
 
+    // MARK: - Fully Authenticated
+
     case authenticated
 
-    case unauthenticated
+    // MARK: - Additional Steps Required
 
-    case pendingVerification(VerificationType)
+    case pendingVerification(
+        VerificationType
+    )
 
-    case restricted(Reason)
+    // MARK: - Restricted Access
+
+    case restricted(
+        Reason
+    )
 }

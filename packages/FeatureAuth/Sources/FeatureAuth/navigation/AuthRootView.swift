@@ -79,55 +79,60 @@ extension AuthRootView {
 extension AuthRootView {
     
     private var loginView: some View {
+        
         LoginView(
-            viewModel: LoginViewModel(authRepository: authRepository),
-            onLoginResult: handleLoginResult,
+            viewModel: loginViewModel,
+            onLoginCompleted: handleAuthSession,
             onSignupTapped: {
-                authSession.status = .unauthenticated // stays in same state machine
+                // TODO:
+                // Show signup flow
             },
             onForgotPasswordTapped: {
-                authSession.status = .unauthenticated
+                // TODO:
+                // Show forgot password flow
             }
         )
     }
     
-    private func handleLoginResult(_ result: AuthenticationResult) {
-        
-        switch result {
-            
-        case .authenticated:
-            authSession.status = .authenticated
-            
-        case .requiresEmailVerification(let email):
-            authSession.status = .pendingVerification(.email)
-            
-        case .requiresPhoneVerification(let phone):
-            authSession.status = .pendingVerification(.phone)
-        }
+    private func handleAuthSession(
+        _ session: AuthSession
+    ) {
+        authSession = session
     }
-    
+}
+
+extension AuthRootView {
+
     @ViewBuilder
-    private func verificationView(_ type: VerificationType) -> some View {
+    private func verificationView(
+        _ type: VerificationType
+    ) -> some View {
 
         switch type {
 
         case .email:
+
             EmailVerificationView(
                 onVerificationSuccess: {
-                    authSession.updatingStatus(
+                    authSession = authSession.updatingStatus(
                         .authenticated
                     )
                 }
             )
 
         case .phone:
+
             PhoneVerificationView(
                 onVerificationSuccess: {
-                    authSession.status = .authenticated
+                    authSession = authSession.updatingStatus(
+                        .authenticated
+                    )
                 }
             )
 
         case .mfa:
+
             Text("MFA not implemented")
         }
-    }}
+    }
+}

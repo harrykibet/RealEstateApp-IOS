@@ -44,28 +44,39 @@ public struct AuthRootView: View {
 }
 
 extension AuthRootView {
-    
+
     @ViewBuilder
     private var content: some View {
-        
-        switch authSession.status {
-            
+
+        switch authSession {
+
         case .unauthenticated:
             loginView
-            
-        case .pendingVerification(let type):
-            verificationView(type)
-            
-        case .authenticated:
-            Color.clear
-                .onAppear {
-                    onAuthenticated()
-                }
-            
-        case .restricted:
-            Text("Account restricted")
+
+        case .authenticated(_, let status):
+
+            switch status {
+
+            case .authenticated:
+
+                Color.clear
+                    .onAppear {
+                        onAuthenticated()
+                    }
+
+            case .pendingVerification(let type):
+
+                verificationView(type)
+
+            case .restricted:
+
+                Text("Account restricted")
+            }
         }
     }
+}
+
+extension AuthRootView {
     
     private var loginView: some View {
         LoginView(

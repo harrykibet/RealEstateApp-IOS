@@ -13,10 +13,11 @@ public struct AuthRootView: View {
 
     // MARK: - State
 
-    @State private var authSession: AuthSession = .init(
-        user: .init(),
-        status: .unauthenticated
-    )
+    @State
+    private var authSession: AuthSession = .unauthenticated
+
+    @StateObject
+    private var loginViewModel: LoginViewModel
 
     // MARK: - Dependencies
 
@@ -29,6 +30,12 @@ public struct AuthRootView: View {
     ) {
         self.authRepository = authRepository
         self.onAuthenticated = onAuthenticated
+
+        _loginViewModel = StateObject(
+            wrappedValue: LoginViewModel(
+                authRepository: authRepository
+            )
+        )
     }
 
     public var body: some View {
@@ -96,7 +103,9 @@ extension AuthRootView {
         case .email:
             EmailVerificationView(
                 onVerificationSuccess: {
-                    authSession.status = .authenticated
+                    authSession.updatingStatus(
+                        .authenticated
+                    )
                 }
             )
 

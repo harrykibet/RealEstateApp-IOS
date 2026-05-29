@@ -28,41 +28,42 @@ public enum AuthSession: Sendable, Equatable {
 }
 
 public extension AuthSession {
-
+    
     var user: User? {
         guard case let .authenticated(user, _) = self else {
             return nil
         }
-
+        
         return user
     }
-
+    
     var status: AuthStatus? {
         guard case let .authenticated(_, status) = self else {
             return nil
         }
-
+        
         return status
     }
-
+    
     var isAuthenticated: Bool {
         if case .authenticated = self {
             return true
         }
-
+        
         return false
     }
-}
-
-public extension AuthSession {
-
+    
     func updatingStatus(
-        _ status: AuthStatus
+        _ newStatus: AuthStatus
     ) -> AuthSession {
-
-        AuthSession(
+        
+        guard case let .authenticated(user, _) = self else {
+            return self
+        }
+        
+        return .authenticated(
             user: user,
-            status: status
+            status: newStatus
         )
     }
 }

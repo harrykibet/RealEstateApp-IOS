@@ -9,10 +9,11 @@ import SwiftUI
 
 public struct ForgotPasswordView: View {
 
-    @StateObject private var viewModel: ForgotPasswordViewModel
+    @ObservedObject
+    private var viewModel: ForgotPasswordViewModel
 
     public init(viewModel: ForgotPasswordViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
 
     public var body: some View {

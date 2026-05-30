@@ -6,36 +6,66 @@
 //
 
 import Foundation
+import CoreAppData
 
 @MainActor
-public final class ForgotPasswordViewModel: ObservableObject {
+public final class ForgotPasswordViewModel:
+ObservableObject {
 
-    // UI State
-    @Published public var uiState: ForgotPasswordUiState = .idle
-    
-    // Email
-    @Published public var email: String = ""
+    // MARK: - Form State
 
-    private let coordinator: AuthCoordinatorViewModel
+    @Published
+    public var form = ForgotPasswordFormState()
 
-    public init(coordinator: AuthCoordinatorViewModel) {
-        self.coordinator = coordinator
+    // MARK: - UI State
+
+    @Published
+    public var uiState: ForgotPasswordUiState = .idle
+
+    // MARK: - Dependencies
+
+    private let authRepository: AuthRepository
+
+    // MARK: - Init
+
+    public init(
+        authRepository: AuthRepository
+    ) {
+        self.authRepository = authRepository
     }
+}
+
+extension ForgotPasswordViewModel {
 
     public func sendResetLink() async {
-        guard !email.isEmpty else {
-            uiState = .error("Email is required")
+
+        guard form.isValid else {
+
+            uiState = .error(
+                "Email is required"
+            )
+
             return
         }
 
         uiState = .loading
-        try? await Task.sleep(nanoseconds: 800_000_000)
 
-        uiState = .success("Password reset link sent")
-        uiState = .idle
-    }
+        do {
 
-    public func backToLogin() {
-        coordinator.goToLogin()
+            try await authRepository
+                .sendPasswordResetEmail(
+                    email: form.email
+                )
+
+            uiState = .success(
+                "Password reset link sent"
+            )
+
+        } catch {
+
+            uiState = .error(
+                error.localizedDescription
+            )
+        }
     }
 }

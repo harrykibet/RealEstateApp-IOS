@@ -228,6 +228,7 @@ extension AuthRootView {
         case .email:
 
             EmailVerificationView(
+                viewModel: emailVerificationViewModel,
                 onVerificationSuccess: completeVerification
             )
 

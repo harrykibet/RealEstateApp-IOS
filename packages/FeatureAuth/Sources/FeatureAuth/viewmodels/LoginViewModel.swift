@@ -12,67 +12,64 @@ import CoreModel
 
 @MainActor
 public final class LoginViewModel: ObservableObject {
-    
+
     // MARK: - Published State
-    
-    @Published public var form = LoginFormState()
-    
-    @Published public private(set) var uiState: LoginUiState = .idle
-    
+
+    @Published
+    public var form = LoginFormState()
+
+    @Published
+    public private(set) var uiState: LoginUiState = .idle
+
     // MARK: - Dependencies
-    
+
     private let authRepository: AuthRepository
-    
+
     // MARK: - Init
-    
+
     public init(
         authRepository: AuthRepository
     ) {
         self.authRepository = authRepository
     }
-    
+
     // MARK: - Login
-    
+
     public func login() async -> AuthSession? {
-        
+
         guard form.isValid else {
-            uiState = .error("Email and password are required")
+
+            uiState = .error(
+                "Email and password are required"
+            )
+
             return nil
         }
-        
+
         uiState = .loading
-        
+
         defer {
+
             if case .loading = uiState {
                 uiState = .idle
             }
         }
-        
+
         do {
-            
-            let result = try await authRepository.signIn(
+
+            let session = try await authRepository.signIn(
                 email: form.email,
                 password: form.password
             )
-            
-            switch result {
-                
-            case .authenticated:
-                return .authenticated
-                
-            case .requiresEmailVerification(let email):
-                return .requiresEmailVerification(email: email)
-                
-            case .requiresPhoneVerification(let phone):
-                return .requiresPhoneVerification(phone: phone)
-            }
-            
+
+            return session
+
         } catch {
-            
+
             uiState = .error(
                 error.localizedDescription
             )
-            
+
             return nil
         }
     }

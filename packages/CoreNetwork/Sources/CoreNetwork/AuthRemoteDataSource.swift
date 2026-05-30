@@ -4,7 +4,7 @@ import CoreModel
 import Foundation
 import CoreModel
 
-public protocol AuthRemoteDataSource {
+public protocol AuthRemoteDataSource: Sendable {
 
     func signIn(
         email: String,

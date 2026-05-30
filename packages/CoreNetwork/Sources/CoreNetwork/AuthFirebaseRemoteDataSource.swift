@@ -2,7 +2,7 @@ import Foundation
 import CoreModel
 import FirebaseAuth
 
-public final class FirebaseAuthRemoteDataSource: AuthRemoteDataSource {
+public actor FirebaseAuthRemoteDataSource: AuthRemoteDataSource {
     
     public init() {}
     

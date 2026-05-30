@@ -20,7 +20,7 @@ public protocol AuthRepository: Repository {
     func currentSession() async throws -> AuthSession?
 }
 
-public final class RemoteAuthRepository: AuthRepository {
+public actor RemoteAuthRepository: AuthRepository {
     private let remote: AuthRemoteDataSource
     
     public init(remote: AuthRemoteDataSource) {

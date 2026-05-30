@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol Repository {}
+public protocol Repository: Sendable {}
 
 public struct RepositoryRegistry {
     public init() {}

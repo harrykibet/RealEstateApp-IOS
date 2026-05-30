@@ -17,7 +17,7 @@ public struct SignupView: View {
     
     // MARK: - Intents
     
-    private let onSignupCompleted: (AuthenticationResult) -> Void
+    private let onAuthSessionReceived: (AuthSession) -> Void
     
     private let onBackToLoginTapped: () -> Void
     
@@ -25,11 +25,11 @@ public struct SignupView: View {
     
     public init(
         viewModel: SignupViewModel,
-        onSignupCompleted: @escaping (AuthenticationResult) -> Void,
+        onAuthSessionReceived: @escaping (AuthSession) -> Void,
         onBackToLoginTapped: @escaping () -> Void
     ) {
         self.viewModel = viewModel
-        self.onSignupCompleted = onSignupCompleted
+        self.onAuthSessionReceived = onAuthSessionReceived
         self.onBackToLoginTapped = onBackToLoginTapped
     }
     

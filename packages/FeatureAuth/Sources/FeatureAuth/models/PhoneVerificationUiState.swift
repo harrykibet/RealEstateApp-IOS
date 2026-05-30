@@ -10,7 +10,7 @@ public enum PhoneVerificationUiState {
     case idle
     case loading
     case sendingCode
-    case codeSent
+    case codeSent(String)
     case verifyingCode
     case verified
     case error(String)

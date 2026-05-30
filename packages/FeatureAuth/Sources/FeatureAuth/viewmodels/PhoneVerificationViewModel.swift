@@ -45,7 +45,7 @@ public final class PhoneVerificationViewModel:
             try await authRepository
                 .sendPhoneVerificationCode()
             
-            uiState = .success(
+            uiState = .codeSent(
                 "Verification code sent"
             )
             

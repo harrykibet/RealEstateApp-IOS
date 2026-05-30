@@ -6,41 +6,33 @@
 //
 
 import Foundation
+import CoreAppData
+import CoreModel
 
 @MainActor
-public final class PhoneVerificationViewModel: ObservableObject {
+public final class PhoneVerificationViewModel:
+ObservableObject {
 
-    // OTP
-    @Published public var code: String = ""
-    
-    //UI State
-    @Published public var uiState: PhoneVerificationUiState = .idle
+    // MARK: - Form
 
-    private let coordinator: AuthCoordinatorViewModel
+    @Published
+    public var form = PhoneVerificationFormState()
 
-    public init(coordinator: AuthCoordinatorViewModel) {
-        self.coordinator = coordinator
-    }
-    
-    public func sendCode() async {
-        
-    }
+    // MARK: - UI State
 
-    public func verifyCode() async {
-        guard code.count >= 4 else {
-            uiState = .error("Invalid verification code")
-            return
-        }
+    @Published
+    public private(set) var uiState:
+        PhoneVerificationUiState = .idle
 
-        uiState = .loading
+    // MARK: - Dependencies
 
-        try? await Task.sleep(nanoseconds: 800_000_000)
+    private let authRepository: AuthRepository
 
-        coordinator.phoneVerified()
-        uiState = .idle
-    }
+    // MARK: - Init
 
-    public func verifyEmailInstead() {
-        coordinator.goToEmailVerification()
+    public init(
+        authRepository: AuthRepository
+    ) {
+        self.authRepository = authRepository
     }
 }

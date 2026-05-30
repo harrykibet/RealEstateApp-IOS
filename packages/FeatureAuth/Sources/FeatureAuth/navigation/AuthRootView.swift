@@ -184,6 +184,9 @@ extension AuthRootView {
     private var forgotPasswordView: some View {
         
         ForgotPasswordView(
+            
+            viewModel: forgotPasswordViewModel,
+            
             onBackToLogin: {
                 flowState = .login
             }

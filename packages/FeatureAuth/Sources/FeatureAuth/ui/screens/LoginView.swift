@@ -17,7 +17,7 @@ public struct LoginView: View {
 
     // MARK: - Actions
 
-    private let onAuthSessionChanged: (AuthSession) -> Void
+    private let onAuthSessionReceived: (AuthSession) -> Void
 
     private let onSignupTapped: () -> Void
 
@@ -27,12 +27,12 @@ public struct LoginView: View {
 
     public init(
         viewModel: LoginViewModel,
-        onLoginCompleted: @escaping (AuthSession) -> Void,
+        onAuthSessionReceived: @escaping (AuthSession) -> Void,
         onSignupTapped: @escaping () -> Void,
         onForgotPasswordTapped: @escaping () -> Void
     ) {
         self.viewModel = viewModel
-        self.onAuthSessionChanged = onLoginCompleted
+        self.onAuthSessionReceived = onAuthSessionReceived
         self.onSignupTapped = onSignupTapped
         self.onForgotPasswordTapped = onForgotPasswordTapped
     }
@@ -53,7 +53,7 @@ public struct LoginView: View {
                         return
                     }
 
-                    onAuthSessionChanged(session)
+                    onAuthSessionReceived(session)
                 }
             }
 

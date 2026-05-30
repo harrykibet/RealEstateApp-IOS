@@ -156,7 +156,7 @@ extension AuthRootView {
         LoginView(
             viewModel: loginViewModel,
             
-            onLoginCompleted: handleAuthSession,
+            onAuthSessionReceived: handleAuthSession,
             
             onSignupTapped: {
                 flowState = .signup

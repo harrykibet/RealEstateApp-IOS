@@ -25,6 +25,15 @@ public struct AuthRootView: View {
     @StateObject
     private var signupViewModel: SignupViewModel
     
+    @StateObject
+    private var emailVerificationViewModel: EmailVerificationViewModel
+    
+    @StateObject
+    private var forgotPasswordViewModel: ForgotPasswordViewModel
+    
+    @StateObject
+    private var phoneVerificationViewModel: PhoneVerificationViewModel
+    
     // MARK: - Dependencies
 
     private let authRepository: AuthRepository

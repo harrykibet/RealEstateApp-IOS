@@ -13,7 +13,8 @@ public struct LoginView: View {
     
     // MARK: - State
     
-    @StateObject private var viewModel: LoginViewModel
+    @ObservedObject
+    private var viewModel: LoginViewModel
     
     // MARK: - Actions
     
@@ -31,10 +32,7 @@ public struct LoginView: View {
         onSignupTapped: @escaping () -> Void,
         onForgotPasswordTapped: @escaping () -> Void
     ) {
-        _viewModel = StateObject(
-            wrappedValue: viewModel
-        )
-        
+        self.viewModel = viewModel
         self.onLoginResult = onLoginResult
         self.onSignupTapped = onSignupTapped
         self.onForgotPasswordTapped = onForgotPasswordTapped

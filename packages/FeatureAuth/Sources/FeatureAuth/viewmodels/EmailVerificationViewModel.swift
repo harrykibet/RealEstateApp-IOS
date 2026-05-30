@@ -6,27 +6,48 @@
 //
 
 import Foundation
+import CoreAppData
+import CoreModel
 
 @MainActor
-public final class EmailVerificationViewModel: ObservableObject {
-
-    // UI State
-    @Published public var uiState: EmailVerificationUiState = .idle
-
-    private let coordinator: AuthCoordinatorViewModel
-
-    public init(coordinator: AuthCoordinatorViewModel) {
-        self.coordinator = coordinator
+public final class EmailVerificationViewModel:
+    ObservableObject {
+    
+    // MARK: - State
+    
+    @Published
+    public var uiState: EmailVerificationUiState = .idle
+    
+    // MARK: - Dependencies
+    
+    private let authRepository: AuthRepository
+    
+    // MARK: - Init
+    
+    public init(
+        authRepository: AuthRepository
+    ) {
+        self.authRepository = authRepository
     }
-
+    
     public func resendEmail() async {
+        
         uiState = .loading
-        try? await Task.sleep(nanoseconds: 800_000_000)
-        uiState = .error("Verification email resent")
-        uiState = .idle
-    }
-
-    public func emailVerified() {
-        coordinator.emailVerified()
+        
+        do {
+            
+            try await authRepository
+                .sendEmailVerification()
+            
+            uiState = .isLoading(
+                "Verification email sent"
+            )
+            
+        } catch {
+            
+            uiState = .error(
+                error.localizedDescription
+            )
+        }
     }
 }

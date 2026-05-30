@@ -36,7 +36,7 @@ public final class SignupViewModel: ObservableObject {
     
     // MARK: - Signup
     
-    public func signup() async -> AuthenticationResult? {
+    public func signup() async -> AuthSession? {
         
         guard validateForm() else {
             return nil
@@ -61,7 +61,7 @@ public final class SignupViewModel: ObservableObject {
             
             // Example outcome
             
-            return .requiresEmailVerification(
+            return status.requiresEmailVerification(
                 email: form.email
             )
             

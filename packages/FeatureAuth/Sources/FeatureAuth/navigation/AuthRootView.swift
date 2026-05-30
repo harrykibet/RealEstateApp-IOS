@@ -57,6 +57,24 @@ public struct AuthRootView: View {
                 authRepository: authRepository
             )
         )
+        
+        _forgotPasswordViewModel = StateObject(
+            wrappedValue: ForgotPasswordViewModel(
+                authRepository: authRepository
+            )
+        )
+        
+        _emailVerificationViewModel = StateObject(
+            wrappedValue: EmailVerificationViewModel(
+                authRepository: authRepository
+            )
+        )
+        
+        _phoneVerificationViewModel = StateObject(
+            wrappedValue: PhoneVerificationViewModel(
+                authRepository: authRepository
+            )
+        )
     }
 
     public var body: some View {

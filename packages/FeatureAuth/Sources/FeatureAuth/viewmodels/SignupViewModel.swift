@@ -11,84 +11,80 @@ import CoreModel
 
 @MainActor
 public final class SignupViewModel: ObservableObject {
-    
+
     // MARK: - Form State
-    
+
     @Published
     public var form = SignupFormState()
-    
+
     // MARK: - UI State
-    
+
     @Published
-    public var uiState: SignupUiState = .idle
-    
+    public private(set) var uiState: SignupUiState = .idle
+
     // MARK: - Dependencies
-    
+
     private let authRepository: AuthRepository
-    
+
     // MARK: - Init
-    
+
     public init(
         authRepository: AuthRepository
     ) {
         self.authRepository = authRepository
     }
-    
+
     // MARK: - Signup
-    
+
     public func signup() async -> AuthSession? {
-        
+
         guard validateForm() else {
             return nil
         }
-        
+
         uiState = .loading
-        
+
         defer {
-            uiState = .idle
+
+            if case .loading = uiState {
+                uiState = .idle
+            }
         }
-        
+
         do {
-            
-            try await authRepository.signUp(
+
+            let session = try await authRepository.signUp(
                 email: form.email,
                 password: form.password,
-                displayName: form.name)
-            
-            try await Task.sleep(
-                nanoseconds: 1_000_000_000
+                displayName: form.name
             )
-            
-            // Example outcome
-            
-            return status.requiresEmailVerification(
-                email: form.email
-            )
-            
+
+            return session
+
         } catch {
-            
+
             uiState = .error(
-                "Signup failed"
+                error.localizedDescription
             )
-            
+
             return nil
         }
     }
 }
 
 extension SignupViewModel {
-    
+
     private func validateForm() -> Bool {
-        
+
         guard form.isFormValid else {
-            
+
             uiState = .error(
                 "Passwords do not match"
             )
-            
+
             return false
         }
-        
+
         return true
     }
 }

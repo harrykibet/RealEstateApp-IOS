@@ -17,7 +17,7 @@ public struct PhoneVerificationView: View {
 
     // MARK: - Actions
 
-    private let onVerificationSuccess: (AuthSession) -> Void
+    private let onAuthSessionReceived: (AuthSession) -> Void
 
     private let onVerifyEmailInstead: () -> Void
 
@@ -25,11 +25,11 @@ public struct PhoneVerificationView: View {
 
     public init(
         viewModel: PhoneVerificationViewModel,
-        onVerificationSuccess: @escaping (AuthSession) -> Void,
+        onAuthSessionReceived: @escaping (AuthSession) -> Void,
         onVerifyEmailInstead: @escaping () -> Void
     ) {
         self.viewModel = viewModel
-        self.onVerificationSuccess = onVerificationSuccess
+        self.onAuthSessionReceived = onAuthSessionReceived
         self.onVerifyEmailInstead = onVerifyEmailInstead
     }
 
@@ -63,7 +63,7 @@ public struct PhoneVerificationView: View {
                         return
                     }
 
-                    onVerificationSuccess(session)
+                    onAuthSessionReceived(session)
                 }
             } label: {
 

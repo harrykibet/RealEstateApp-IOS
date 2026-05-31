@@ -12,14 +12,14 @@ public struct EmailVerificationView: View {
     @ObservedObject
     private var viewModel: EmailVerificationViewModel
     
-    private let onVerificationSuccess: () -> Void
+    private let onAuthSessionReceived: () -> Void
     
     public init(
         viewModel: EmailVerificationViewModel,
-        onVerificationSuccess: @escaping () -> Void
+        onAuthSessionReceived: @escaping () -> Void
     ) {
         self.viewModel = viewModel
-        self.onVerificationSuccess = onVerificationSuccess
+        self.onAuthSessionReceived = onAuthSessionReceived
     }
     
     public var body: some View {
@@ -74,7 +74,7 @@ public struct EmailVerificationView: View {
                 .authenticated
             ) = session {
                 
-                onVerificationSuccess()
+                onAuthSessionReceived()
             }
             
         } catch {

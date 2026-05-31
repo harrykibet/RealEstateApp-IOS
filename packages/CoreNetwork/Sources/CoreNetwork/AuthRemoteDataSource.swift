@@ -16,5 +16,5 @@ public protocol AuthRemoteDataSource: Sendable {
 
     func signOut() async throws
 
-    func currentSession() async throws -> AuthSession?
+    func currentSession() async throws -> AuthSession
 }

@@ -43,13 +43,15 @@ public actor FirebaseAuthRemoteDataSource: AuthRemoteDataSource {
         try Auth.auth().signOut()
     }
     
-    public func currentSession() async throws -> AuthSession? {
+    public func currentSession() async throws -> AuthSession {
 
         guard let firebaseUser = Auth.auth().currentUser else {
-            return nil
+            return .unauthenticated
         }
 
-        return mapAuthSession(from: firebaseUser)
+        return mapAuthSession(
+            from: firebaseUser
+        )
     }
     
     private func mapAuthSession(

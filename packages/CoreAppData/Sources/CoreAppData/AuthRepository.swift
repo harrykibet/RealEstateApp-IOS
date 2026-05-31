@@ -17,7 +17,7 @@ public protocol AuthRepository: Repository {
     
     func signOut() async throws
     
-    func currentSession() async throws -> AuthSession?
+    func currentSession() async throws -> AuthSession
 }
 
 public actor RemoteAuthRepository: AuthRepository {
@@ -39,7 +39,7 @@ public actor RemoteAuthRepository: AuthRepository {
         try await remote.signOut()
     }
     
-    public func currentSession() async throws -> AuthSession? {
+    public func currentSession() async throws -> AuthSession {
         try await remote.currentSession()
     }
 }

@@ -10,7 +10,7 @@ public enum EmailVerificationUiState {
     case idle
     case sending
     case loading
-    case waitingForVerification
+    case waitingForVerification(String)
     case verified
     case error(String)
 }

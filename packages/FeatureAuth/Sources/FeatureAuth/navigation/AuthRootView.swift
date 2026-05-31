@@ -232,14 +232,14 @@ extension AuthRootView {
             EmailVerificationView(
                 viewModel: emailVerificationViewModel,
                 onVerificationSuccess: {
-                                Task {
-                                    let session = try? await emailVerificationViewModel.refreshSession()
+                            Task {
+                                let session = try? await emailVerificationViewModel.refreshSession()
 
-                                    if let session {
-                                        handleAuthSession(session)
-                                    }
+                                if let session {
+                                    handleAuthSession(session)
                                 }
                             }
+                        }
             )
 
         case .phone:

@@ -231,7 +231,7 @@ extension AuthRootView {
 
             EmailVerificationView(
                 viewModel: emailVerificationViewModel,
-                onVerificationSuccess: {
+                onAuthSessionReceived: {
                             Task {
                                 let session = try? await emailVerificationViewModel.refreshSession()
 
@@ -246,7 +246,7 @@ extension AuthRootView {
 
             PhoneVerificationView(
                         viewModel: phoneVerificationViewModel,
-                        onVerificationSuccess: handleAuthSession,
+                        onAuthSessionReceived: handleAuthSession,
                         onVerifyEmailInstead: {
                             flowState = .verification(.email)
                         }

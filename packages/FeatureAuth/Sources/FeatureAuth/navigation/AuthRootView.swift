@@ -212,14 +212,7 @@ extension AuthRootView {
 }
 
 extension AuthRootView {
-    
-    private func completeVerification() {
 
-        authSession = authSession.updatingStatus(
-            .authenticated
-        )
-    }
-    
     @ViewBuilder
     private func verificationView(
         _ type: VerificationType

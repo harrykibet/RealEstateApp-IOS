@@ -231,15 +231,7 @@ extension AuthRootView {
 
             EmailVerificationView(
                 viewModel: emailVerificationViewModel,
-                onAuthSessionReceived: {
-                            Task {
-                                let session = try? await emailVerificationViewModel.refreshSession()
-
-                                if let session {
-                                    handleAuthSession(session)
-                                }
-                            }
-                        }
+                onAuthSessionReceived: handleAuthSession
             )
 
         case .phone:

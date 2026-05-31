@@ -231,15 +231,27 @@ extension AuthRootView {
 
             EmailVerificationView(
                 viewModel: emailVerificationViewModel,
-                onVerificationSuccess: completeVerification
+                onVerificationSuccess: {
+                                Task {
+                                    let session = try? await emailVerificationViewModel.refreshSession()
+
+                                    if let session {
+                                        handleAuthSession(session)
+                                    }
+                                }
+                            }
             )
 
         case .phone:
 
             PhoneVerificationView(
-                onVerificationSuccess: completeVerification
-            )
-
+                        viewModel: phoneVerificationViewModel,
+                        onVerificationSuccess: handleAuthSession,
+                        onVerifyEmailInstead: {
+                            flowState = .verification(.email)
+                        }
+                    )
+            
         case .mfa:
 
             Text("MFA not implemented")

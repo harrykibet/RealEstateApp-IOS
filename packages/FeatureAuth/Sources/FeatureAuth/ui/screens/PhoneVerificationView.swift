@@ -6,43 +6,78 @@
 //
 
 import SwiftUI
+import CoreModel
 
 public struct PhoneVerificationView: View {
 
-    @StateObject private var viewModel: PhoneVerificationViewModel
+    // MARK: - State
 
-    public init(viewModel: PhoneVerificationViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    @ObservedObject
+    private var viewModel: PhoneVerificationViewModel
+
+    // MARK: - Actions
+
+    private let onVerificationSuccess: (AuthSession) -> Void
+
+    private let onVerifyEmailInstead: () -> Void
+
+    // MARK: - Init
+
+    public init(
+        viewModel: PhoneVerificationViewModel,
+        onVerificationSuccess: @escaping (AuthSession) -> Void,
+        onVerifyEmailInstead: @escaping () -> Void
+    ) {
+        self.viewModel = viewModel
+        self.onVerificationSuccess = onVerificationSuccess
+        self.onVerifyEmailInstead = onVerifyEmailInstead
     }
 
+    // MARK: - Body
+
     public var body: some View {
+
         VStack(spacing: 16) {
 
             Text("Verify Phone")
                 .font(.title.bold())
 
-            TextField("Verification Code", text: $viewModel.code)
-                .keyboardType(.numberPad)
-                .textFieldStyle(.roundedBorder)
+            TextField(
+                "Verification Code",
+                text: $viewModel.form.code
+            )
+            .keyboardType(.numberPad)
+            .textFieldStyle(.roundedBorder)
 
             if let error = viewModel.uiState.errorMessage {
-                Text(error).foregroundColor(.red)
+                Text(error)
+                    .foregroundColor(.red)
             }
 
             Button {
-                Task { await viewModel.verifyCode() }
+                Task {
+
+                    guard let session =
+                        await viewModel.verifyCode()
+                    else {
+                        return
+                    }
+
+                    onVerificationSuccess(session)
+                }
             } label: {
-                Group {
-                    if viewModel.uiState.isLoading {
-                            ProgressView()
-                        } else {
-                            Text("Verify")
-                        }
-                    }            }
+
+                if viewModel.uiState.isLoading {
+                    ProgressView()
+                } else {
+                    Text("Verify")
+                }
+            }
             .buttonStyle(.borderedProminent)
+            .disabled(viewModel.uiState.isLoading)
 
             Button("Verify Email Instead") {
-                viewModel.verifyEmailInstead()
+                onVerifyEmailInstead()
             }
             .font(.caption)
         }

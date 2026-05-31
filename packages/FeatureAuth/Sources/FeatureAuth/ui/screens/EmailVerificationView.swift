@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import CoreModel
 
 public struct EmailVerificationView: View {
     
     @ObservedObject
     private var viewModel: EmailVerificationViewModel
     
-    private let onAuthSessionReceived: () -> Void
+    private let onAuthSessionReceived: (AuthSession) -> Void
     
     public init(
         viewModel: EmailVerificationViewModel,
-        onAuthSessionReceived: @escaping () -> Void
+        onAuthSessionReceived: @escaping (AuthSession) -> Void
     ) {
         self.viewModel = viewModel
         self.onAuthSessionReceived = onAuthSessionReceived
@@ -74,7 +75,7 @@ public struct EmailVerificationView: View {
                 .authenticated
             ) = session {
                 
-                onAuthSessionReceived()
+                onAuthSessionReceived(session)
             }
             
         } catch {

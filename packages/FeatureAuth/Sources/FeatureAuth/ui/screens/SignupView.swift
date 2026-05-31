@@ -96,13 +96,15 @@ public struct SignupView: View {
 }
 
 extension SignupView {
-    
+
     private func handleSignup() async {
-        
-        guard let result = await viewModel.signup() else {
+
+        guard let session =
+            await viewModel.signup()
+        else {
             return
         }
-        
-        onSignupCompleted(result)
+
+        onAuthSessionReceived(session)
     }
 }

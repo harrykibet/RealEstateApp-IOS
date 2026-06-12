@@ -15,7 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../CoreAppData"),
-        .package(path: "..CoreDesignSystem")
+        .package(path: "../CoreDesignSystem")
     ],
     targets: [
         .target(

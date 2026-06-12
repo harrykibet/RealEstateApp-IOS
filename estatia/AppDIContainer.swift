@@ -29,6 +29,7 @@ import CoreUI
 import CoreModel
 import CoreImagePipeline
 import CoreMediaPipeline
+import CoreDesignSystem
 
 public final class AppDIContainer {
     public struct AppScope {

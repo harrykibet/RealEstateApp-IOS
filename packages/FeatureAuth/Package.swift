@@ -1,4 +1,5 @@
 // swift-tools-version: 6.1
+
 import PackageDescription
 
 let package = Package(
@@ -7,7 +8,10 @@ let package = Package(
         .iOS(.v18)
     ],
     products: [
-        .library(name: "FeatureAuth", targets: ["FeatureAuth"]),
+        .library(
+            name: "FeatureAuth",
+            targets: ["FeatureAuth"]
+        )
     ],
     dependencies: [
         .package(path: "../CoreAppData")
@@ -16,13 +20,19 @@ let package = Package(
         .target(
             name: "FeatureAuth",
             dependencies: [
-                .product(name: "CoreAppData", package: "CoreAppData")
+                .product(
+                    name: "CoreAppData",
+                    package: "CoreAppData"
+                )
             ],
-            path: "Sources/FeatureAuth"
+            path: "Sources/FeatureAuth",
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "FeatureAuthTests",
             dependencies: ["FeatureAuth"]
-        ),
+        )
     ]
 )

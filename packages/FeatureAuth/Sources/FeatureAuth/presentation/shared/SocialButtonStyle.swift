@@ -52,4 +52,27 @@ public struct SocialButtonStyle: ButtonStyle {
             }
         }
     }
+    
+    private var border: some View {
+        RoundedRectangle(cornerRadius: 14, style: .continuous)
+            .stroke(borderColor, lineWidth: 1)
+    }
+    
+    private var borderColor: Color {
+        switch provider {
+        case .apple:
+            return .clear
+        case .google:
+            return Color.gray.opacity(0.25)
+        }
+    }
+    
+    private var foregroundColor: Color {
+        switch provider {
+        case .apple:
+            return .white
+        case .google:
+            return .primary
+        }
+    }
 }

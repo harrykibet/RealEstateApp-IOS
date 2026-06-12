@@ -8,12 +8,12 @@
 
 import SwiftUI
 
+public enum Provider {
+    case apple
+    case google
+}
+
 public struct SocialButtonStyle: ButtonStyle {
-    
-    public enum Provider {
-        case apple
-        case google
-    }
     
     private let provider: Provider
     

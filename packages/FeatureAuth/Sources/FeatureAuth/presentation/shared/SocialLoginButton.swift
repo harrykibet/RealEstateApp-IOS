@@ -9,19 +9,17 @@ import SwiftUI
 
 public struct SocialLoginButton: View {
 
-    public enum Provider {
-        case apple
-        case google
-    }
-
     private let provider: Provider
+    private let isLoading: Bool
     private let action: () -> Void
 
     public init(
         provider: Provider,
+        isLoading: Bool,
         action: @escaping () -> Void
     ) {
         self.provider = provider
+        self.isLoading = isLoading
         self.action = action
     }
 
@@ -40,6 +38,13 @@ public struct SocialLoginButton: View {
             }
         }
         .buttonStyle(SocialButtonStyle(provider: provider))
+        
+        if isLoading {
+            ProgressView()
+                .tint(provider == .apple ? .white : .primary)
+        } else {
+            labelContent
+        }
     }
 
     private var icon: some View {

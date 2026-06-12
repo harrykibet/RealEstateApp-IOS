@@ -8,17 +8,3 @@
 import SwiftUI
 
 
-struct AuthBackground: View {
-
-    let content: () -> Content
-
-    var body: some View {
-
-        ZStack {
-
-            LinearGradient(...)
-
-            content()
-        }
-    }
-}

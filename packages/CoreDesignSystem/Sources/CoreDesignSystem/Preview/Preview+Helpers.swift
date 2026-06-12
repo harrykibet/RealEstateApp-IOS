@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 public enum Preview {
     
-    static func light<Content: View>(
+    public static func light<Content: View>(
         @ViewBuilder _ content: () -> Content
     ) -> some View {
         PreviewContainer(colorScheme: .light) {
@@ -18,7 +18,7 @@ public enum Preview {
         }
     }
     
-    static func dark<Content: View>(
+    public static func dark<Content: View>(
         @ViewBuilder _ content: () -> Content
     ) -> some View {
         PreviewContainer(colorScheme: .dark) {
@@ -26,7 +26,7 @@ public enum Preview {
         }
     }
     
-    static func both<Content: View>(
+    public static func both<Content: View>(
         @ViewBuilder _ content: () -> Content
     ) -> some View {
         Group {

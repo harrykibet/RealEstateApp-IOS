@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreDesignSystem
 
 public struct SocialLoginButton: View {
 
@@ -38,13 +39,6 @@ public struct SocialLoginButton: View {
             }
         }
         .buttonStyle(SocialButtonStyle(provider: provider))
-        
-        if isLoading {
-            ProgressView()
-                .tint(provider == .apple ? .white : .primary)
-        } else {
-            labelContent
-        }
     }
 
     private var icon: some View {
@@ -55,7 +49,8 @@ public struct SocialLoginButton: View {
                 Image(systemName: "apple.logo")
 
             case .google:
-                Image("google_logo") // asset catalog
+                Image("google_logo",
+                      bundle: .module)
             }
         }
     }
@@ -67,3 +62,52 @@ public struct SocialLoginButton: View {
         }
     }
 } 
+
+#if DEBUG
+
+#Preview("Social Login - Light") {
+    Preview.light {
+        socialLoginButtonPreviewContent
+    }
+}
+
+#Preview("Social Login - Dark") {
+    Preview.dark {
+        socialLoginButtonPreviewContent
+    }
+}
+
+// MARK: - Preview Content
+
+private var socialLoginButtonPreviewContent: some View {
+
+    VStack(spacing: 16) {
+
+        SocialLoginButton(
+            provider: .apple,
+            isLoading: false,
+            action: {}
+        )
+
+        SocialLoginButton(
+            provider: .google,
+            isLoading: false,
+            action: {}
+        )
+
+        SocialLoginButton(
+            provider: .apple,
+            isLoading: true,
+            action: {}
+        )
+
+        SocialLoginButton(
+            provider: .google,
+            isLoading: true,
+            action: {}
+        )
+    }
+    .padding()
+}
+
+#endif

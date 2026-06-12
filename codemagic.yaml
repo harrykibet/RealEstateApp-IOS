@@ -7,16 +7,10 @@ workflows:
     environment:
       xcode: latest
 
-      # ----------------------------
-      # 🔑 Secure token group (used by Python SSH uploader)
-      # ----------------------------
       groups:
-        - tokens  # GITHUB_TOKEN, GITLAB_TOKEN
-        - firebase  # GOOGLE_SERVICES_PLIST_B64
+        - tokens
+        - firebase
 
-      # ----------------------------
-      # 📝 Non-secret environment vars
-      # ----------------------------
       vars:
         GIT_USER_NAME: harrykibet
         GIT_USER_EMAIL: trmnjames@gmail.com
@@ -33,57 +27,87 @@ workflows:
     scripts:
 
       # =========================
-      # 🔐 SSH SETUP (CRITICAL FIRST STEP)
+      # 🔐 SSH SETUP
       # =========================
       - name: Setup ephemeral SSH keys
         script: |
+          set -euxo pipefail
           echo "Setting up SSH keys..."
           python3 -m pip install --quiet requests
           chmod +x scripts/ssh_key_manager.py
           python3 scripts/ssh_key_manager.py
 
       # =========================
-      # 🔐 RESTORE FIREBASE PLIST
-      # =========================
-      - name: Restore GoogleService-Info.plist
-        script: |
-          echo "Restoring Firebase plist..."
-          echo "$GOOGLE_SERVICES_PLIST_B64" | base64 --decode > "$CM_BUILD_DIR/estatia/GoogleService-Info.plist"
-          echo "Firebase plist restored to estatia/GoogleService-Info.plist"
-
-      # =========================
-      # 🔥 GIT SETUP (depends on SSH)
+      # 🔥 GIT SETUP (NO CLEAN YET)
       # =========================
       - name: Setup Git identity & remotes
         script: |
+          set -euxo pipefail
           echo "Running Git setup..."
           chmod +x scripts/git_setup.sh
           chmod +x scripts/update_repos.sh
           ./scripts/git_setup.sh
 
       # =========================
-      #  VALIDATE SSH CONNECTION
-      # =========================
-      - name: Validate SSH connection
-        script: |
-          echo "Testing SSH connectivity..."
-          export GIT_SSH_COMMAND="ssh -i $SSH_KEY_PATH -o IdentitiesOnly=yes -o StrictHostKeyChecking=no"
-          ssh -T git@github.com || true
-          ssh -T git@gitlab.com || true
-
-      # =========================
-      # 🧹 CLEAN REPO
+      # 🧹 CLEAN ONLY AFTER GIT SETUP
       # =========================
       - name: Clean repository state
         script: |
+          set -euxo pipefail
           echo "Cleaning repo..."
           git clean -fdx
+          git status --porcelain
+
+      # =========================
+      # 🔐 RESTORE FIREBASE PLIST (AFTER CLEAN)
+      # =========================
+      - name: Restore GoogleService-Info.plist
+        script: |
+          set -euxo pipefail
+
+          echo "Restoring Firebase plist..."
+
+          FILE_PATH="$CM_BUILD_DIR/estatia/GoogleService-Info.plist"
+          mkdir -p "$(dirname "$FILE_PATH")"
+
+          echo "$GOOGLE_SERVICES_PLIST_B64" | base64 --decode > "$FILE_PATH"
+
+          echo "Validating plist..."
+          test -f "$FILE_PATH"
+          test -s "$FILE_PATH"
+
+          plutil -lint "$FILE_PATH"
+
+          echo "File details:"
+          ls -la "$FILE_PATH"
+          shasum -a 256 "$FILE_PATH"
+
+          echo "Firebase plist successfully restored."
+
+      # =========================
+      # 🔍 VERIFY PLIST STILL EXISTS
+      # =========================
+      - name: Verify Firebase plist presence
+        script: |
+          set -euxo pipefail
+
+          FILE="$CM_BUILD_DIR/estatia/GoogleService-Info.plist"
+
+          echo "Checking plist after setup steps..."
+
+          if [ ! -f "$FILE" ]; then
+            echo "❌ Firebase plist missing"
+            exit 1
+          fi
+
+          ls -la "$FILE"
 
       # =========================
       # 🖥 DISPLAY BOOTSTRAP
       # =========================
       - name: Bootstrap virtual display
         script: |
+          set -euxo pipefail
           echo "Initializing CI display environment..."
           chmod +x scripts/ci-display-bootstrap.sh
           ./scripts/ci-display-bootstrap.sh
@@ -93,7 +117,9 @@ workflows:
       # =========================
       - name: Resolve Swift Package Dependencies
         script: |
+          set -euxo pipefail
           echo "Resolving Swift Package dependencies..."
+
           xcodebuild -resolvePackageDependencies \
             -project "$XCODE_PROJECT" \
             -clonedSourcePackagesDirPath "$CM_BUILD_DIR/spm"
@@ -103,25 +129,29 @@ workflows:
       # =========================
       - name: Build for testing
         script: |
-          set -e
+          set -euxo pipefail
+
           DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
 
           echo "Building project..."
+
           xcodebuild clean build-for-testing \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -destination "$DESTINATION" \
             -derivedDataPath "$DERIVED_DATA" \
             -parallelizeTargets \
-            -quiet \
             CODE_SIGNING_ALLOWED=NO
 
       # =========================
-      # 🔍 VALIDATE
+      # 🔍 VALIDATE BUILD OUTPUT
       # =========================
       - name: Validate build artifacts
         script: |
+          set -euxo pipefail
+
           echo "Validating build output..."
+
           APP_PATH=$(find "$DERIVED_DATA" -name "*.app" | head -n 1)
 
           if [ -d "$APP_PATH" ]; then
@@ -136,7 +166,8 @@ workflows:
       # =========================
       - name: Run tests (optional)
         script: |
-          set -e
+          set -euxo pipefail
+
           DESTINATION="platform=iOS Simulator,OS=latest,name=iPhone 15"
 
           xcodebuild test-without-building \
@@ -145,11 +176,13 @@ workflows:
             -destination "$DESTINATION" \
             -derivedDataPath "$DERIVED_DATA"
 
-      # ========================
-      # CLEANUP SSH
-      # ========================
+      # =========================
+      # 🧹 CLEANUP SSH
+      # =========================
       - name: Cleanup SSH
-        script: python3 scripts/ssh_key_manager.py cleanup
+        script: |
+          set -euxo pipefail
+          python3 scripts/ssh_key_manager.py cleanup
 
     artifacts:
       - build/**/*.app

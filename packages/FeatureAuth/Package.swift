@@ -14,7 +14,8 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../CoreAppData")
+        .package(path: "../CoreAppData"),
+        .package(path: "..CoreDesignSystem")
     ],
     targets: [
         .target(
@@ -23,7 +24,8 @@ let package = Package(
                 .product(
                     name: "CoreAppData",
                     package: "CoreAppData"
-                )
+                ),
+                .product(name: "CoreDesignSystem", package: "CoreDesignSystem")
             ],
             path: "Sources/FeatureAuth",
             resources: [

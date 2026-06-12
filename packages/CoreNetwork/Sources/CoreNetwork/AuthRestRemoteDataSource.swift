@@ -2,6 +2,18 @@ import Foundation
 import CoreModel
 
 public final class AuthRestRemoteDataSource: AuthRemoteDataSource {
+    public func signIn(email: String, password: String) async throws -> CoreModel.AuthSession {
+        return AuthSession.unauthenticated
+    }
+    
+    public func signUp(email: String, password: String, displayName: String?) async throws -> CoreModel.AuthSession {
+        return AuthSession.unauthenticated
+    }
+    
+    public func currentSession() async throws -> CoreModel.AuthSession {
+        return AuthSession.unauthenticated
+    }
+    
     private let client: APIClient
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder

@@ -1,7 +1,7 @@
 import Foundation
 import CoreModel
 
-public protocol UserRemoteDataSource {
+public protocol UserRemoteDataSource: Sendable {
     func fetchUser(id: String) async throws -> User
     func updateUser(_ user: User) async throws -> User
     func deleteUser(id: String) async throws

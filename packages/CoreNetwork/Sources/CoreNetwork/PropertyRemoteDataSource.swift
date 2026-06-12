@@ -1,7 +1,7 @@
 import Foundation
 import CoreModel
 
-public protocol PropertyRemoteDataSource {
+public protocol PropertyRemoteDataSource: Sendable {
     func fetchProperty(id: String) async throws -> PropertyModel
     func fetchProperties() async throws -> [PropertyModel]
     func searchProperties(query: String?, filters: PropertySearchFilters) async throws -> [PropertyModel]

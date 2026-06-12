@@ -6,7 +6,7 @@ public enum APIClientError: Error {
     case httpStatus(Int)
 }
 
-public protocol APIClient {
+public protocol APIClient: Sendable {
     func get(_ path: String, query: [URLQueryItem]?) async throws -> Data
     func post(_ path: String, body: Data?) async throws -> Data
     func put(_ path: String, body: Data?) async throws -> Data

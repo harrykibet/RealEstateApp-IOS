@@ -1,7 +1,7 @@
 import Foundation
 import CoreModel
 
-public protocol SecurityRemoteDataSource {
+public protocol SecurityRemoteDataSource: Sendable {
     func fetchSecurityConfig() async throws -> SecurityConfig
     func updateSecurityConfig(_ config: SecurityConfig) async throws -> SecurityConfig
 }

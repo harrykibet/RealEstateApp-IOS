@@ -19,9 +19,9 @@ public protocol AuthRepository: Repository {
     
     func sendPhoneVerificationCode() async throws
     
-    func sendPasswordResetEmail() async throws
+    func sendPasswordResetEmail(email: String) async throws
     
-    func verifyPhoneCode(code: String) async throws
+    func verifyPhoneCode(_: String) async throws -> AuthSession
     
     func signOut() async throws
     
@@ -38,12 +38,12 @@ public actor RemoteAuthRepository: AuthRepository {
         
     }
     
-    public func sendPasswordResetEmail() async throws {
+    public func sendPasswordResetEmail(email: String) async throws {
         
     }
     
-    public func verifyPhoneCode(code: String) async throws {
-        
+    public func verifyPhoneCode(_: String) async throws -> AuthSession {
+        return AuthSession.unauthenticated
     }
     
     private let remote: AuthRemoteDataSource

@@ -17,21 +17,12 @@ public protocol AuthRepository: Repository {
     
     func sendEmailVerification() async throws
     
-    public func sendEmailVerification() async throws {
-        
-    }
+    func sendPhoneVerificationCode() async throws
     
-    public func sendPhoneVerificationCode() async throws {
-        
-    }
+    func sendPasswordResetEmail() async throws
     
-    public func sendPasswordResetEmail() async throws {
-        
-    }
+    func verifyPhoneCode(code: String) async throws
     
-    public func verifyPhoneCode(code: String) async throws {
-        
-    }
     func signOut() async throws
     
     func currentSession() async throws -> AuthSession

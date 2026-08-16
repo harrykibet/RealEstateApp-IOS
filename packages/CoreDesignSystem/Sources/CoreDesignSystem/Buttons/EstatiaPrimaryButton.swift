@@ -28,7 +28,7 @@ public struct EstatiaPrimaryButton: View {
     
     public var body: some View {
         AppButton(
-            style: .primary,
+            style: .filled,
             isEnabled: isEnabled,
             isLoading: isLoading,
             action: action

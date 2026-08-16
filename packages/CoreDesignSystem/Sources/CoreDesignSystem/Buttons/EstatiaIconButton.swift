@@ -25,7 +25,7 @@ public struct EstatiaIconButton: View {
     
     public var body: some View {
         AppButton(
-            style: .iconOnly,
+            style: .text,
             isEnabled: isEnabled,
             action: action
         ) {

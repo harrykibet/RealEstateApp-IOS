@@ -6,10 +6,7 @@
 //
 
 public enum AppButtonStyle {
-    
-    case primary
-    
-    case secondary
-    
-    case iconOnly
+    case filled
+    case outlined
+    case text
 }

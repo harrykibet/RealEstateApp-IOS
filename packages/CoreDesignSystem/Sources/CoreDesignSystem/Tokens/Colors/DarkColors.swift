@@ -10,22 +10,23 @@ import SwiftUI
 public extension AppSemanticColors {
     
     @MainActor static let dark = AppSemanticColors(
-        primary: ColorPalette.Blue.base,
+        // Use a lighter, desaturated primary for dark mode to increase legibility
+        primary: Color(hex: "#D2E3FC"),
         onPrimary: ColorPalette.Base.black,
         
         secondary: ColorPalette.Green.strong,
         onSecondary: ColorPalette.Base.black,
         
         background: ColorPalette.Base.black,
-        surface: Color(hex: "#111827"),
-        surfaceVariant: Color(hex: "#1F2937"),
+        surface: Color(hex: "#202124"),
+        surfaceVariant: Color(hex: "#202124"),
         
         textPrimary: ColorPalette.Base.white,
         textSecondary: ColorPalette.Gray.medium,
         textDisabled: ColorPalette.Gray.secondary,
         
         onSurface: ColorPalette.Base.white,
-        outline: ColorPalette.Gray.secondary,
+        outline: Color(hex: "#DADCE0"),
         disabled: ColorPalette.Gray.medium,
         
         success: ColorPalette.Status.success,
@@ -34,8 +35,8 @@ public extension AppSemanticColors {
         info: ColorPalette.Status.info,
         
         progressBackground: ColorPalette.Gray.secondary.opacity(0.35),
-        progressFill: ColorPalette.Blue.base,
+        progressFill: Color(hex: "#D2E3FC"),
         
-        separator: Color.black.opacity(0.08)
+        separator: Color.white.opacity(0.06)
     )
 }

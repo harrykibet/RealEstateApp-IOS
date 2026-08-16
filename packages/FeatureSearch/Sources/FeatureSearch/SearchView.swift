@@ -8,9 +8,11 @@
 import SwiftUI
 
 public struct SearchView: View {
-    public init() {}
+    @StateObject private var viewModel: SearchViewModel
 
-    @State private var searchText = ""
+    public init(viewModel: SearchViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     public var body: some View {
         NavigationView {
@@ -19,9 +21,11 @@ public struct SearchView: View {
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
-                    TextField("Search properties...", text: $searchText)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
+                    TextField("Search properties...", text: $viewModel.searchText, onCommit: {
+                        Task { await viewModel.search() }
+                    })
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
                 }
                 .padding(12)
                 .background(
@@ -34,10 +38,16 @@ public struct SearchView: View {
                 // Results List
                 ScrollView {
                     LazyVStack(spacing: 16) {
-                        ForEach(0..<5, id: \.self) { index in
-                            SearchResultCard(title: "Search Result \(index + 1)",
-                                             subtitle: "Sample location and description")
-                                .padding(.horizontal)
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .padding()
+                        } else {
+                            ForEach(viewModel.results.indices, id: \.self) { index in
+                                let p = viewModel.results[index]
+                                SearchResultCard(title: p.title ?? "Untitled",
+                                                 subtitle: p.county ?? "Unknown location")
+                                    .padding(.horizontal)
+                            }
                         }
                     }
                     .padding(.top)
@@ -53,6 +63,19 @@ public struct SearchView: View {
             }
         }
     }
+}
+
+#Preview {
+    struct MockRepo: PropertyRepository {
+        func fetchProperty(id: String) async throws -> PropertyModel { PropertyModel() }
+        func fetchProperties() async throws -> [PropertyModel] { [] }
+        func searchProperties(query: String?, filters: PropertySearchFilters) async throws -> [PropertyModel] { [PropertyModel()] }
+        func createProperty(_ property: PropertyModel) async throws -> PropertyModel { property }
+        func updateProperty(_ property: PropertyModel) async throws -> PropertyModel { property }
+        func deleteProperty(id: String) async throws {}
+    }
+
+    SearchView(viewModel: SearchViewModel(repository: RemotePropertyRepository(remote: NoopPropertyRemoteDataSource())))
 }
 
 // MARK: - Custom Card View

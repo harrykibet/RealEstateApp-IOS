@@ -9,20 +9,27 @@
 import SwiftUI
 
 public struct HomeView: View {
-    public init() {}
+    @StateObject var viewModel: HomeViewModel
+
+    public init(viewModel: HomeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+
     public var body: some View {
         NavigationView {
             List {
-                ForEach(0..<10) { index in
+                ForEach(viewModel.properties.indices, id: \.self) { index in
+                    let property = viewModel.properties[index]
+
                     VStack(alignment: .leading, spacing: 6) {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))
                             .frame(height: 200)
                             .cornerRadius(10)
 
-                        Text("Property Title \(index + 1)")
+                        Text(property.title ?? "Untitled Property")
                             .font(.headline)
-                        Text("Location • 2 Beds • $1200/month")
+                        Text(property.county ?? "Unknown • — Beds • —")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -30,9 +37,21 @@ public struct HomeView: View {
                 }
             }
             .navigationTitle("Home")
+            .task {
+                await viewModel.load()
+            }
         }
     }
 }
+
 #Preview {
-    HomeView()
+    struct MockRepo: PropertyRepository {
+        func fetchProperty(id: String) async throws -> PropertyModel { PropertyModel() }
+        func fetchProperties() async throws -> [PropertyModel] { [PropertyModel()] }
+        func searchProperties(query: String?, filters: PropertySearchFilters) async throws -> [PropertyModel] { [PropertyModel()] }
+        func createProperty(_ property: PropertyModel) async throws -> PropertyModel { property }
+        func updateProperty(_ property: PropertyModel) async throws -> PropertyModel { property }
+        func deleteProperty(id: String) async throws {}
+    }
+    HomeView(viewModel: HomeViewModel(repository: MockRepo()))
 }

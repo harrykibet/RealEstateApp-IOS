@@ -9,10 +9,10 @@ import SwiftUI
 import CoreModel
 
 public struct UserProfileView: View {
-    @State private var user: User
+    @StateObject private var viewModel: ProfileViewModel
 
-    public init(user: User) {
-        _user = State(initialValue: user)
+    public init(viewModel: ProfileViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
     public var body: some View {
@@ -21,15 +21,15 @@ public struct UserProfileView: View {
                 VStack(spacing: 24) {
                     // MARK: - Profile Header
                     VStack(spacing: 12) {
-                        ProfileImageView(url: user.profilePictureUrl)
+                        ProfileImageView(url: viewModel.user.profilePictureUrl)
 
                         // Name + Verified badge
                         HStack(spacing: 6) {
-                            Text(user.name ?? "Unnamed User")
+                            Text(viewModel.user.name ?? "Unnamed User")
                                 .font(.title2)
                                 .fontWeight(.semibold)
 
-                            if user.verified {
+                            if viewModel.user.verified {
                                 Image(systemName: "checkmark.seal.fill")
                                     .foregroundColor(.blue)
                                     .imageScale(.medium)
@@ -39,15 +39,15 @@ public struct UserProfileView: View {
 
                     // MARK: - User Info Card
                     VStack(spacing: 12) {
-                        if let email = user.email {
+                        if let email = viewModel.user.email {
                             InfoRow(label: "Email", value: email, icon: "envelope")
                         }
 
-                        if let phone = user.phoneNumber {
+                        if let phone = viewModel.user.phoneNumber {
                             InfoRow(label: "Phone", value: phone, icon: "phone")
                         }
 
-                        InfoRow(label: "Account Type", value: user.userType.rawValue.capitalized, icon: "person.crop.circle")
+                        InfoRow(label: "Account Type", value: viewModel.user.userType.rawValue.capitalized, icon: "person.crop.circle")
                     }
                     .padding()
                     .background(Color(.systemBackground))
@@ -60,7 +60,7 @@ public struct UserProfileView: View {
                         Text("Liked Properties")
                             .font(.headline)
 
-                        Text("\(user.likedProperties.count)")
+                        Text("\(viewModel.favoriteCount)")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.accentColor)
@@ -71,6 +71,9 @@ public struct UserProfileView: View {
                 .padding(.top, 24)
                 .navigationTitle("Profile")
             }
+        }
+        .task {
+            await viewModel.refresh()
         }
     }
 }
@@ -157,5 +160,14 @@ struct InfoRow: View {
         verified: true,
         likedProperties: ["property_1", "property_2"]    )
 
-    UserProfileView(user: mockUser)
+    struct MockRepo: UserRepository {
+        func fetchUser(id: String) async throws -> User { mockUser }
+        func updateUser(_ user: User) async throws -> User { user }
+        func deleteUser(id: String) async throws {}
+        func fetchFavoritePropertyIds(userId: String) async throws -> [String] { mockUser.likedProperties }
+        func addFavoriteProperty(userId: String, propertyId: String) async throws {}
+        func removeFavoriteProperty(userId: String, propertyId: String) async throws {}
+    }
+
+    UserProfileView(viewModel: ProfileViewModel(repository: MockRepo(), initialUser: mockUser))
 }

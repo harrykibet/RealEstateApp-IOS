@@ -116,13 +116,27 @@ public final class AppDIContainer {
     public func makeView(for destination: FeatureDestination) -> AnyView {
         switch destination {
         case .home:
-            return AnyView(HomeView())
+            // Wire MVVM for Home: create a property repository and inject into the HomeViewModel
+            let propertyRemote: PropertyRemoteDataSource = NoopPropertyRemoteDataSource()
+            let propertyRepo = RemotePropertyRepository(remote: propertyRemote)
+            let homeVM = FeatureHome.HomeViewModel(repository: propertyRepo)
+            return AnyView(FeatureHome.HomeView(viewModel: homeVM))
+
         case .search:
-            return AnyView(SearchView())
+            // Wire MVVM for Search
+            let propertyRemoteForSearch: PropertyRemoteDataSource = NoopPropertyRemoteDataSource()
+            let propertyRepoForSearch = RemotePropertyRepository(remote: propertyRemoteForSearch)
+            let searchVM = FeatureSearch.SearchViewModel(repository: propertyRepoForSearch)
+            return AnyView(FeatureSearch.SearchView(viewModel: searchVM))
+
         case .property:
             return AnyView(AddPropertyView())
         case .profile(let user):
-            return AnyView(UserProfileView(user: user))
+            // Wire MVVM for Profile
+            let userRemote: UserRemoteDataSource = NoopUserRemoteDataSource()
+            let userRepo = RemoteUserRepository(remote: userRemote)
+            let profileVM = FeatureProfile.ProfileViewModel(repository: userRepo, initialUser: user)
+            return AnyView(FeatureProfile.UserProfileView(viewModel: profileVM))
         case .settings:
             return AnyView(SettingsView(viewModel: SettingsViewModel()))
         case .comments:

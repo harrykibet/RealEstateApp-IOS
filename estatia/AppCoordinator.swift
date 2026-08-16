@@ -1,19 +1,23 @@
 import SwiftUI
 import CoreModel
+import CoreDesignSystem
 
 public final class AppCoordinator: ObservableObject {
-    public enum AppTab: Hashable {
-        case home
-        case search
-        case add
-        case profile
-    }
+    // Use the shared AppTabID from CoreDesignSystem for consistency across the app
+    public typealias AppTab = AppTabID
 
-    @Published public var selectedTab: AppTab = .home
+    private let navigationState: NavigationState
     public let container: AppDIContainer
 
-    public init(container: AppDIContainer) {
+    public init(container: AppDIContainer, navigationState: NavigationState) {
         self.container = container
+        self.navigationState = navigationState
+    }
+
+    // Expose selectedTab as a façade to the central NavigationState
+    public var selectedTab: AppTab {
+        get { navigationState.selectedTab }
+        set { Task { await MainActor.run { self.navigationState.selectedTab = newValue } } }
     }
 
     public var currentUser: User {
@@ -28,3 +32,4 @@ public final class AppCoordinator: ObservableObject {
         container.makeView(for: destination)
     }
 }
+

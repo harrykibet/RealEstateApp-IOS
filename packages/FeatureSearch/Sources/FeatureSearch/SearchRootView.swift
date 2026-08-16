@@ -16,7 +16,12 @@ public struct SearchRootView: View {
     public var body: some View {
         NavigationStack(path: $navigationState.searchPath) {
             
-            SearchView(router: router)
+            // default viewModel when used standalone inside the feature package
+            let propertyRemote: PropertyRemoteDataSource = NoopPropertyRemoteDataSource()
+            let propertyRepo = RemotePropertyRepository(remote: propertyRemote)
+            let vm = SearchViewModel(repository: propertyRepo)
+
+            SearchView(viewModel: vm)
             
             .navigationDestination(for: SearchDestination.self) { destination in
                 SearchRouter.resolve(destination, router: router)

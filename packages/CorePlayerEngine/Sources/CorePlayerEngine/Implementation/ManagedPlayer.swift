@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ManagedPlayer: @unchecked Sendable {
+public struct ManagedPlayer {
     public let mediaId: String
     public let engine: PlayerEngine
     public var pinned: Bool = false

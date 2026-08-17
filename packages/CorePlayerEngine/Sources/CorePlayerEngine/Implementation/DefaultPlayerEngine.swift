@@ -8,6 +8,7 @@ import Foundation
 //
 
     
+@MainActor
 final class DefaultPlayerEngine: PlayerEngine {
     private let actor: PlayerActor
     

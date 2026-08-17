@@ -50,10 +50,10 @@ public protocol PlayerEngine: AnyObject {
     
     /// Current snapshot of playback progress.
     /// - Note: This is a pull-based API complementing event streams.
-    var currentTime: TimeInterval { get }
+    var currentTime: TimeInterval { get async }
     
     /// Duration of the currently loaded media.
-    var duration: TimeInterval? { get }
+    var duration: TimeInterval? { get async }
 }
 
 

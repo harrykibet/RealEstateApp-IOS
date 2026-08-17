@@ -10,7 +10,7 @@ import Foundation
 // MARK: - PlayerEventEmitter
 
     
-public final class PlayerEventEmitter<T: Sendable> {
+public final class PlayerEventEmitter<T: Sendable>: @unchecked Sendable {
     
     // MARK: Internal Storage
     

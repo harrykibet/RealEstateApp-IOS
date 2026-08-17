@@ -85,9 +85,9 @@ actor PlayerActor {
         player.release()
     }
 
-    // Expose read-only snapshots for engine consumers
-    nonisolated var currentTime: TimeInterval { currentTimeInternal }
-    nonisolated var duration: TimeInterval? { durationInternal }
+    // Expose read-only snapshots for engine consumers (actor-isolated; use `await actor.currentTime`)
+    var currentTime: TimeInterval { currentTimeInternal }
+    var duration: TimeInterval? { durationInternal }
 }
 
     

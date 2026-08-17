@@ -82,7 +82,7 @@ private extension AVPlayerItemObserver {
 
             case .failed:
                 if let error = item.error {
-                    emit?(.failed(.underlying(error)))
+                emit?(.failed(PlayerError.from(error)))
                 } else {
                     emit?(.failed(.unknown))
                 }
@@ -122,7 +122,7 @@ private extension AVPlayerItemObserver {
             queue: nil
         ) { [weak self] notification in
             let error = notification.userInfo?[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error
-            self?.emit?(.failed(error.map { .underlying($0) } ?? .unknown))
+            self?.emit?(.failed(error.map { PlayerError.from($0) } ?? .unknown))
         }
     }
 }

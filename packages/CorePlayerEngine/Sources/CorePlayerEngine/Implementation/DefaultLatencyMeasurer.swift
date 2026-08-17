@@ -4,7 +4,7 @@ public protocol LatencyMeasurer {
     func measure(url: URL) async -> TimeInterval?
 }
 
-public final class DefaultLatencyMeasurer: LatencyMeasurer {
+public final class DefaultLatencyMeasurer: LatencyMeasurer, @unchecked Sendable {
     private let session: URLSession
 
     public init(session: URLSession = URLSession(configuration: .ephemeral)) {

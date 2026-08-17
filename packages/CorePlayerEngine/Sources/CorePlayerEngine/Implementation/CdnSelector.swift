@@ -1,6 +1,6 @@
 import Foundation
 
-public final class CdnSelector {
+public final class CdnSelector: @unchecked Sendable {
     private let cdns: [Cdn]
     private let measurer: LatencyMeasurer
 

@@ -55,6 +55,3 @@ public protocol PlayerEngine: AnyObject {
     /// Duration of the currently loaded media.
     var duration: TimeInterval? { get async }
 }
-
-
-extension PlayerEngine: @unchecked Sendable {}

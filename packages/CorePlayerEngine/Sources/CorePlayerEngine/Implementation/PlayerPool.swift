@@ -1,6 +1,7 @@
 import Foundation
 
 /// Actor-based pool managing multiple PlayerEngine instances keyed by mediaId.
+@MainActor
 public actor PlayerPool {
     private var pool: [String: ManagedPlayer] = [:]
 

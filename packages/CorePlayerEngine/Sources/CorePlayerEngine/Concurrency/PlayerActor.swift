@@ -53,9 +53,30 @@ actor PlayerActor {
         self.eventEmitter = eventEmitter
 
         // Bind AV layer → PlayerEvent → Actor without calling an actor-isolated method from init
-        player.emit = { [weak self] event in
+        // Map AVPlayerWrapper callbacks to PlayerEvent and forward to the actor
+        player.onReady = { [weak self] in
             guard let self else { return }
-            Task { await self.consume(event) }
+            Task { await self.consume(.ready) }
+        }
+
+        player.onBuffering = { [weak self] buffering in
+            guard let self else { return }
+            Task { await self.consume(buffering ? .bufferingStarted : .bufferingEnded) }
+        }
+
+        player.onCompletion = { [weak self] in
+            guard let self else { return }
+            Task { await self.consume(.playbackCompleted) }
+        }
+
+        player.onError = { [weak self] error in
+            guard let self else { return }
+            Task { await self.consume(.failed(error)) }
+        }
+
+        player.onProgress = { [weak self] progress in
+            guard let self else { return }
+            Task { await self.consume(.progress(progress)) }
         }
     }
 

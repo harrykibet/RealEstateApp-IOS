@@ -1,6 +1,7 @@
 import Foundation
 
 /// High-level manager that coordinates multiple PlayerEngine instances (a player pool), environment, audio session, and streaming pipeline.
+@MainActor
 public final class PlayerManager {
     public static let shared = PlayerManager()
 

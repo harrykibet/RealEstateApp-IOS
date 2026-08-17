@@ -22,7 +22,6 @@ public enum PlayerEngineFactory {
     ///
     /// - Parameter config: Player configuration
     /// - Returns: Fully wired PlayerEngine
-    @MainActor
     public static func make(
         config: PlayerConfiguration = PlayerConfiguration()
     ) -> PlayerEngine {

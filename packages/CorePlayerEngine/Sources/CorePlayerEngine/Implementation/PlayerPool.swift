@@ -15,7 +15,7 @@ public actor PlayerPool {
             return existing
         }
 
-        let engine = await MainActor.run { PlayerEngineFactory.make() }
+        let engine = PlayerEngineFactory.make()
         let managed = ManagedPlayer(mediaId: mediaId, engine: engine)
         pool[mediaId] = managed
 

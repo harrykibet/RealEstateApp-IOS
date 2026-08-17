@@ -1,6 +1,6 @@
 import Foundation
 
-public final class CacheWarmer {
+public final class CacheWarmer: @unchecked Sendable {
     private let session: URLSession
     private let metrics: MetricsCollector?
     private let prefetchSize: Int = 256 * 1024 // 256 KB

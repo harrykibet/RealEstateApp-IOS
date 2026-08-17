@@ -9,7 +9,7 @@ public protocol StreamingPipeline {
     func warm(mediaId: String, source: MediaSource, priority: WarmPriority) async
 }
 
-public final class DefaultStreamingPipeline: StreamingPipeline {
+public final class DefaultStreamingPipeline: StreamingPipeline, @unchecked Sendable {
     private let cacheWarmer: CacheWarmer
     private let offlineController: OfflineDownloadController
     private let cdnSelector: CdnSelector?

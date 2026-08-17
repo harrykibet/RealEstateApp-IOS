@@ -84,6 +84,10 @@ actor PlayerActor {
         // Ensure underlying resources are released
         player.release()
     }
+
+    // Expose read-only snapshots for engine consumers
+    nonisolated var currentTime: TimeInterval { currentTimeInternal }
+    nonisolated var duration: TimeInterval? { durationInternal }
 }
 
     

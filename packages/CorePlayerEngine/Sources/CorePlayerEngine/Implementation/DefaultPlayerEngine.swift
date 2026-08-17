@@ -10,11 +10,6 @@ import Foundation
     
 @MainActor
 final class  DefaultPlayerEngine: PlayerEngine {
-    var currentTime: TimeInterval
-    
-    var duration: TimeInterval?
-    
-    
     private let actor: PlayerActor
     
     private let stateEmitter = PlayerEventEmitter<PlayerState>()

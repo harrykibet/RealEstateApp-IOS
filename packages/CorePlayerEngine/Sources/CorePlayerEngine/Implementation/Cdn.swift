@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Cdn {
+public struct Cdn: @unchecked Sendable {
     public let id: String
     public let baseURL: URL
     public let healthCheckPath: String?

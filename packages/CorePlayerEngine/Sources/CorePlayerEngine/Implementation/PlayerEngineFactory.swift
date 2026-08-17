@@ -23,7 +23,7 @@ public enum PlayerEngineFactory {
     /// - Parameter config: Player configuration
     /// - Returns: Fully wired PlayerEngine
     public static func make(
-        config: PlayerConfiguration = .default
+        config: PlayerConfiguration = PlayerConfiguration()
     ) -> PlayerEngine {
         
         let logger = PlayerLogger(isEnabled: config.enableLogging)

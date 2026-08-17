@@ -10,7 +10,7 @@ import Foundation
 // MARK: - PlayerEngine
 
     
-public protocol PlayerEngine: AnyObject, @unchecked Sendable {
+public protocol PlayerEngine: AnyObject {
     
     // MARK: Lifecycle
     
@@ -57,3 +57,4 @@ public protocol PlayerEngine: AnyObject, @unchecked Sendable {
 }
 
 
+extension PlayerEngine: @unchecked Sendable {}

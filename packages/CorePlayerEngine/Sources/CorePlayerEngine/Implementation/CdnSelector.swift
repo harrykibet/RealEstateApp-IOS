@@ -16,13 +16,14 @@ public final class CdnSelector: @unchecked Sendable {
         var latencies: [(Cdn, TimeInterval?)] = []
         await withTaskGroup(of: (Cdn, TimeInterval?).self) { group in
             for cdn in cdns {
+                let meas = self.measurer
                 group.addTask {
                     if let check = cdn.healthCheckPath, let url = URL(string: check, relativeTo: cdn.baseURL) {
-                        let ms = await self.measurer.measure(url: url)
+                        let ms = await meas.measure(url: url)
                         return (cdn, ms)
                     } else {
                         // No health check path; measure base URL
-                        let ms = await self.measurer.measure(url: cdn.baseURL)
+                        let ms = await meas.measure(url: cdn.baseURL)
                         return (cdn, ms)
                     }
                 }

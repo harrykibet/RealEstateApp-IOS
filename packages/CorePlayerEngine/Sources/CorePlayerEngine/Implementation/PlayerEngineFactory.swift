@@ -26,11 +26,9 @@ public enum PlayerEngineFactory {
         config: PlayerConfiguration = PlayerConfiguration()
     ) -> PlayerEngine {
         
-        let loader = AVPlayerLoader()
-
+        // AVPlayerLoader exists but AVPlayerWrapper currently manages its own loader.
         let wrapper = AVPlayerWrapper(
-            progressInterval: config.progressUpdateInterval,
-            loader: loader
+            progressInterval: config.progressUpdateInterval
         )
 
         let engine = DefaultPlayerEngine(

@@ -26,24 +26,18 @@ public enum PlayerEngineFactory {
         config: PlayerConfiguration = PlayerConfiguration()
     ) -> PlayerEngine {
         
-        let logger = PlayerLogger(isEnabled: config.enableLogging)
-        let metrics = MetricsCollector()
-        
         let loader = AVPlayerLoader()
-        
+
         let wrapper = AVPlayerWrapper(
             progressInterval: config.progressUpdateInterval,
-            loader: loader,
-            logger: logger
+            loader: loader
         )
-        
+
         let engine = DefaultPlayerEngine(
             config: config,
-            player: wrapper,
-            logger: logger,
-            metrics: metrics
+            player: wrapper
         )
-        
+
         return engine
     }
 }

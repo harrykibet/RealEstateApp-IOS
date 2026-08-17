@@ -9,7 +9,7 @@ public final class PlayerManager {
     private let environmentManager = EnvironmentManager()
     private let audioSession = AudioSessionManager()
     private let bitrateController = DynamicBitrateController()
-    private let streamingPipeline: StreamingPipeline = DefaultStreamingPipeline()
+    private let streamingPipeline: DefaultStreamingPipeline = DefaultStreamingPipeline()
     private let mediaSessionProvider = MediaSessionProvider()
 
     public private(set) var activeMediaId: String? = nil

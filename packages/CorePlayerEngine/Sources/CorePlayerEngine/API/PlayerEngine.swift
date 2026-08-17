@@ -10,6 +10,7 @@ import Foundation
 // MARK: - PlayerEngine
 
     
+@MainActor
 public protocol PlayerEngine: AnyObject {
     
     // MARK: Lifecycle

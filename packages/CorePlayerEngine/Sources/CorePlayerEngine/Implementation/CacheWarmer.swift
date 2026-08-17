@@ -35,7 +35,7 @@ public final class CacheWarmer {
             metrics?.onPrefetch(mediaId: mediaId, bytes: bytes, time: elapsed)
         } catch {
             print("[CacheWarmer] warm failed for \(mediaId): \(error)")
-            metrics?.log("prefetch-failed \(mediaId) \(error)")
+            metrics?.onPrefetchFailed(mediaId: mediaId, error: error)
         }
     }
 }

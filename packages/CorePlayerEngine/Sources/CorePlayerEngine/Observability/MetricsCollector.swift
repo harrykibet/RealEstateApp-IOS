@@ -79,6 +79,10 @@ public final class MetricsCollector {
         log("Prefetch \(mediaId) bytes=\(bytes) time=\(time)")
     }
 
+    public func onPrefetchFailed(mediaId: String, error: Error) {
+        log("Prefetch failed \(mediaId) error=\(error)")
+    }
+
     private func log(_ message: String) {
         // Replace with PlayerLogger or analytics integration
         print("[Metrics] \(message)")

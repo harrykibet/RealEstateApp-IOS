@@ -71,7 +71,7 @@ actor PlayerActor {
 
         player.onError = { [weak self] error in
             guard let self else { return }
-            Task { await self.consume(.failed(error)) }
+            Task { await self.consume(.failed(PlayerError.from(error))) }
         }
 
         player.onProgress = { [weak self] progress in

@@ -75,6 +75,10 @@ public final class MetricsCollector {
     
     // MARK: Logging Hook
     
+    public func onPrefetch(mediaId: String, bytes: Int, time: TimeInterval) {
+        log("Prefetch \(mediaId) bytes=\(bytes) time=\(time)")
+    }
+
     private func log(_ message: String) {
         // Replace with PlayerLogger or analytics integration
         print("[Metrics] \(message)")

@@ -14,8 +14,8 @@ public final class DefaultStreamingPipeline: StreamingPipeline {
     private let offlineController: OfflineDownloadController
     private let cdnSelector: CdnSelector?
 
-    public init(cdns: [Cdn] = [], cacheWarmer: CacheWarmer = CacheWarmer(), offlineController: OfflineDownloadController = OfflineDownloadController(), measurer: LatencyMeasurer = DefaultLatencyMeasurer()) {
-        self.cacheWarmer = cacheWarmer
+    public init(cdns: [Cdn] = [], cacheWarmer: CacheWarmer? = nil, offlineController: OfflineDownloadController = OfflineDownloadController(), measurer: LatencyMeasurer = DefaultLatencyMeasurer(), metrics: MetricsCollector? = nil) {
+        self.cacheWarmer = cacheWarmer ?? CacheWarmer(metrics: metrics)
         self.offlineController = offlineController
         self.cdnSelector = cdns.isEmpty ? nil : CdnSelector(cdns: cdns, measurer: measurer)
     }
@@ -25,7 +25,17 @@ public final class DefaultStreamingPipeline: StreamingPipeline {
             // If CDN selection is configured, try to resolve the best CDN then warm that endpoint.
             if let selector = self.cdnSelector {
                 if let best = await selector.selectBestCdn(forPath: source.url.path) {
-                    let resolved = best.resolve(path: source.url.absoluteString)
+                    // Resolve by replacing the origin with the CDN base URL while preserving the path
+                    let base = best.baseURL.absoluteString
+                    let path = source.url.path
+                    let resolvedString: String
+                    if base.hasSuffix("/") {
+                        resolvedString = String(base.dropLast()) + path
+                    } else {
+                        resolvedString = base + path
+                    }
+
+                    let resolved = URL(string: resolvedString) ?? source.url
                     let replacementSource = MediaSource(url: resolved, type: source.type, headers: source.headers, metadata: source.metadata)
                     await self.cacheWarmer.warm(mediaId: mediaId, source: replacementSource, priority: priority)
                 } else {

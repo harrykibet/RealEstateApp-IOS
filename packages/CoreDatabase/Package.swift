@@ -12,9 +12,15 @@ let package = Package(
             targets: ["CoreDatabase"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMajor(from: "6.0.0")),
+    ],
     targets: [
         .target(
-            name: "CoreDatabase"
+            name: "CoreDatabase",
+            dependencies: [
+                .product(name: "GRDB", package: "GRDB.swift")
+            ]
         ),
         .testTarget(
             name: "CoreDatabaseTests",

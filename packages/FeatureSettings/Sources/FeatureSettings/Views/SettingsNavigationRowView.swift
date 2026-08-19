@@ -9,9 +9,12 @@ public struct SettingsNavigationRowView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("SettingsNavigationRowView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Real Estate App")
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

@@ -9,9 +9,12 @@ public struct BasicDetailsFormView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("BasicDetailsFormView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Enter a short, clear title for the property (e.g., '2 Bedroom Apartment in Kilimani')")
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

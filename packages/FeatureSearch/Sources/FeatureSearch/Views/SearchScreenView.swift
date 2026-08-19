@@ -9,9 +9,13 @@ public struct SearchScreenView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("SearchScreenView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Recent Searches")
+                EstatiaCircularProgress(state: viewModel.isLoading ? .indeterminate : .idle)
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

@@ -9,9 +9,18 @@ public struct UserTypeDropdownMenuView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("UserTypeDropdownMenuView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Real Estate App")
+                EstatiaTextField(text: $viewModel.email, placeholder: viewModel.emailPlaceholder)
+                EstatiaTextField(text: $viewModel.password, placeholder: viewModel.passwordPlaceholder)
+                EstatiaPrimaryButton(title: viewModel.loginTitle, isEnabled: !viewModel.isLoading, isLoading: viewModel.isLoading) {
+                    viewModel.login()
+                }
+                EstatiaCircularProgress(state: viewModel.isLoading ? .indeterminate : .idle)
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

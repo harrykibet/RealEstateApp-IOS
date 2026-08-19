@@ -9,9 +9,11 @@ public struct ExtraDetailsFormLightPreviewView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("ExtraDetailsFormLightPreviewView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

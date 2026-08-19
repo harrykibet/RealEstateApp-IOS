@@ -9,9 +9,13 @@ public struct CommentSheetContentSendingPreviewView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("CommentSheetContentSendingPreviewView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Reply")
+                EstatiaCircularProgress(state: viewModel.isLoading ? .indeterminate : .idle)
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

@@ -9,9 +9,17 @@ public struct EmailInputView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("EmailInputView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Reset password")
+                EstatiaTextField(text: $viewModel.email, placeholder: viewModel.emailPlaceholder)
+                EstatiaTextField(text: $viewModel.password, placeholder: viewModel.passwordPlaceholder)
+                EstatiaPrimaryButton(title: viewModel.loginTitle, isEnabled: !viewModel.isLoading, isLoading: viewModel.isLoading) {
+                    viewModel.login()
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

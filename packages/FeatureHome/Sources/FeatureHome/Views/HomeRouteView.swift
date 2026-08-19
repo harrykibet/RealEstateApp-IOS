@@ -9,9 +9,16 @@ public struct HomeRouteView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("HomeRouteView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaText("Real Estate App")
+                EstatiaPrimaryButton(title: viewModel.loginTitle, isEnabled: !viewModel.isLoading, isLoading: viewModel.isLoading) {
+                    viewModel.login()
+                }
+                EstatiaCircularProgress(state: viewModel.isLoading ? .indeterminate : .idle)
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

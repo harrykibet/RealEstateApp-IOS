@@ -9,9 +9,18 @@ public struct ProfileScreenLightPreviewView: View {
     }
 
     public var body: some View {
-        // TODO: Port composable UI from Android. Replace this placeholder.
-        Text("ProfileScreenLightPreviewView")
-            .padding()
+        ScrollView {
+            VStack(alignment: .center, spacing: 16) {
+                EstatiaImage(name: "app_icon")
+                    .frame(width: 120, height: 120)
+                    .clipShape(Circle())
+                EstatiaText("Real Estate App")
+                EstatiaPrimaryButton(title: viewModel.loginTitle, isEnabled: !viewModel.isLoading, isLoading: viewModel.isLoading) {
+                    viewModel.login()
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
     }
 }
 

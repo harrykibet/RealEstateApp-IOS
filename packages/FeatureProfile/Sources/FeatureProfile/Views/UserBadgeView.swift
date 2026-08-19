@@ -1,0 +1,29 @@
+// Auto-generated stub from /Users/builder/RealEstateApp-Android/feature/profile/src/main/java/com/estatia/realestate/apps/feature/profile/ui/screens/ProfileScreen.kt composable UserBadge
+import SwiftUI
+
+public struct UserBadgeView: View {
+    @StateObject public var viewModel = UserBadgeViewModel()
+
+    public init(viewModel: UserBadgeViewModel = .init()) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    public var body: some View {
+        // TODO: Port composable UI from Android. Replace this placeholder.
+        Text("UserBadgeView")
+            .padding()
+    }
+}
+
+public final class UserBadgeViewModel: ObservableObject {
+    // TODO: Implement state and actions ported from Android ViewModel/Presenter
+    @Published public var isLoading: Bool = false
+
+    public init() {}
+}
+
+#if DEBUG
+struct UserBadgeView_Preview: PreviewProvider {
+    static var previews: some View { UserBadgeView() }
+}
+#endif

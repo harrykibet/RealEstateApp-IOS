@@ -1,0 +1,29 @@
+// Auto-generated stub from /Users/builder/RealEstateApp-Android/feature/property/src/main/java/com/estatia/realestate/apps/feature/property/ui/screens/ContactOwnershipForm.kt composable ContactOwnershipFormLightPreview
+import SwiftUI
+
+public struct ContactOwnershipFormLightPreviewView: View {
+    @StateObject public var viewModel = ContactOwnershipFormLightPreviewViewModel()
+
+    public init(viewModel: ContactOwnershipFormLightPreviewViewModel = .init()) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    public var body: some View {
+        // TODO: Port composable UI from Android. Replace this placeholder.
+        Text("ContactOwnershipFormLightPreviewView")
+            .padding()
+    }
+}
+
+public final class ContactOwnershipFormLightPreviewViewModel: ObservableObject {
+    // TODO: Implement state and actions ported from Android ViewModel/Presenter
+    @Published public var isLoading: Bool = false
+
+    public init() {}
+}
+
+#if DEBUG
+struct ContactOwnershipFormLightPreviewView_Preview: PreviewProvider {
+    static var previews: some View { ContactOwnershipFormLightPreviewView() }
+}
+#endif

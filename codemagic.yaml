@@ -5,7 +5,7 @@ workflows:
     instance_type: mac_studio_m4_max
 
     environment:
-      xcode: 27
+      xcode: 27.0
 
       groups:
         - tokens

@@ -2,7 +2,7 @@ workflows:
   ios-native:
     name: Native iOS
     max_build_duration: 120
-    instance_type: mac_mini_m2_max
+    instance_type: mac_pro
 
     environment:
       xcode: latest

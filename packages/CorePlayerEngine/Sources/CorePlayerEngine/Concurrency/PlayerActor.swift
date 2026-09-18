@@ -122,13 +122,10 @@ actor PlayerActor {
     private func consume(
         _ event: PlayerActorEvent
     ) async {
-
         switch event {
 
         case .ready:
-
             apply(.ready)
-
             emit(.ready)
 
             if config.autoPlay {
@@ -136,40 +133,30 @@ actor PlayerActor {
             }
 
         case .bufferingStarted:
-
             apply(.bufferingStarted)
-
             emit(.bufferingStarted)
 
         case .bufferingEnded:
-
             apply(.bufferingEnded)
-
             emit(.bufferingEnded)
 
         case .playbackCompleted:
-
             apply(.playbackCompleted)
-
             emit(.playbackCompleted)
 
             if config.looping {
                 try? await replayFromBeginning()
             }
 
-        case .progress(let progress):
+        case .failed(let error):
+            handlePlaybackFailure(error)
 
+        case .progress(let progress):
             currentTimeInternal = progress.currentTime
             durationInternal = progress.duration
-
             emit(.progress(progress))
-
-        case .failed(let error):
-
-            handlePlaybackFailure(error)
         }
     }
-
     // MARK: - Public Intent Handling
 
     func handle(
@@ -380,13 +367,6 @@ private enum PlayerActorEvent {
 // MARK: - AV Error → Actor Event Bridge
 
 private extension PlayerActor {
-
-    func consume(
-        _ event: PlayerActorEvent
-    ) async {
-        // This overload exists only to make the callback bridge explicit.
-        await consumeInternal(event)
-    }
 
     func consumeInternal(
         _ event: PlayerActorEvent

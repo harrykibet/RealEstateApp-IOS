@@ -2,57 +2,35 @@
 //  PlayerEngine.swift
 //  CorePlayerEngine
 //
-//  Created by builder on 3/26/26.
-//
 
 import Foundation
 
-// MARK: - PlayerEngine
-
-    
 @MainActor
 public protocol PlayerEngine: AnyObject {
-    
-    // MARK: Lifecycle
-    
-    /// Loads a media source into the player.
-    /// - Important: Must be called before play().
+
+    // MARK: - Lifecycle
+
     func load(_ source: MediaSource) async throws
-    
-    /// Starts or resumes playback.
-    func play()
-    
-    /// Pauses playback.
-    func pause()
-    
-    /// Seeks to a specific time (in seconds).
-    func seek(to seconds: TimeInterval)
-    
-    /// Stops playback and resets internal state.
-    func stop()
-    
-    /// Fully releases all underlying resources.
-    /// - Important: Must be called explicitly to avoid leaks.
-    func release()
-    
-    
-    // MARK: State & Events
-    
-    /// Continuous stream of player state updates.
-    /// - Guarantees: Serialized, no concurrent emissions.
+
+    func play() async throws
+
+    func pause() async throws
+
+    func seek(to seconds: TimeInterval) async throws
+
+    func stop() async throws
+
+    func release() async throws
+
+    // MARK: - State
+
     var state: AsyncStream<PlayerState> { get }
-    
-    /// Discrete events emitted by the player.
-    /// - Examples: buffering started, seek completed, playback ended.
+
     var events: AsyncStream<PlayerEvent> { get }
-    
-    
-    // MARK: Observability
-    
-    /// Current snapshot of playback progress.
-    /// - Note: This is a pull-based API complementing event streams.
+
+    // MARK: - Observability
+
     var currentTime: TimeInterval { get async }
-    
-    /// Duration of the currently loaded media.
+
     var duration: TimeInterval? { get async }
 }

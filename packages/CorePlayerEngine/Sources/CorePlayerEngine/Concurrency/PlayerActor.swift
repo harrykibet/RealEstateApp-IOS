@@ -17,7 +17,6 @@
 
 import Foundation
 
-    
 actor PlayerActor {
 
     // MARK: - Dependencies
@@ -30,16 +29,13 @@ actor PlayerActor {
 
     // MARK: - State
 
-    private var state: PlayerState = .idle
+    private var reducer = PlaybackStateReducer()
     private var currentSource: MediaSource?
 
     private var currentTimeInternal: TimeInterval = 0
     private var durationInternal: TimeInterval?
 
-    /// Tracks last stable playback intent to resolve buffering transitions correctly
-    private var lastUserIntent: PlayerIntent?
-
-    // MARK: - Init
+    // MARK: - Initialization
 
     init(
         config: PlayerConfiguration,
@@ -52,180 +48,391 @@ actor PlayerActor {
         self.stateEmitter = stateEmitter
         self.eventEmitter = eventEmitter
 
-        // Bind AV layer → PlayerEvent → Actor without calling an actor-isolated method from init
-        // Map AVPlayerWrapper callbacks to PlayerEvent and forward to the actor
         player.onReady = { [weak self] in
             guard let self else { return }
-            Task { await self.consume(.ready) }
+
+            Task {
+                await self.consume(.ready)
+            }
         }
 
         player.onBuffering = { [weak self] buffering in
             guard let self else { return }
-            Task { await self.consume(buffering ? .bufferingStarted : .bufferingEnded) }
+
+            Task {
+                await self.consume(
+                    buffering
+                        ? .bufferingStarted
+                        : .bufferingEnded
+                )
+            }
         }
 
         player.onCompletion = { [weak self] in
             guard let self else { return }
-            Task { await self.consume(.playbackCompleted) }
+
+            Task {
+                await self.consume(.playbackCompleted)
+            }
         }
 
         player.onError = { [weak self] error in
             guard let self else { return }
-            Task { await self.consume(.failed(PlayerError.from(error))) }
+
+            Task {
+                await self.consume(
+                    .failed(
+                        PlayerError.from(error)
+                    )
+                )
+            }
         }
 
         player.onProgress = { [weak self] progress in
             guard let self else { return }
-            Task { await self.consume(.progress(progress)) }
+
+            Task {
+                await self.consume(
+                    .progress(progress)
+                )
+            }
         }
     }
 
     deinit {
-        // Ensure underlying resources are released
         player.release()
     }
 
-    // Expose read-only snapshots for engine consumers (actor-isolated; use `await actor.currentTime`)
-    var currentTime: TimeInterval { currentTimeInternal }
-    var duration: TimeInterval? { durationInternal }
-}
+    // MARK: - Snapshots
 
-    
-private extension PlayerActor {
+    var currentState: PlayerState {
+        reducer.state
+    }
 
-    /// Consumes low-level PlayerEvent and maps to state transitions.
-    func consume(_ event: PlayerEvent) async {
+    var currentTime: TimeInterval {
+        currentTimeInternal
+    }
+
+    var duration: TimeInterval? {
+        durationInternal
+    }
+
+    // MARK: - Event Consumption
+
+    private func consume(
+        _ event: PlayerActorEvent
+    ) async {
 
         switch event {
 
         case .ready:
-            try? transition(to: .ready)
-            emitEvent(.ready)
+
+            apply(.ready)
+
+            emit(.ready)
 
             if config.autoPlay {
-                await handle(.play)
+                try? await handle(.play)
             }
 
         case .bufferingStarted:
-            try? transition(to: .buffering)
-            emitEvent(.bufferingStarted)
+
+            apply(.bufferingStarted)
+
+            emit(.bufferingStarted)
 
         case .bufferingEnded:
-            // Resume only if last intent was play
-            if lastUserIntent == .play {
-                try? transition(to: .playing)
-            }
-            emitEvent(.bufferingEnded)
+
+            apply(.bufferingEnded)
+
+            emit(.bufferingEnded)
 
         case .playbackCompleted:
-            try? transition(to: .ended)
-            emitEvent(.playbackCompleted)
+
+            apply(.playbackCompleted)
+
+            emit(.playbackCompleted)
 
             if config.looping {
-                await handle(.play)
+                try? await replayFromBeginning()
             }
 
         case .progress(let progress):
+
             currentTimeInternal = progress.currentTime
             durationInternal = progress.duration
-            emitEvent(.progress(progress))
+
+            emit(.progress(progress))
 
         case .failed(let error):
-            try? fail(error)
 
-        default:
-            break
+            handlePlaybackFailure(error)
         }
     }
-}
 
-    
-extension PlayerActor {
+    // MARK: - Public Intent Handling
 
-    /// Public API: external commands
-    func handle(_ intent: PlayerIntent) async throws {
-
-        lastUserIntent = intent
+    func handle(
+        _ intent: PlayerIntent
+    ) async throws {
 
         switch intent {
 
         case .load(let source):
-            try transition(to: .loading)
+
+            apply(.loadStarted)
+
             currentSource = source
 
             do {
                 try await player.load(source)
             } catch {
-                try fail(error)
+                handlePlaybackFailure(error)
                 throw error
             }
 
         case .play:
-            guard state.isPlayable else { return }
 
-            player.play()
-            try transition(to: .playing)
-            emitEvent(.playbackStarted)
+            guard reducer.state.isPlayable else {
+                return
+            }
+
+            if reducer.state == .ended {
+                try await player.seek(to: 0)
+            }
+
+            try applyAndPerform(
+                .play
+            ) {
+                player.play()
+            }
+
+            emit(.playbackStarted)
 
         case .pause:
-            guard state == .playing else { return }
 
-            player.pause()
-            try transition(to: .paused)
-            emitEvent(.playbackPaused)
+            guard reducer.state == .playing else {
+                return
+            }
+
+            try applyAndPerform(
+                .pause
+            ) {
+                player.pause()
+            }
+
+            emit(.playbackPaused)
 
         case .seek(let seconds):
-            guard state.isSeekable else { return }
 
-            emitEvent(.seekStarted(seconds))
+            guard reducer.state.isSeekable else {
+                return
+            }
+
+            emit(
+                .seekStarted(seconds)
+            )
 
             do {
-                try await player.seek(to: seconds)
-                emitEvent(.seekCompleted(seconds))
+                try await player.seek(
+                    to: max(0, seconds)
+                )
+
+                emit(
+                    .seekCompleted(seconds)
+                )
+
             } catch {
-                emitEvent(.seekFailed(PlayerError.from(error)))
+                emit(
+                    .seekFailed(
+                        PlayerError.from(error)
+                    )
+                )
+
+                throw error
             }
 
         case .stop:
+
             player.stop()
-            try transition(to: .idle)
-            emitEvent(.stopped)
+
+            apply(.reset)
+
+            emit(.stopped)
 
         case .release:
+
             player.release()
-            try transition(to: .idle)
-            emitEvent(.released)
+
+            apply(.released)
+
+            emit(.released)
 
         default:
             break
         }
     }
-}
 
+    // MARK: - State Helpers
 
-    
-private extension PlayerActor {
+    private func apply(
+        _ event: PlaybackStateReducer.Event
+    ) {
+        let previous = reducer.state
 
-    /// Validates and applies state transitions
-    func transition(to newState: PlayerState) throws {
-        guard state.canTransition(to: newState) else {
-            throw InvalidStateTransition(from: state, to: newState)
+        let newState = reducer.reduce(event)
+
+        guard newState != previous else {
+            return
         }
 
-        state = newState
-        stateEmitter.emit(state)
+        stateEmitter.emit(newState)
     }
 
-    /// Handles terminal failure
-    func fail(_ error: Error) throws {
-        let mapped = PlayerError.from(error)
-        try transition(to: .error(mapped))
-        emitEvent(.failed(mapped))
+    private func applyAndPerform(
+        _ event: PlaybackStateReducer.Event,
+        operation: () -> Void
+    ) throws {
+
+        let previous = reducer.state
+
+        let newState = reducer.reduce(event)
+
+        guard newState != previous else {
+            return
+        }
+
+        operation()
+
+        stateEmitter.emit(newState)
     }
 
-    /// Emits external event
-    func emitEvent(_ event: PlayerEvent) {
+    private func handlePlaybackFailure(
+        _ error: Error
+    ) {
+
+        handlePlaybackFailure(
+            PlayerError.from(error)
+        )
+    }
+
+    private func handlePlaybackFailure(
+        _ error: PlayerError
+    ) {
+
+        switch error {
+
+        case .network:
+
+            apply(.networkLost)
+
+            emit(.failed(error))
+
+        default:
+
+            apply(
+                .failed(error)
+            )
+
+            emit(
+                .failed(error)
+            )
+        }
+    }
+
+    private func replayFromBeginning() async throws {
+
+        try await player.seek(
+            to: 0
+        )
+
+        apply(.play)
+
+        player.play()
+
+        emit(.playbackStarted)
+    }
+
+    private func emit(
+        _ event: PlayerEvent
+    ) {
         eventEmitter.emit(event)
     }
 }
 
+// MARK: - Internal Actor Events
+
+private enum PlayerActorEvent {
+
+    case ready
+
+    case bufferingStarted
+
+    case bufferingEnded
+
+    case playbackCompleted
+
+    case failed(PlayerError)
+
+    case progress(PlaybackProgress)
+}
+
+// MARK: - AV Error → Actor Event Bridge
+
+private extension PlayerActor {
+
+    func consume(
+        _ event: PlayerActorEvent
+    ) async {
+        // This overload exists only to make the callback bridge explicit.
+        await consumeInternal(event)
+    }
+
+    func consumeInternal(
+        _ event: PlayerActorEvent
+    ) async {
+
+        switch event {
+
+        case .ready:
+
+            apply(.ready)
+
+            emit(.ready)
+
+            if config.autoPlay {
+                try? await handle(.play)
+            }
+
+        case .bufferingStarted:
+
+            apply(.bufferingStarted)
+            emit(.bufferingStarted)
+
+        case .bufferingEnded:
+
+            apply(.bufferingEnded)
+            emit(.bufferingEnded)
+
+        case .playbackCompleted:
+
+            apply(.playbackCompleted)
+            emit(.playbackCompleted)
+
+            if config.looping {
+                try? await replayFromBeginning()
+            }
+
+        case .failed(let error):
+
+            handlePlaybackFailure(error)
+
+        case .progress(let progress):
+
+            currentTimeInternal = progress.currentTime
+            durationInternal = progress.duration
+
+            emit(.progress(progress))
+        }
+    }
+}

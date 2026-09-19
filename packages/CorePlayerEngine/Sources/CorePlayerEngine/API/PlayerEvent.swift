@@ -30,6 +30,10 @@ public enum PlayerEvent: Sendable {
     case bufferingStarted
     case bufferingEnded
     
+    // MARK: Watchdog
+    
+    case watchdogExpired
+    
     
     // MARK: Seeking
     

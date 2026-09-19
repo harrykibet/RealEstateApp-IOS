@@ -165,6 +165,10 @@ actor PlayerActor {
             currentTimeInternal = progress.currentTime
             durationInternal = progress.duration
             emit(.progress(progress))
+            
+        case .watchdogExpired:
+            apply(.watchdogExpired)
+            emit(.watchdogExpired)
         }
     }
     
@@ -427,6 +431,9 @@ private extension PlayerActor {
             durationInternal = progress.duration
 
             emit(.progress(progress))
+        case .watchdogExpired:
+            apply(.watchdogExpired)
+            emit(.watchdogExpired)
         }
     }
 }

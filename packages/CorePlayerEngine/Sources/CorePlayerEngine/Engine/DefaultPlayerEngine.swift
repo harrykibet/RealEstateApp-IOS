@@ -17,11 +17,13 @@ final class DefaultPlayerEngine: PlayerEngine {
 
     init(
         config: PlayerConfiguration,
-        player: AVPlayerWrapper
+        player: AVPlayerWrapper,
+        watchdog: PlaybackWatchdog
     ) {
         self.actor = PlayerActor(
             config: config,
             player: player,
+            watchdog: watchdog,
             stateEmitter: stateEmitter,
             eventEmitter: eventEmitter
         )

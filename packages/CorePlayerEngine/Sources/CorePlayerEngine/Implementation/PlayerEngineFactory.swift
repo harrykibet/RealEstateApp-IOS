@@ -22,21 +22,26 @@ public enum PlayerEngineFactory {
     ///
     /// - Parameter config: Player configuration
     /// - Returns: Fully wired PlayerEngine
+    
     @MainActor
     public static func make(
         config: PlayerConfiguration = PlayerConfiguration()
     ) -> PlayerEngine {
         
-        // AVPlayerLoader exists but AVPlayerWrapper currently manages its own loader.
         let wrapper = AVPlayerWrapper(
             progressInterval: config.progressUpdateInterval
         )
-
-        let engine = DefaultPlayerEngine(
-            config: config,
-            player: wrapper
+        
+        let watchdog = PlaybackWatchdog(
+            configuration: .init(
+                bufferingTimeout: .seconds(7)
+            )
         )
-
-        return engine
+        
+        return DefaultPlayerEngine(
+            config: config,
+            player: wrapper,
+            watchdog: watchdog
+        )
     }
 }

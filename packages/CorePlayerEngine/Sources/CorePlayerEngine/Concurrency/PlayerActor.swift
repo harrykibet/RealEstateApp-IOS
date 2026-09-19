@@ -121,6 +121,9 @@ actor PlayerActor {
         switch event {
 
         case .ready:
+            
+            await watchdog.cancel()
+            
             apply(.ready)
             emit(.ready)
 
@@ -133,13 +136,13 @@ actor PlayerActor {
             emit(.bufferingEnded)
             
         case .bufferingEnded:
-            watchdog.cancel()
+            await watchdog.cancel()
 
             apply(.bufferingEnded)
             emit(.bufferingEnded)
             
         case .bufferingStarted:
-            watchdog.start { [weak self] in
+            await watchdog.start { [weak self] in
                 guard let self else { return }
 
                 Task {

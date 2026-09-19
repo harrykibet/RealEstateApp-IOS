@@ -1,84 +1,87 @@
-import Foundation
-
-/// High-level manager that coordinates multiple PlayerEngine instances (a player pool), environment, audio session, and streaming pipeline.
 @MainActor
 public final class PlayerManager {
+
     public static let shared = PlayerManager()
 
-    private let pool = PlayerPool()
+    private let pool: PlayerPool
+
+    private let orchestrator: PlaybackOrchestrator
+
     private let environmentManager = EnvironmentManager()
     private let audioSession = AudioSessionManager()
-    private let bitrateController = DynamicBitrateController()
-    private let streamingPipeline: DefaultStreamingPipeline = DefaultStreamingPipeline()
     private let mediaSessionProvider = MediaSessionProvider()
 
-    public private(set) var activeMediaId: String? = nil
-    private var composedMediaIds = Set<String>()
+    public private(set) var activeMediaId: String?
 
-    public init() {}
+    public init() {
 
-    public func start() {
-        environmentManager.start(onAppBackgrounded: { [weak self] in
-            Task { await self?.handleAppBackgrounded() }
-        }, onAppForegrounded: { [weak self] in
-            Task { await self?.handleAppForegrounded() }
-        })
+        let pool = PlayerPool()
+
+        self.pool = pool
+
+        self.orchestrator = PlaybackOrchestrator(
+            pool: pool,
+            streamingPipeline: DefaultStreamingPipeline()
+        )
     }
 
-    private func handleAppBackgrounded() async {
-        // Pause active player
-        if let active = activeMediaId, let managed = await pool.get(mediaId: active) {
-            managed.engine.pause()
-        }
-    }
+    public func play(
+        mediaId: String,
+        source: MediaSource,
+        title: String? = nil,
+        artist: String? = nil
+    ) async throws {
 
-    private func handleAppForegrounded() async {
-        // No-op: do not auto-resume by default
-    }
+        mediaSessionProvider.configureNowPlaying(
+            title: title,
+            artist: artist
+        )
 
-    public func play(mediaId: String, source: MediaSource, title: String? = nil, artist: String? = nil) async throws {
-        let managed = try await pool.getOrCreate(mediaId: mediaId, source: source, loadSource: true)
-        mediaSessionProvider.configureNowPlaying(title: title, artist: artist)
         audioSession.request()
-        managed.engine.play()
-        activeMediaId = mediaId
-        // warm streaming pipeline
-        await streamingPipeline.warm(mediaId: mediaId, source: source, priority: .visible)
-    }
 
-    public func preload(mediaId: String, source: MediaSource) async {
-        _ = await pool.prewarm(mediaId: mediaId, source: source)
+        try await orchestrator.play(
+            mediaId: mediaId,
+            source: source
+        )
+
+        activeMediaId = orchestrator.activeMediaId
     }
 
     public func pause() async {
-        if let active = activeMediaId, let managed = await pool.get(mediaId: active) {
-            managed.engine.pause()
-            audioSession.abandon()
-        }
+
+        await orchestrator.pauseCurrent()
+
+        audioSession.abandon()
     }
 
-    public func getEngine(mediaId: String) async -> PlayerEngine? {
-        await pool.get(mediaId: mediaId)?.engine
+    public func preload(
+        mediaId: String,
+        source: MediaSource
+    ) async {
+
+        await orchestrator.preload(
+            mediaId: mediaId,
+            source: source
+        )
     }
 
-    public func observeState(mediaId: String) async -> AsyncStream<PlayerState>? {
-        guard let managed = await pool.get(mediaId: mediaId) else { return nil }
-        return managed.engine.state
+    public func observeState(
+        mediaId: String
+    ) async -> AsyncStream<PlayerState>? {
+
+        await orchestrator.observeState(
+            mediaId: mediaId
+        )
     }
 
     public func shutdown() async {
+
         audioSession.cleanup()
-        await pool.releaseAll()
+
+        await orchestrator.shutdown()
+
         environmentManager.stop()
-    }
 
-    public func notifyMediaBound(mediaId: String) async {
-        composedMediaIds.insert(mediaId)
-        await pool.updatePinnedIds(composedMediaIds)
-    }
-
-    public func notifyMediaUnbound(mediaId: String) async {
-        composedMediaIds.remove(mediaId)
-        await pool.updatePinnedIds(composedMediaIds)
+        activeMediaId = nil
     }
 }

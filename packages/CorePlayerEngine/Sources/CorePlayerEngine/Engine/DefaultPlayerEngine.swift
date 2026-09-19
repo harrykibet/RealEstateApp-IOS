@@ -32,7 +32,13 @@ final class DefaultPlayerEngine: PlayerEngine {
     var state: AsyncStream<PlayerState> {
         stateEmitter.stream
     }
-
+    
+    var currentState: PlayerState {
+        get async {
+            await actor.currentState
+        }
+    }
+    
     var events: AsyncStream<PlayerEvent> {
         eventEmitter.stream
     }

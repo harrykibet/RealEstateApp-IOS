@@ -26,7 +26,9 @@ actor PlayerActor {
 
     private let stateEmitter: PlayerEventEmitter<PlayerState>
     private let eventEmitter: PlayerEventEmitter<PlayerEvent>
-
+    
+    private let watchdog: PlaybackWatchdog
+    
     // MARK: - State
 
     private var reducer = PlaybackStateReducer()
@@ -40,11 +42,13 @@ actor PlayerActor {
     init(
         config: PlayerConfiguration,
         player: AVPlayerWrapper,
+        watchdog: PlaybackWatchdog,
         stateEmitter: PlayerEventEmitter<PlayerState>,
         eventEmitter: PlayerEventEmitter<PlayerEvent>
     ) {
         self.config = config
         self.player = player
+        self.watchdog = watchdog
         self.stateEmitter = stateEmitter
         self.eventEmitter = eventEmitter
 
@@ -65,14 +69,6 @@ actor PlayerActor {
                         ? .bufferingStarted
                         : .bufferingEnded
                 )
-            }
-        }
-
-        player.onCompletion = { [weak self] in
-            guard let self else { return }
-
-            Task {
-                await self.consume(.playbackCompleted)
             }
         }
 
@@ -132,14 +128,28 @@ actor PlayerActor {
                 try? await handle(.play)
             }
 
-        case .bufferingStarted:
-            apply(.bufferingStarted)
-            emit(.bufferingStarted)
-
         case .bufferingEnded:
             apply(.bufferingEnded)
             emit(.bufferingEnded)
+            
+        case .bufferingEnded:
+            watchdog.cancel()
 
+            apply(.bufferingEnded)
+            emit(.bufferingEnded)
+            
+        case .bufferingStarted:
+            watchdog.start { [weak self] in
+                guard let self else { return }
+
+                Task {
+                    await self.consume(.watchdogExpired)
+                }
+            }
+
+            apply(.bufferingStarted)
+            emit(.bufferingStarted)
+            
         case .playbackCompleted:
             apply(.playbackCompleted)
             emit(.playbackCompleted)
@@ -360,6 +370,8 @@ private enum PlayerActorEvent {
     case bufferingEnded
 
     case playbackCompleted
+    
+    case watchdogExpired
 
     case failed(PlayerError)
 

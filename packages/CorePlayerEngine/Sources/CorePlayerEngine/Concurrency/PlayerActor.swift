@@ -119,62 +119,63 @@ actor PlayerActor {
         _ event: PlayerActorEvent
     ) async {
         switch event {
-
+            
         case .ready:
             
             await watchdog.cancel()
             
             apply(.ready)
             emit(.ready)
-
+            
             if config.autoPlay {
                 try? await handle(.play)
             }
-
+            
         case .bufferingEnded:
             apply(.bufferingEnded)
             emit(.bufferingEnded)
             
         case .bufferingEnded:
             await watchdog.cancel()
-
+            
             apply(.bufferingEnded)
             emit(.bufferingEnded)
             
         case .bufferingStarted:
             await watchdog.start { [weak self] in
                 guard let self else { return }
-
+                
                 Task {
                     await self.consume(.watchdogExpired)
                 }
             }
-
+            
             apply(.bufferingStarted)
             emit(.bufferingStarted)
             
         case .playbackCompleted:
             apply(.playbackCompleted)
             emit(.playbackCompleted)
-
+            
             if config.looping {
                 try? await replayFromBeginning()
             }
-
+            
         case .failed(let error):
             handlePlaybackFailure(error)
-
+            
         case .progress(let progress):
             currentTimeInternal = progress.currentTime
             durationInternal = progress.duration
             emit(.progress(progress))
             
         case .watchdogExpired:
+            
             apply(.watchdogExpired)
-            emit(.watchdogExpired)
+            
+            emit(.failed(.playbackStalled))
         }
     }
-    
     
     // MARK: - Public Intent Handling
 
@@ -186,6 +187,8 @@ actor PlayerActor {
 
         case .load(let source):
 
+            await watchdog.cancel()
+
             apply(.loadStarted)
 
             currentSource = source
@@ -196,7 +199,7 @@ actor PlayerActor {
                 handlePlaybackFailure(error)
                 throw error
             }
-
+            
         case .play:
 
             guard reducer.state.isPlayable else {
@@ -259,6 +262,8 @@ actor PlayerActor {
             }
 
         case .stop:
+            
+            await watchdog.cancel()
 
             player.stop()
 
@@ -267,6 +272,8 @@ actor PlayerActor {
             emit(.stopped)
 
         case .release:
+            
+            await watchdog.cancel()
 
             player.release()
 

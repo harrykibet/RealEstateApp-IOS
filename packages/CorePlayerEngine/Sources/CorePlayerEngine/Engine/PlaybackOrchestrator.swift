@@ -255,7 +255,16 @@ public final class PlaybackOrchestrator {
 
         activeMediaId == mediaId
     }
+    
+    public func updateComposedMedia(
+        _ mediaIds: Set<String>
+    ) async {
 
+        await pool.updatePinnedIds(
+            mediaIds
+        )
+    }
+    
     // MARK: - Shutdown
 
     public func shutdown() async {

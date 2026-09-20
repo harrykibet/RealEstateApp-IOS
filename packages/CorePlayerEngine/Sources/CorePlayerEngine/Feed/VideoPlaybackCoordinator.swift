@@ -94,7 +94,18 @@ public final class VideoPlaybackCoordinator {
         self.sleep = sleep
         self.now = now
     }
+    
+    private func isFlinging(
+        context: FeedPlaybackContext
+    ) -> Bool {
 
+        context.scrollVelocity
+            >= policy.flingVelocityThreshold
+        ||
+        consecutiveFastTransitions
+            >= policy.flingTransitionThreshold
+    }
+    
     // MARK: - Visibility
 
     public func onItemVisible(
@@ -118,10 +129,10 @@ public final class VideoPlaybackCoordinator {
 
         updateFlingState()
 
-        let isFlinging =
-            consecutiveFastTransitions >=
-            policy.flingTransitionThreshold
-
+        let flinging = isFlinging(
+            context: context
+        )
+        
         playTask = Task {
             @MainActor [weak self] in
 

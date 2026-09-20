@@ -84,6 +84,18 @@ actor PlayerActor {
             }
         }
         
+        player.onCompletion = { [weak self] in
+            guard let self else {
+                return
+            }
+
+            Task {
+                await self.consume(
+                    .playbackCompleted
+                )
+            }
+        }
+        
         player.onProgress = { [weak self] progress in
             guard let self else { return }
             
@@ -407,61 +419,4 @@ private enum PlayerActorEvent {
     case failed(PlayerError)
 
     case progress(PlaybackProgress)
-}
-
-// MARK: - AV Error → Actor Event Bridge
-
-private extension PlayerActor {
-    
-    func consumeInternal(
-        _ event: PlayerActorEvent
-    ) async {
-
-        switch event {
-
-        case .ready:
-
-            apply(.ready)
-
-            emit(.ready)
-
-            if config.autoPlay {
-                try? await handle(.play)
-            }
-
-        case .bufferingStarted:
-
-            apply(.bufferingStarted)
-            emit(.bufferingStarted)
-
-        case .bufferingEnded:
-
-            apply(.bufferingEnded)
-            emit(.bufferingEnded)
-
-        case .playbackCompleted:
-
-            apply(.playbackCompleted)
-            emit(.playbackCompleted)
-
-            if config.looping {
-                try? await replayFromBeginning()
-            }
-
-        case .failed(let error):
-
-            handlePlaybackFailure(error)
-
-        case .progress(let progress):
-
-            currentTimeInternal = progress.currentTime
-            durationInternal = progress.duration
-
-            emit(.progress(progress))
-            
-        case .watchdogExpired:
-            apply(.watchdogExpired)
-            emit(.watchdogExpired)
-        }
-    }
 }

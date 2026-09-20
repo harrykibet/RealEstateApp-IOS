@@ -6,7 +6,11 @@ public final class PlayerManager {
     private let pool: PlayerPool
 
     private let orchestrator: PlaybackOrchestrator
+    
+    private let networkMonitor: NetworkConnectivityProviding
 
+    private let networkRecovery: NetworkRecoveryCoordinator
+    
     private let environmentManager = EnvironmentManager()
     private let audioSession = AudioSessionManager()
     private let mediaSessionProvider = MediaSessionProvider()
@@ -16,12 +20,19 @@ public final class PlayerManager {
     public init() {
 
         let pool = PlayerPool()
+        
+        let streamingPipeline = DefaultStreamingPipeline()
+        
+        let orchestrator = PlaybackOrchestrator(pool: pool, streamingPipeline: streamingPipeline)
 
+        let networkMonitor = NetworkConnectivityMonitor()
+        
         self.pool = pool
-
-        self.orchestrator = PlaybackOrchestrator(
-            pool: pool,
-            streamingPipeline: DefaultStreamingPipeline()
+        self.orchestrator = orchestrator
+        self.networkMonitor = networkMonitor
+        self.networkRecovery = NetworkRecoveryCoordinator(
+            network: networkMonitor,
+            playback: orchestrator
         )
     }
 

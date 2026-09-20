@@ -266,3 +266,100 @@ public final class PlaybackOrchestrator {
         await pool.releaseAll()
     }
 }
+
+@MainActor
+extension PlaybackOrchestrator: PlaybackRecoveryTarget {
+
+    public func markNetworkUnavailable() async {
+
+        guard let activeMediaId else {
+            return
+        }
+
+        guard let managed = await pool.get(
+            mediaId: activeMediaId
+        ) else {
+            return
+        }
+
+        let state = await managed.engine.currentState
+
+        switch state {
+
+        case .playing,
+             .buffering,
+             .ready:
+
+            await managed.engine.notifyNetworkLost()
+
+        default:
+            break
+        }
+    }
+
+    public func isActiveMediaReconnecting()
+        async -> Bool {
+
+        guard let activeMediaId else {
+            return false
+        }
+
+        guard let managed = await pool.get(
+            mediaId: activeMediaId
+        ) else {
+            return false
+        }
+
+        return await managed.engine.currentState
+            == .reconnecting
+    }
+
+    public func recoverActivePlayback()
+        async throws {
+
+        guard let activePlayback else {
+            return
+        }
+
+        guard let managed = await pool.get(
+            mediaId: activePlayback.mediaId
+        ) else {
+            return
+        }
+
+        let generation = playGeneration
+
+        try await managed.engine.load(
+            activePlayback.source
+        )
+
+        // A user action may have replaced the active item while
+        // recovery was awaiting the network.
+        guard generation == playGeneration else {
+            try? await managed.engine.pause()
+            throw CancellationError()
+        }
+
+        try await managed.engine.play()
+
+        guard generation == playGeneration else {
+            try? await managed.engine.pause()
+            throw CancellationError()
+        }
+    }
+
+    public func failActiveRecovery() async {
+
+        guard let activeMediaId else {
+            return
+        }
+
+        guard let managed = await pool.get(
+            mediaId: activeMediaId
+        ) else {
+            return
+        }
+
+        await managed.engine.notifyRecoveryExhausted()
+    }
+}

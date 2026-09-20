@@ -25,7 +25,9 @@ public struct VideoPlaybackPolicy: Sendable, Equatable {
     /// Maximum interval between transitions that counts
     /// toward the same fling.
     public let fastTransitionWindow: Duration
-
+    
+    public let flingVelocityThreshold: Double
+    
     // MARK: Prefetch
 
     public let previousMinimumMatchScore: Double

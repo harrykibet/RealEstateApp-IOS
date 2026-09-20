@@ -340,7 +340,7 @@ public final class VideoPlaybackCoordinator {
         _ mediaIds: Set<String>
     ) async {
 
-        await pool.updatePinnedIds(
+        await playback.updateComposedMedia(
             mediaIds
         )
     }

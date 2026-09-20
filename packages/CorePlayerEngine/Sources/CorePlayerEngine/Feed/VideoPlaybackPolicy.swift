@@ -26,7 +26,7 @@ public struct VideoPlaybackPolicy: Sendable, Equatable {
     /// toward the same fling.
     public let fastTransitionWindow: Duration
     
-    public let flingVelocityThreshold: Double
+    //public let flingVelocityThreshold: Double
     
     // MARK: Prefetch
 

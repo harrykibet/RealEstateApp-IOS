@@ -102,9 +102,9 @@ public final class NetworkConnectivityMonitor:
 
         isStarted = true
 
-        monitor.pathUpdateHandler = { [weak self] path in
+        monitor.pathUpdateHandler =  {  [weak self] path in
 
-            let snapshot = Self.snapshot(
+            let snapshot =  Self.snapshot(
                 from: path
             )
 

@@ -61,6 +61,7 @@ public enum NetworkError: Equatable, Sendable {
     case timeout
     case serverError(statusCode: Int)
     case unreachable
+    case retryExhausted
     case unknown
 }
 
@@ -80,44 +81,67 @@ public struct SystemError: Equatable, Sendable {
 // MARK: - Mapping
 
 public extension PlayerError {
-    
+
     static func from(_ error: Error) -> PlayerError {
-        
+
+        if let playerError = error as? PlayerError {
+            return playerError
+        }
+
         let nsError = error as NSError
-        
-        // MARK: AVFoundation Errors
-        
+
         if nsError.domain == NSURLErrorDomain {
             return mapNetworkError(nsError)
         }
-        
+
+        // AVFoundation often wraps transport failures inside an underlying
+        // NSError. Inspect that before classifying the failure as decoding.
+        if let underlying = nsError.userInfo[
+            NSUnderlyingErrorKey
+        ] as? NSError {
+
+            if underlying.domain == NSURLErrorDomain {
+                return mapNetworkError(underlying)
+            }
+        }
+
         if nsError.domain == AVError.errorDomain {
             return .decodingFailed
         }
-        
-        // MARK: Fallback
-        
+
         return .system(
-            SystemError(domain: nsError.domain, code: nsError.code)
+            SystemError(
+                domain: nsError.domain,
+                code: nsError.code
+            )
         )
     }
 }
 
 private extension PlayerError {
-    
-    static func mapNetworkError(_ error: NSError) -> PlayerError {
-        
+
+    static func mapNetworkError(
+        _ error: NSError
+    ) -> PlayerError {
+
         switch error.code {
-        case NSURLErrorNotConnectedToInternet:
+
+        case NSURLErrorNotConnectedToInternet,
+             NSURLErrorDataNotAllowed,
+             NSURLErrorNetworkConnectionLost:
             return .network(.offline)
-            
+
         case NSURLErrorTimedOut:
             return .network(.timeout)
-            
+
         case NSURLErrorCannotFindHost,
-             NSURLErrorCannotConnectToHost:
+             NSURLErrorCannotConnectToHost,
+             NSURLErrorDNSLookupFailed:
             return .network(.unreachable)
-            
+
+        case NSURLErrorCannotLoadFromNetwork:
+            return .network(.unknown)
+
         default:
             return .network(.unknown)
         }

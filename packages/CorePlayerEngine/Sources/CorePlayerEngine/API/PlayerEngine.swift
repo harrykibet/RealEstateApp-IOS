@@ -21,12 +21,20 @@ public protocol PlayerEngine: AnyObject {
     func stop() async throws
 
     func release() async throws
+    
+    /// Notifies the engine that external network connectivity was lost.
+    func notifyNetworkLost() async
 
+    /// Terminates an unsuccessful automatic recovery cycle.
+    func notifyRecoveryExhausted() async
+    
     // MARK: - State
 
     var state: AsyncStream<PlayerState> { get }
 
     var events: AsyncStream<PlayerEvent> { get }
+    
+    var currentState: PlayerState { get async }
 
     // MARK: - Observability
 

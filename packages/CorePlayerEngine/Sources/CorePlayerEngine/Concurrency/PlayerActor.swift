@@ -132,10 +132,6 @@ actor PlayerActor {
             }
             
         case .bufferingEnded:
-            apply(.bufferingEnded)
-            emit(.bufferingEnded)
-            
-        case .bufferingEnded:
             await watchdog.cancel()
             
             apply(.bufferingEnded)
@@ -395,7 +391,28 @@ private enum PlayerActorEvent {
 // MARK: - AV Error → Actor Event Bridge
 
 private extension PlayerActor {
+    
+    func notifyNetworkLost() async {
+        await watchdog.cancel()
+        apply(.networkLost)
+    }
 
+    func notifyRecoveryExhausted() async {
+        await watchdog.cancel()
+
+        let error = PlayerError.network(
+            .retryExhausted
+        )
+
+        apply(
+            .failed(error)
+        )
+
+        emit(
+            .failed(error)
+        )
+    }
+    
     func consumeInternal(
         _ event: PlayerActorEvent
     ) async {
@@ -441,6 +458,7 @@ private extension PlayerActor {
             durationInternal = progress.duration
 
             emit(.progress(progress))
+            
         case .watchdogExpired:
             apply(.watchdogExpired)
             emit(.watchdogExpired)

@@ -1,15 +1,6 @@
 import Foundation
 
-public enum WarmPriority: Int {
-    case background = 0
-    case visible = 1
-}
-
-public protocol StreamingPipeline {
-    func warm(mediaId: String, source: MediaSource, priority: WarmPriority) async
-}
-
-public final class DefaultStreamingPipeline: StreamingPipeline, @unchecked Sendable {
+public final class DefaultStreamingPipeline: StreamingPipeline, Sendable {
     private let cacheWarmer: CacheWarmer
     private let offlineController: OfflineDownloadController
     private let cdnSelector: CdnSelector?

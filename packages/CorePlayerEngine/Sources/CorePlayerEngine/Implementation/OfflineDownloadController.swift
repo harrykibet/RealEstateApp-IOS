@@ -1,6 +1,6 @@
 import Foundation
 
-public final class OfflineDownloadController {
+public final class OfflineDownloadController : Sendable {
     public init() {}
 
     public func scheduleDownload(mediaId: String, source: MediaSource) {

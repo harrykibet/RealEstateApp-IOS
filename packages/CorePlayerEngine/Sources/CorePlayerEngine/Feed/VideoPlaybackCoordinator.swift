@@ -208,7 +208,7 @@ public final class VideoPlaybackCoordinator {
             throw CancellationError()
         }
 
-        await playback.play(
+        try await playback.play(
             mediaId: item.mediaId,
             source: item.source
         )
@@ -456,7 +456,7 @@ public final class VideoPlaybackCoordinator {
 
         let elapsed =
             current.duration(
-                since: last
+                to: last
             )
 
         if elapsed <=

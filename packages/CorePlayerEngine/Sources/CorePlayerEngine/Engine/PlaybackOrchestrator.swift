@@ -45,7 +45,14 @@ public final class PlaybackOrchestrator {
     /// previous request becomes stale and is forbidden from taking playback
     /// ownership.
     private var playGeneration: UInt64 = 0
-
+    
+    private struct ActivePlayback: Sendable {
+        let mediaId: String
+        let source: MediaSource
+    }
+    
+    private var activePlayback: ActivePlayback?
+    
     // MARK: - Init
 
     public init(
@@ -100,6 +107,11 @@ public final class PlaybackOrchestrator {
 
             throw CancellationError()
         }
+        
+        activePlayback = ActivePlayback(
+            mediaId: mediaId,
+            source: source
+        )
 
         activeMediaId = mediaId
 

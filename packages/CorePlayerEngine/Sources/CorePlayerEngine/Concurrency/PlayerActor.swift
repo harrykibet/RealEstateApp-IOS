@@ -18,27 +18,27 @@
 import Foundation
 
 actor PlayerActor {
-
+    
     // MARK: - Dependencies
-
+    
     private let config: PlayerConfiguration
     private let player: AVPlayerWrapper
-
+    
     private let stateEmitter: PlayerEventEmitter<PlayerState>
     private let eventEmitter: PlayerEventEmitter<PlayerEvent>
     
     private let watchdog: PlaybackWatchdog
     
     // MARK: - State
-
+    
     private var reducer = PlaybackStateReducer()
     private var currentSource: MediaSource?
-
+    
     private var currentTimeInternal: TimeInterval = 0
     private var durationInternal: TimeInterval?
-
+    
     // MARK: - Initialization
-
+    
     init(
         config: PlayerConfiguration,
         player: AVPlayerWrapper,
@@ -51,30 +51,30 @@ actor PlayerActor {
         self.watchdog = watchdog
         self.stateEmitter = stateEmitter
         self.eventEmitter = eventEmitter
-
+        
         player.onReady = { [weak self] in
             guard let self else { return }
-
+            
             Task {
                 await self.consume(.ready)
             }
         }
-
+        
         player.onBuffering = { [weak self] buffering in
             guard let self else { return }
-
+            
             Task {
                 await self.consume(
                     buffering
-                        ? .bufferingStarted
-                        : .bufferingEnded
+                    ? .bufferingStarted
+                    : .bufferingEnded
                 )
             }
         }
-
+        
         player.onError = { [weak self] error in
             guard let self else { return }
-
+            
             Task {
                 await self.consume(
                     .failed(
@@ -83,10 +83,10 @@ actor PlayerActor {
                 )
             }
         }
-
+        
         player.onProgress = { [weak self] progress in
             guard let self else { return }
-
+            
             Task {
                 await self.consume(
                     .progress(progress)
@@ -94,27 +94,27 @@ actor PlayerActor {
             }
         }
     }
-
+    
     deinit {
         player.release()
     }
-
+    
     // MARK: - Snapshots
-
+    
     var currentState: PlayerState {
         reducer.state
     }
-
+    
     var currentTime: TimeInterval {
         currentTimeInternal
     }
-
+    
     var duration: TimeInterval? {
         durationInternal
     }
-
+    
     // MARK: - Event Consumption
-
+    
     private func consume(
         _ event: PlayerActorEvent
     ) async {
@@ -174,21 +174,21 @@ actor PlayerActor {
     }
     
     // MARK: - Public Intent Handling
-
+    
     func handle(
         _ intent: PlayerIntent
     ) async throws {
-
+        
         switch intent {
-
+            
         case .load(let source):
-
+            
             await watchdog.cancel()
-
+            
             apply(.loadStarted)
-
+            
             currentSource = source
-
+            
             do {
                 try await player.load(source)
             } catch {
@@ -197,175 +197,196 @@ actor PlayerActor {
             }
             
         case .play:
-
+            
             guard reducer.state.isPlayable else {
                 return
             }
-
+            
             if reducer.state == .ended {
                 try await player.seek(to: 0)
             }
-
+            
             try applyAndPerform(
                 .play
             ) {
                 player.play()
             }
-
+            
             emit(.playbackStarted)
-
+            
         case .pause:
-
+            
             guard reducer.state == .playing else {
                 return
             }
-
+            
             try applyAndPerform(
                 .pause
             ) {
                 player.pause()
             }
-
+            
             emit(.playbackPaused)
-
+            
         case .seek(let seconds):
-
+            
             guard reducer.state.isSeekable else {
                 return
             }
-
+            
             emit(
                 .seekStarted(seconds)
             )
-
+            
             do {
                 try await player.seek(
                     to: max(0, seconds)
                 )
-
+                
                 emit(
                     .seekCompleted(seconds)
                 )
-
+                
             } catch {
                 emit(
                     .seekFailed(
                         PlayerError.from(error)
                     )
                 )
-
+                
                 throw error
             }
-
+            
         case .stop:
             
             await watchdog.cancel()
-
+            
             player.stop()
-
+            
             apply(.reset)
-
+            
             emit(.stopped)
-
+            
         case .release:
             
             await watchdog.cancel()
-
+            
             player.release()
-
+            
             apply(.released)
-
+            
             emit(.released)
-
+            
         default:
             break
         }
     }
-
+    
     // MARK: - State Helpers
-
+    
     private func apply(
         _ event: PlaybackStateReducer.Event
     ) {
         let previous = reducer.state
-
+        
         let newState = reducer.reduce(event)
-
+        
         guard newState != previous else {
             return
         }
-
+        
         stateEmitter.emit(newState)
     }
-
+    
     private func applyAndPerform(
         _ event: PlaybackStateReducer.Event,
         operation: () -> Void
     ) throws {
-
+        
         let previous = reducer.state
-
+        
         let newState = reducer.reduce(event)
-
+        
         guard newState != previous else {
             return
         }
-
+        
         operation()
-
+        
         stateEmitter.emit(newState)
     }
-
+    
     private func handlePlaybackFailure(
         _ error: Error
     ) {
-
+        
         handlePlaybackFailure(
             PlayerError.from(error)
         )
     }
-
+    
     private func handlePlaybackFailure(
         _ error: PlayerError
     ) {
-
+        
         switch error {
-
+            
         case .network:
-
+            
             apply(.networkLost)
-
+            
             emit(.failed(error))
-
+            
         default:
-
+            
             apply(
                 .failed(error)
             )
-
+            
             emit(
                 .failed(error)
             )
         }
     }
-
+    
     private func replayFromBeginning() async throws {
-
+        
         try await player.seek(
             to: 0
         )
-
+        
         apply(.play)
-
+        
         player.play()
-
+        
         emit(.playbackStarted)
     }
-
+    
     private func emit(
         _ event: PlayerEvent
     ) {
         eventEmitter.emit(event)
+    }
+    
+    func notifyNetworkLost() async {
+        await watchdog.cancel()
+        apply(.networkLost)
+    }
+    
+    func notifyRecoveryExhausted() async {
+        await watchdog.cancel()
+        
+        let error = PlayerError.network(
+            .retryExhausted
+        )
+        
+        apply(
+            .failed(error)
+        )
+        
+        emit(
+            .failed(error)
+        )
     }
 }
 
@@ -391,27 +412,6 @@ private enum PlayerActorEvent {
 // MARK: - AV Error → Actor Event Bridge
 
 private extension PlayerActor {
-    
-    func notifyNetworkLost() async {
-        await watchdog.cancel()
-        apply(.networkLost)
-    }
-
-    func notifyRecoveryExhausted() async {
-        await watchdog.cancel()
-
-        let error = PlayerError.network(
-            .retryExhausted
-        )
-
-        apply(
-            .failed(error)
-        )
-
-        emit(
-            .failed(error)
-        )
-    }
     
     func consumeInternal(
         _ event: PlayerActorEvent

@@ -9,12 +9,12 @@ import Foundation
 
 @MainActor
 final class DefaultPlayerEngine: PlayerEngine {
-
+    
     private let actor: PlayerActor
-
+    
     private let stateEmitter = PlayerEventEmitter<PlayerState>()
     private let eventEmitter = PlayerEventEmitter<PlayerEvent>()
-
+    
     init(
         config: PlayerConfiguration,
         player: AVPlayerWrapper,
@@ -28,9 +28,9 @@ final class DefaultPlayerEngine: PlayerEngine {
             eventEmitter: eventEmitter
         )
     }
-
+    
     // MARK: - Streams
-
+    
     var state: AsyncStream<PlayerState> {
         stateEmitter.stream
     }
@@ -44,44 +44,54 @@ final class DefaultPlayerEngine: PlayerEngine {
     var events: AsyncStream<PlayerEvent> {
         eventEmitter.stream
     }
-
+    
     // MARK: - Lifecycle
-
+    
     func load(_ source: MediaSource) async throws {
         try await actor.handle(.load(source))
     }
-
+    
     func play() async throws {
         try await actor.handle(.play)
     }
-
+    
     func pause() async throws {
         try await actor.handle(.pause)
     }
-
+    
     func seek(to seconds: TimeInterval) async throws {
         try await actor.handle(.seek(seconds))
     }
-
+    
     func stop() async throws {
         try await actor.handle(.stop)
     }
-
+    
     func release() async throws {
         try await actor.handle(.release)
     }
-
+    
     // MARK: - Observability
-
+    
     var currentTime: TimeInterval {
         get async {
             await actor.currentTime
         }
     }
-
+    
     var duration: TimeInterval? {
         get async {
             await actor.duration
         }
+    }
+    
+    // MARK: - Network
+    
+    func notifyNetworkLost() async {
+        await actor.notifyNetworkLost()
+    }
+    
+    func notifyRecoveryExhausted() async {
+        await actor.notifyRecoveryExhausted()
     }
 }

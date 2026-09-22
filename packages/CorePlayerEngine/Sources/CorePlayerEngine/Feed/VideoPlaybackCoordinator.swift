@@ -26,7 +26,7 @@ public final class VideoPlaybackCoordinator {
     // MARK: - Dependencies
 
     private let playback:
-        PlaybackOrchestrator
+        any VideoPlaybackTarget
 
     private let streamingPipeline:
         StreamingPipeline
@@ -71,7 +71,7 @@ public final class VideoPlaybackCoordinator {
     // MARK: - Init
 
     public init(
-        playback: PlaybackOrchestrator,
+        playback: any VideoPlaybackTarget,
         pool: PlayerPool,
         streamingPipeline: StreamingPipeline,
         policy: VideoPlaybackPolicy = VideoPlaybackPolicy(),

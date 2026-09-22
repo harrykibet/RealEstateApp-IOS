@@ -1,96 +1,92 @@
 import Foundation
 
-public enum PlayerPoolError: Error, Equatable, LocalizedError {
+public enum PlayerPoolError:
+    Error,
+    Equatable,
+    LocalizedError {
+
     case capacityExceeded
+    case draining
 
     public var errorDescription: String? {
+
         switch self {
+
         case .capacityExceeded:
-            return "The player pool has reached capacity and all active players are pinned."
+            return """
+            The player pool has reached capacity and all active players \
+            are pinned.
+            """
+
+        case .draining:
+            return """
+            The player pool is currently releasing its resources and \
+            cannot accept new players.
+            """
         }
     }
 }
 
-///
-/// Bounded lifecycle manager for PlayerEngine instances.
-///
-/// Ownership contract:
-/// - Pool owns every retained PlayerEngine.
-/// - All pool state is main-actor isolated.
-/// - Mutating operations are serialized across suspension points.
-/// - Active players are indexed by media ID.
-/// - Released players may be retained in an idle reservoir.
-/// - Idle players are reused before allocating new player instances.
-/// - Pinned players are never evicted.
-/// - When capacity is reached, the least-recently-used unpinned player
-///   is recycled.
-///
 @MainActor
 public final class PlayerPool {
 
-    // MARK: - Internal Gate
-
-    /// MainActor isolation alone does not prevent actor reentrancy across
-    /// `await` points. This gate serializes logical pool mutations so that
-    /// release/reuse/eviction operations cannot interleave halfway through
-    /// a lifecycle transition.
-    private actor MutationGate {
-
-        private var locked = false
-
-        private var waiters: [
-            CheckedContinuation<Void, Never>
-        ] = []
-
-        func lock() async {
-            guard locked else {
-                locked = true
-                return
-            }
-
-            await withCheckedContinuation { continuation in
-                waiters.append(continuation)
-            }
-        }
-
-        func unlock() {
-            guard let continuation = waiters.first else {
-                locked = false
-                return
-            }
-
-            waiters.removeFirst()
-            continuation.resume()
-        }
-    }
-
     // MARK: - Dependencies
 
-    private let configuration: PlayerPoolConfiguration
+    private let configuration:
+        PlayerPoolConfiguration
 
-    private let makeEngine: @MainActor () -> PlayerEngine
-
-    private let mutationGate = MutationGate()
+    private let makeEngine:
+        @MainActor () -> PlayerEngine
 
     // MARK: - State
 
-    private var activePlayers: [String: ManagedPlayer] = [:]
+    private var activePlayers:
+        [String: ManagedPlayer] = [:]
 
-    private var idlePlayers: [ManagedPlayer] = []
+    private var idlePlayers:
+        [ManagedPlayer] = []
 
-    private var allPlayers: [ManagedPlayer] = []
+    private var allPlayers:
+        [ManagedPlayer] = []
 
-    private var pinnedMediaIds: Set<String> = []
+    private var pinnedMediaIds:
+        Set<String> = []
 
-    private var accessSequence: UInt64 = 0
+    private var accessSequence:
+        UInt64 = 0
 
-    // MARK: - Init
+    // MARK: - In-Flight Creation
+
+    /// One creation task per media ID.
+    ///
+    /// This prevents:
+    ///
+    ///     request A ──┐
+    ///                  ├── create two players
+    ///     request A ──┘
+    ///
+    /// from occurring concurrently.
+    ///
+    /// Unrelated media IDs may still be created concurrently.
+    private var inFlightCreations:
+        [String: Task<ManagedPlayer, Error>] = [:]
+
+    // MARK: - Lifecycle
+
+    private var isDraining = false
+
+    // MARK: - Initialization
 
     public init(
-        configuration: PlayerPoolConfiguration = PlayerPoolConfiguration(),
-        factory: @escaping @MainActor () -> PlayerEngine = {
-            PlayerEngineFactory.make()
-        }
+        configuration:
+            PlayerPoolConfiguration =
+            PlayerPoolConfiguration(),
+
+        factory:
+            @escaping @MainActor () -> PlayerEngine =
+            {
+                PlayerEngineFactory.make()
+            }
     ) {
         self.configuration = configuration
         self.makeEngine = factory
@@ -102,100 +98,138 @@ public final class PlayerPool {
         mediaId: String
     ) async -> ManagedPlayer? {
 
-        await mutationGate.lock()
-
-        let result = activePlayers[mediaId]
-
-        if let result {
-            touch(result)
+        guard !isDraining else {
+            return nil
         }
 
-        await mutationGate.unlock()
+        guard let managed =
+                activePlayers[mediaId]
+        else {
+            return nil
+        }
 
-        return result
+        touch(
+            managed
+        )
+
+        return managed
     }
-    
+
     // MARK: - Acquisition
 
-    /// Returns an existing player or creates/reuses one.
-    ///
-    /// A source is always loaded for a newly allocated or recycled player.
-    /// Existing active media is returned without reloading.
     public func getOrCreate(
         mediaId: String,
         source: MediaSource
     ) async throws -> ManagedPlayer {
 
-        await mutationGate.lock()
+        guard !isDraining else {
+            throw PlayerPoolError.draining
+        }
 
-        do {
-            if let existing = activePlayers[mediaId] {
-                touch(existing)
+        // IMPORTANT:
+        // Check in-flight creation before active state.
+        //
+        // A creation task may have reserved this media ID while
+        // the actual AVPlayer load is suspended.
+        if let inFlight =
+            inFlightCreations[mediaId] {
 
-                await mutationGate.unlock()
+            return try await inFlight.value
+        }
 
-                return existing
-            }
+        if let existing =
+            activePlayers[mediaId] {
 
-            let managed = try await acquirePlayer()
-
-            activate(
-                managed,
-                mediaId: mediaId
+            touch(
+                existing
             )
 
-            do {
-                try await managed.engine.load(source)
-            } catch {
-                activePlayers.removeValue(
-                    forKey: mediaId
+            return existing
+        }
+
+        let creation =
+            Task<ManagedPlayer, Error> { @MainActor [self] in
+
+                try await createAndLoad(
+                    mediaId: mediaId,
+                    source: source
                 )
-
-                try? await managed.engine.release()
-
-                managed.markIdle()
-
-                if idlePlayers.count <
-                    configuration.maxIdlePlayers {
-
-                    idlePlayers.append(
-                        managed
-                    )
-                } else {
-                    removeFromPool(
-                        managed
-                    )
-                }
-
-                // IMPORTANT:
-                // Do not unlock here.
-                //
-                // The outer catch owns the gate release.
-                throw error
             }
 
-            await mutationGate.unlock()
+        inFlightCreations[mediaId] =
+            creation
 
-            return managed
+        return try await creation.value
+    }
+
+    // MARK: - Creation
+
+    private func createAndLoad(
+        mediaId: String,
+        source: MediaSource
+    ) async throws -> ManagedPlayer {
+
+        defer {
+            inFlightCreations.removeValue(
+                forKey: mediaId
+            )
+        }
+
+        let managed =
+            try await acquirePlayer()
+
+        do {
+
+            try Task.checkCancellation()
+
+            try await managed.engine.load(
+                source
+            )
+
+            try Task.checkCancellation()
 
         } catch {
-            await mutationGate.unlock()
+
+            // The engine must be returned to a known lifecycle state
+            // before it can be reused or discarded.
+            try? await managed.engine.release()
+
+            managed.markIdle()
+
+            if idlePlayers.count <
+                configuration.maxIdlePlayers {
+
+                idlePlayers.append(
+                    managed
+                )
+
+            } else {
+
+                removeFromPool(
+                    managed
+                )
+            }
+
             throw error
         }
+
+        activate(
+            managed,
+            mediaId: mediaId
+        )
+
+        return managed
     }
-    
+
     // MARK: - Prewarm
 
-    /// Prepares a player for a media item without starting playback.
-    ///
-    /// The player remains active in the pool because later playback can reuse
-    /// the prepared engine without another allocation.
     public func prewarm(
         mediaId: String,
         source: MediaSource
     ) async -> Bool {
 
         do {
+
             _ = try await getOrCreate(
                 mediaId: mediaId,
                 source: source
@@ -204,77 +238,128 @@ public final class PlayerPool {
             return true
 
         } catch {
+
             return false
         }
     }
 
     // MARK: - Release
 
-    /// Releases an active media binding.
-    ///
-    /// The underlying PlayerEngine is retained when idle capacity is available,
-    /// otherwise it is fully released.
     public func release(
         mediaId: String
     ) async {
 
-        await mutationGate.lock()
+        guard !isDraining else {
+            return
+        }
 
-        guard let managed = activePlayers[mediaId] else {
-            await mutationGate.unlock()
+        guard let managed =
+                activePlayers.removeValue(
+                    forKey: mediaId
+                )
+        else {
             return
         }
 
         do {
-            try await managed.engine.stop()
-        } catch {
-            // Stop failure must not leak the hardware player.
-            try? await managed.engine.release()
-            activePlayers.removeValue(forKey: mediaId)
-            managed.markIdle()
-            removeFromPool(managed)
 
-            await mutationGate.unlock()
+            try await managed.engine.stop()
+
+        } catch {
+
+            try? await managed.engine.release()
+
+            managed.markIdle()
+
+            removeFromPool(
+                managed
+            )
+
             return
         }
 
-        activePlayers.removeValue(forKey: mediaId)
-
         managed.markIdle()
 
-        if idlePlayers.count < configuration.maxIdlePlayers {
-            idlePlayers.append(managed)
-        } else {
-            try? await managed.engine.release()
-            removeFromPool(managed)
-        }
+        if idlePlayers.count <
+            configuration.maxIdlePlayers {
 
-        await mutationGate.unlock()
+            idlePlayers.append(
+                managed
+            )
+
+        } else {
+
+            try? await managed.engine.release()
+
+            removeFromPool(
+                managed
+            )
+        }
     }
 
     // MARK: - Release All
 
     public func releaseAll() async {
 
-        await mutationGate.lock()
-
-        let players = allPlayers
-
-        activePlayers.removeAll(keepingCapacity: true)
-        idlePlayers.removeAll(keepingCapacity: true)
-        allPlayers.removeAll(keepingCapacity: true)
-        pinnedMediaIds.removeAll(keepingCapacity: true)
-
-        await withTaskGroup(of: Void.self) { group in
-            for managed in players {
-                group.addTask { @MainActor in
-                    try? await managed.engine.release()
-                    managed.markIdle()
-                }
-            }
+        guard !isDraining else {
+            return
         }
 
-        await mutationGate.unlock()
+        isDraining = true
+
+        // First stop creation of new resources.
+        //
+        // getOrCreate() will now fail with `.draining`.
+        //
+        // Existing in-flight loads must be cancelled and awaited before
+        // hardware resources are finally released.
+        let pendingCreations =
+            Array(
+                inFlightCreations.values
+            )
+
+        for task in pendingCreations {
+            task.cancel()
+        }
+
+        for task in pendingCreations {
+            _ = try? await task.value
+        }
+
+        let players =
+            allPlayers
+
+        // Remove logical ownership before suspension.
+        activePlayers.removeAll(
+            keepingCapacity: false
+        )
+
+        idlePlayers.removeAll(
+            keepingCapacity: false
+        )
+
+        pinnedMediaIds.removeAll(
+            keepingCapacity: false
+        )
+
+        // Physical resources are released only after all pending
+        // creation tasks have completed.
+        for managed in players {
+
+            try? await managed.engine.release()
+
+            managed.markIdle()
+        }
+
+        allPlayers.removeAll(
+            keepingCapacity: false
+        )
+
+        inFlightCreations.removeAll(
+            keepingCapacity: false
+        )
+
+        isDraining = false
     }
 
     // MARK: - Pinning
@@ -283,72 +368,101 @@ public final class PlayerPool {
         _ pinned: Set<String>
     ) async {
 
-        await mutationGate.lock()
-
-        pinnedMediaIds = pinned
-
-        for managed in activePlayers.values {
-            managed.markPinned(
-                pinned.contains(managed.mediaId ?? "")
-            )
+        guard !isDraining else {
+            return
         }
 
-        await mutationGate.unlock()
+        pinnedMediaIds =
+            pinned
+
+        for managed in
+            activePlayers.values {
+
+            managed.markPinned(
+                pinned.contains(
+                    managed.mediaId ?? ""
+                )
+            )
+        }
     }
 
-    // MARK: - Iteration
+    // MARK: - Snapshot
 
-    public func activePlayersSnapshot() async -> [ManagedPlayer] {
+    public func activePlayersSnapshot()
+        async -> [ManagedPlayer] {
 
-        await mutationGate.lock()
+        guard !isDraining else {
+            return []
+        }
 
-        let snapshot = Array(activePlayers.values)
-
-        await mutationGate.unlock()
-
-        return snapshot
+        return Array(
+            activePlayers.values
+        )
     }
 
     // MARK: - Capacity
 
-    private func acquirePlayer() async throws -> ManagedPlayer {
+    private func acquirePlayer()
+        async throws -> ManagedPlayer {
 
-        // 1. Always prefer an idle retained player.
-        if let idle = idlePlayers.popLast() {
+        // 1. Reuse idle resources first.
+        if let idle =
+            idlePlayers.popLast() {
+
             return idle
         }
 
-        // 2. Allocate when capacity exists.
-        if allPlayers.count < configuration.maxPlayers {
-            let managed = ManagedPlayer(
-                engine: makeEngine()
-            )
+        // 2. Create if capacity exists.
+        if allPlayers.count <
+            configuration.maxPlayers {
 
-            allPlayers.append(managed)
+            let managed =
+                ManagedPlayer(
+                    engine: makeEngine()
+                )
+
+            allPlayers.append(
+                managed
+            )
 
             return managed
         }
 
-        // 3. Pool is full; recycle the least recently used unpinned player.
-        guard let evictable = leastRecentlyUsedEvictablePlayer() else {
+        // 3. Recycle least-recently-used unpinned player.
+        guard let evictable =
+            leastRecentlyUsedEvictablePlayer()
+        else {
+
             throw PlayerPoolError.capacityExceeded
         }
 
-        guard let mediaId = evictable.mediaId else {
-            removeFromPool(evictable)
+        guard let mediaId =
+                evictable.mediaId
+        else {
+
+            removeFromPool(
+                evictable
+            )
+
             return try await acquirePlayer()
         }
 
-        activePlayers.removeValue(forKey: mediaId)
+        activePlayers.removeValue(
+            forKey: mediaId
+        )
 
-        // The player is no longer bound to its old media item.
         do {
-            try await evictable.engine.stop()
-        } catch {
-            try? await evictable.engine.release()
-            removeFromPool(evictable)
 
-            // We now have capacity for a new player.
+            try await evictable.engine.stop()
+
+        } catch {
+
+            try? await evictable.engine.release()
+
+            removeFromPool(
+                evictable
+            )
+
             return try await acquirePlayer()
         }
 
@@ -363,21 +477,28 @@ public final class PlayerPool {
         _ managed: ManagedPlayer,
         mediaId: String
     ) {
+
         accessSequence &+= 1
 
         managed.activate(
             mediaId: mediaId,
             sequence: accessSequence,
-            pinned: pinnedMediaIds.contains(mediaId)
+            pinned:
+                pinnedMediaIds.contains(
+                    mediaId
+                )
         )
 
-        activePlayers[mediaId] = managed
+        activePlayers[mediaId] =
+            managed
     }
 
     private func touch(
         _ managed: ManagedPlayer
     ) {
+
         accessSequence &+= 1
+
         managed.touch(
             sequence: accessSequence
         )
@@ -385,13 +506,18 @@ public final class PlayerPool {
 
     // MARK: - Eviction
 
-    private func leastRecentlyUsedEvictablePlayer()
+    private func
+        leastRecentlyUsedEvictablePlayer()
         -> ManagedPlayer?
     {
+
         activePlayers.values
-            .filter { !$0.pinned }
+            .filter {
+                !$0.pinned
+            }
             .min {
-                $0.lastUsedSequence < $1.lastUsedSequence
+                $0.lastUsedSequence <
+                $1.lastUsedSequence
             }
     }
 
@@ -400,6 +526,7 @@ public final class PlayerPool {
     private func removeFromPool(
         _ managed: ManagedPlayer
     ) {
+
         idlePlayers.removeAll {
             $0 === managed
         }
@@ -423,6 +550,10 @@ public final class PlayerPool {
         allPlayers.count
     }
 
+    public var inFlightCreationCount: Int {
+        inFlightCreations.count
+    }
+
     public var maxPlayers: Int {
         configuration.maxPlayers
     }
@@ -430,15 +561,23 @@ public final class PlayerPool {
     public func contains(
         mediaId: String
     ) async -> Bool {
-        await get(mediaId: mediaId) != nil
+
+        await get(
+            mediaId: mediaId
+        ) != nil
     }
 
     public func hasDuplicateInstances() -> Bool {
 
-        let identifiers = allPlayers.map {
-            ObjectIdentifier($0.engine)
-        }
+        let identifiers =
+            allPlayers.map {
+                ObjectIdentifier(
+                    $0.engine
+                )
+            }
 
-        return Set(identifiers).count != identifiers.count
+        return Set(
+            identifiers
+        ).count != identifiers.count
     }
 }

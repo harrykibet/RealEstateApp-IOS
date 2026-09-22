@@ -127,7 +127,9 @@ public final class PlayerPool {
         do {
             if let existing = activePlayers[mediaId] {
                 touch(existing)
+
                 await mutationGate.unlock()
+
                 return existing
             }
 
@@ -141,21 +143,30 @@ public final class PlayerPool {
             do {
                 try await managed.engine.load(source)
             } catch {
-                activePlayers.removeValue(forKey: mediaId)
+                activePlayers.removeValue(
+                    forKey: mediaId
+                )
 
-                // A failed load may leave PlayerActor in `.error`.
-                // Release resets it to a reusable lifecycle state.
                 try? await managed.engine.release()
 
                 managed.markIdle()
 
-                if idlePlayers.count < configuration.maxIdlePlayers {
-                    idlePlayers.append(managed)
+                if idlePlayers.count <
+                    configuration.maxIdlePlayers {
+
+                    idlePlayers.append(
+                        managed
+                    )
                 } else {
-                    removeFromPool(managed)
+                    removeFromPool(
+                        managed
+                    )
                 }
 
-                await mutationGate.unlock()
+                // IMPORTANT:
+                // Do not unlock here.
+                //
+                // The outer catch owns the gate release.
                 throw error
             }
 
@@ -168,7 +179,7 @@ public final class PlayerPool {
             throw error
         }
     }
-
+    
     // MARK: - Prewarm
 
     /// Prepares a player for a media item without starting playback.

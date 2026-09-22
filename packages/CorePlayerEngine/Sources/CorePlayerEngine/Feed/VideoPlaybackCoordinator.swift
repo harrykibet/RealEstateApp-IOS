@@ -72,7 +72,6 @@ public final class VideoPlaybackCoordinator {
 
     public init(
         playback: any VideoPlaybackTarget,
-        pool: PlayerPool,
         streamingPipeline: StreamingPipeline,
         policy: VideoPlaybackPolicy = VideoPlaybackPolicy(),
         sleep: @escaping @Sendable (

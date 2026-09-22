@@ -106,11 +106,15 @@ public final class PlayerPool {
 
         let result = activePlayers[mediaId]
 
+        if let result {
+            touch(result)
+        }
+
         await mutationGate.unlock()
 
         return result
     }
-
+    
     // MARK: - Acquisition
 
     /// Returns an existing player or creates/reuses one.

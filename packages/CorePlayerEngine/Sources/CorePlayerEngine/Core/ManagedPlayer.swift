@@ -25,7 +25,7 @@ public final class ManagedPlayer {
     /// Retained for source compatibility with callers that explicitly construct
     /// a managed player. Normal application code should obtain instances from
     /// PlayerPool.
-    public convenience init(
+    internal convenience init(
         mediaId: String,
         engine: PlayerEngine
     ) {

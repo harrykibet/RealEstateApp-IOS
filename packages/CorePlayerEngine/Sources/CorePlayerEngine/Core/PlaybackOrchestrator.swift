@@ -179,6 +179,7 @@ public final class PlaybackOrchestrator {
         playGeneration &+= 1
 
         guard let activeMediaId else {
+            activePlayback = nil
             return
         }
 
@@ -186,14 +187,16 @@ public final class PlaybackOrchestrator {
             mediaId: activeMediaId
         ) else {
             self.activeMediaId = nil
+            self.activePlayback = nil
             return
         }
 
         try? await managed.engine.stop()
 
         self.activeMediaId = nil
+        self.activePlayback = nil
     }
-
+    
     // MARK: - Release
 
     public func release(

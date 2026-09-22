@@ -170,6 +170,7 @@ actor PlayerActor {
             }
             
         case .failed(let error):
+            await watchdog.cancel()
             handlePlaybackFailure(error)
             
         case .progress(let progress):

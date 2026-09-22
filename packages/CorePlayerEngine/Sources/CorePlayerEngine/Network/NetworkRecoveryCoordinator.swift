@@ -94,8 +94,6 @@ public final class NetworkRecoveryCoordinator {
 
     public func stop() {
 
-        recoveryGeneration &+= 1
-
         observationTask?.cancel()
         observationTask = nil
 
@@ -103,7 +101,7 @@ public final class NetworkRecoveryCoordinator {
 
         network.stop()
     }
-
+    
     // MARK: - Network Events
 
     private func handle(

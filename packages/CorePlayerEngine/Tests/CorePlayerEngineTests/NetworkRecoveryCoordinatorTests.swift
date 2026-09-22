@@ -127,15 +127,15 @@ final class NetworkRecoveryCoordinatorTests: XCTestCase {
         let recorder = SleepRecorder()
 
         let coordinator =
-                NetworkRecoveryCoordinator(
-                    network: network,
-                    playback: playback,
-                    policy: policy,
-                    sleep: { duration in
-                        await recorder.record(duration)
-                    },
-                    random: { 0 }
-                )
+            NetworkRecoveryCoordinator(
+                network: network,
+                playback: playback,
+                policy: policy,
+                sleep: { duration in
+                    await recorder.record(duration)
+                },
+                random: { 0 }
+            )
             
         coordinator.start()
 

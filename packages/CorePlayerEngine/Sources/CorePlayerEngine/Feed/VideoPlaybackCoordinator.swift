@@ -28,9 +28,6 @@ public final class VideoPlaybackCoordinator {
     private let playback:
         PlaybackOrchestrator
 
-    private let pool:
-        PlayerPool
-
     private let streamingPipeline:
         StreamingPipeline
 
@@ -88,7 +85,6 @@ public final class VideoPlaybackCoordinator {
         }
     ) {
         self.playback = playback
-        self.pool = pool
         self.streamingPipeline = streamingPipeline
         self.policy = policy
         self.sleep = sleep
@@ -99,11 +95,9 @@ public final class VideoPlaybackCoordinator {
         context: FeedPlaybackContext
     ) -> Bool {
 
-        context.scrollVelocity
-            >= policy.flingVelocityThreshold
+        abs(context.scrollVelocity) >= policy.flingVelocityThreshold
         ||
-        consecutiveFastTransitions
-            >= policy.flingTransitionThreshold
+        consecutiveFastTransitions >= policy.flingTransitionThreshold
     }
     
     // MARK: - Visibility
@@ -122,16 +116,18 @@ public final class VideoPlaybackCoordinator {
 
         cancelPendingWork()
 
-        let debounce =
-            calculateDebounce(
+        updateFlingState()
+
+        let flinging =
+            isFlinging(
                 context: context
             )
 
-        updateFlingState()
-
-        let flinging = isFlinging(
-            context: context
-        )
+        let debounce =
+            calculateDebounce(
+                isFlinging: flinging,
+                context: context
+            )
         
         playTask = Task {
             @MainActor [weak self] in
@@ -431,6 +427,7 @@ public final class VideoPlaybackCoordinator {
     }
 
     private func calculateDebounce(
+        isFlinging: Bool,
         context: FeedPlaybackContext
     ) -> Duration {
 
@@ -438,15 +435,13 @@ public final class VideoPlaybackCoordinator {
             return policy.jankAwareDebounce
         }
 
-        if consecutiveFastTransitions >=
-            policy.flingTransitionThreshold {
-
+        if isFlinging {
             return policy.flingDebounce
         }
 
         return policy.dwellDebounce
     }
-
+    
     private func updateFlingState() {
 
         let current =
@@ -466,8 +461,8 @@ public final class VideoPlaybackCoordinator {
         }
 
         let elapsed =
-            current.duration(
-                to: last
+            last.duration(
+                to: current
             )
 
         if elapsed <=

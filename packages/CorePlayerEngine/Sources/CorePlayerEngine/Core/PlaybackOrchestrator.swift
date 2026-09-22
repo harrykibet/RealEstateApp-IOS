@@ -28,16 +28,16 @@ import Foundation
 /// Those belong to specialized components.
 @MainActor
 public final class PlaybackOrchestrator {
-
+    
     // MARK: - Dependencies
-
+    
     private let pool: PlayerPool
     private let streamingPipeline: StreamingPipeline
-
+    
     // MARK: - State
-
+    
     public private(set) var activeMediaId: String?
-
+    
     /// Monotonically increasing request generation.
     ///
     /// Every play request captures its generation. If a newer request arrives
@@ -54,7 +54,7 @@ public final class PlaybackOrchestrator {
     private var activePlayback: ActivePlayback?
     
     // MARK: - Init
-
+    
     public init(
         pool: PlayerPool,
         streamingPipeline: StreamingPipeline
@@ -62,49 +62,49 @@ public final class PlaybackOrchestrator {
         self.pool = pool
         self.streamingPipeline = streamingPipeline
     }
-
+    
     // MARK: - Play
-
+    
     public func play(
         mediaId: String,
         source: MediaSource
     ) async throws {
-
+        
         playGeneration &+= 1
-
+        
         let generation = playGeneration
-
+        
         // Stop the previous logical owner first.
         if let previousMediaId = activeMediaId,
            previousMediaId != mediaId {
-
+            
             if let previous = await pool.get(
                 mediaId: previousMediaId
             ) {
                 try? await previous.engine.pause()
             }
         }
-
+        
         let managed = try await pool.getOrCreate(
             mediaId: mediaId,
             source: source
         )
-
+        
         // A newer play request arrived while acquiring/loading this player.
         guard generation == playGeneration else {
-
+            
             try? await managed.engine.pause()
-
+            
             throw CancellationError()
         }
-
+        
         try await managed.engine.play()
-
+        
         // Check again because `play()` itself suspends.
         guard generation == playGeneration else {
-
+            
             try? await managed.engine.pause()
-
+            
             throw CancellationError()
         }
         
@@ -112,77 +112,77 @@ public final class PlaybackOrchestrator {
             mediaId: mediaId,
             source: source
         )
-
+        
         activeMediaId = mediaId
-
+        
         await streamingPipeline.warm(
             mediaId: mediaId,
             source: source,
             priority: .visible
         )
     }
-
+    
     // MARK: - Preload
-
+    
     public func preload(
         mediaId: String,
         source: MediaSource
     ) async {
-
+        
         _ = await pool.prewarm(
             mediaId: mediaId,
             source: source
         )
     }
-
+    
     // MARK: - Pause
-
+    
     public func pauseCurrent() async {
-
+        
         // Invalidate any pending play request.
         playGeneration &+= 1
-
+        
         guard let activeMediaId else {
             return
         }
-
+        
         guard let managed = await pool.get(
             mediaId: activeMediaId
         ) else {
             return
         }
-
+        
         try? await managed.engine.pause()
     }
-
+    
     // MARK: - Resume
-
+    
     public func resumeCurrent() async throws {
-
+        
         guard let activeMediaId else {
             return
         }
-
+        
         guard let managed = await pool.get(
             mediaId: activeMediaId
         ) else {
             return
         }
-
+        
         try await managed.engine.play()
     }
-
+    
     // MARK: - Stop
-
+    
     public func stopCurrent() async {
-
+        
         playGeneration &+= 1
-
+        
         guard let activeMediaId else {
             activePlayback = nil
             return
         }
-
+        
         guard let managed = await pool.get(
             mediaId: activeMediaId
         ) else {
@@ -190,91 +190,94 @@ public final class PlaybackOrchestrator {
             self.activePlayback = nil
             return
         }
-
+        
         try? await managed.engine.stop()
-
+        
         self.activeMediaId = nil
         self.activePlayback = nil
     }
     
     // MARK: - Release
-
+    
     public func release(
         mediaId: String
     ) async {
-
+        
         if activeMediaId == mediaId {
             playGeneration &+= 1
             activeMediaId = nil
+            activePlayback = nil
         }
-
+        
         await pool.release(
             mediaId: mediaId
         )
     }
-
+    
     // MARK: - State
-
+    
     public func observeState(
         mediaId: String
     ) async -> AsyncStream<PlayerState>? {
-
+        
         guard let managed = await pool.get(
             mediaId: mediaId
         ) else {
             return nil
         }
-
+        
         return managed.engine.state
     }
-
+    
     public func currentState(
         mediaId: String
     ) async -> PlayerState? {
-
+        
         guard let managed = await pool.get(
             mediaId: mediaId
         ) else {
             return nil
         }
-
+        
         return await managed.engine.currentState
     }
-
+    
     public func isCurrentlyPlaying() async -> Bool {
-
+        
         guard let activeMediaId else {
             return false
         }
-
+        
         return await currentState(
             mediaId: activeMediaId
         ) == .playing
     }
-
+    
     public func isMediaActive(
         _ mediaId: String
     ) -> Bool {
-
+        
         activeMediaId == mediaId
     }
     
     public func updateComposedMedia(
         _ mediaIds: Set<String>
     ) async {
-
+        
         await pool.updatePinnedIds(
             mediaIds
         )
     }
     
     // MARK: - Shutdown
-
+    
     public func shutdown() async {
-
+        
         playGeneration &+= 1
+        
         activeMediaId = nil
-
+        activePlayback = nil
+        
         await pool.releaseAll()
     }
 }

@@ -45,7 +45,7 @@ public struct VideoPlaybackPolicy: Sendable, Equatable {
         flingDebounce: Duration = .milliseconds(250),
         jankAwareDebounce: Duration = .milliseconds(400),
         flingTransitionThreshold: Int = 3,
-        flingVelocityThreshold: 
+        flingVelocityThreshold: Double = 1_500,
         fastTransitionWindow: Duration = .milliseconds(300),
         previousMinimumMatchScore: Double = 0.5,
         nextPreloadMinimumMatchScore: Double = 0.8,
@@ -76,5 +76,8 @@ public struct VideoPlaybackPolicy: Sendable, Equatable {
 
         self.maxWarmedMedia =
             maxWarmedMedia
+        
+        self.flingVelocityThreshold =
+            flingVelocityThreshold
     }
 }

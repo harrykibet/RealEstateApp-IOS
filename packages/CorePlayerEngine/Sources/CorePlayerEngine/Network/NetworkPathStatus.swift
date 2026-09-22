@@ -1,10 +1,6 @@
-//
 //  NetworkPathStatus.swift
 //  CorePlayerEngine
 //
-//  Created by builder on 9/20/26.
-//
-
 
 import Foundation
 import Network
@@ -42,6 +38,10 @@ public protocol NetworkConnectivityProviding: AnyObject {
 
     var currentSnapshot: NetworkSnapshot { get }
 
+    /// Stream belonging to the current monitoring session.
+    ///
+    /// Calling `stop()` finishes the current stream. The next `start()`
+    /// creates a fresh stream.
     var snapshots: AsyncStream<NetworkSnapshot> { get }
 
     func start()
@@ -55,15 +55,27 @@ public final class NetworkConnectivityMonitor:
 
     // MARK: - Dependencies
 
-    private let monitor: NWPathMonitor
+    private let makeMonitor:
+        @MainActor () -> NWPathMonitor
+
     private let queue: DispatchQueue
+
+    // MARK: - Runtime Monitor
+
+    private var monitor: NWPathMonitor?
 
     // MARK: - Stream
 
-    public let snapshots: AsyncStream<NetworkSnapshot>
+    private var snapshotStream:
+        AsyncStream<NetworkSnapshot>
 
-    private let continuation:
-        AsyncStream<NetworkSnapshot>.Continuation
+    private var continuation:
+        AsyncStream<NetworkSnapshot>.Continuation?
+
+    public var snapshots:
+        AsyncStream<NetworkSnapshot> {
+        snapshotStream
+    }
 
     // MARK: - State
 
@@ -74,22 +86,28 @@ public final class NetworkConnectivityMonitor:
 
     private var isStarted = false
 
-    // MARK: - Init
+    // MARK: - Initialization
 
     public init(
-        monitor: NWPathMonitor = NWPathMonitor(),
+        monitorFactory: @escaping @MainActor () -> NWPathMonitor = {
+            NWPathMonitor()
+        },
         queue: DispatchQueue = DispatchQueue(
             label: "com.estatia.coreplayerengine.network-monitor",
             qos: .utility
         )
     ) {
-        self.monitor = monitor
+        self.makeMonitor = monitorFactory
         self.queue = queue
 
-        let stream = AsyncStream<NetworkSnapshot>.makeStream()
+        let stream =
+            AsyncStream<NetworkSnapshot>.makeStream()
 
-        self.snapshots = stream.stream
-        self.continuation = stream.continuation
+        self.snapshotStream =
+            stream.stream
+
+        self.continuation =
+            stream.continuation
     }
 
     // MARK: - Lifecycle
@@ -102,21 +120,45 @@ public final class NetworkConnectivityMonitor:
 
         isStarted = true
 
-        monitor.pathUpdateHandler =  {  [weak self] path in
+        // Every monitoring session gets a fresh stream.
+        let stream =
+            AsyncStream<NetworkSnapshot>.makeStream()
 
-            let snapshot =  Self.snapshot(
-                from: path
+        snapshotStream =
+            stream.stream
+
+        continuation =
+            stream.continuation
+
+        currentSnapshot =
+            NetworkSnapshot(
+                status: .unknown
             )
 
-            Task { @MainActor [weak self] in
+        let monitor =
+            makeMonitor()
 
-                guard let self else {
-                    return
+        self.monitor = monitor
+
+        monitor.pathUpdateHandler =
+            { [weak self] path in
+
+                let snapshot =
+                    Self.snapshot(
+                        from: path
+                    )
+
+                Task { @MainActor [weak self] in
+
+                    guard let self else {
+                        return
+                    }
+
+                    self.publish(
+                        snapshot
+                    )
                 }
-
-                self.publish(snapshot)
             }
-        }
 
         monitor.start(
             queue: queue
@@ -131,12 +173,19 @@ public final class NetworkConnectivityMonitor:
 
         isStarted = false
 
-        monitor.cancel()
+        monitor?.cancel()
+        monitor = nil
 
-        continuation.finish()
+        continuation?.finish()
+        continuation = nil
+
+        currentSnapshot =
+            NetworkSnapshot(
+                status: .unknown
+            )
     }
 
-    // MARK: - Internal
+    // MARK: - Publishing
 
     private func publish(
         _ snapshot: NetworkSnapshot
@@ -146,12 +195,15 @@ public final class NetworkConnectivityMonitor:
             return
         }
 
-        currentSnapshot = snapshot
+        currentSnapshot =
+            snapshot
 
-        continuation.yield(
+        continuation?.yield(
             snapshot
         )
     }
+
+    // MARK: - Mapping
 
     private static func snapshot(
         from path: NWPath

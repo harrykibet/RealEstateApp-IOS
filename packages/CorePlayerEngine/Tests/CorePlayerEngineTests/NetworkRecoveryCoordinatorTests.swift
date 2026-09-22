@@ -11,7 +11,23 @@ import XCTest
 
 @MainActor
 final class NetworkRecoveryCoordinatorTests: XCTestCase {
+    
+    actor SleepRecorder {
 
+        private(set) var values: [Duration] = []
+
+        func record(
+            _ duration: Duration
+        ) {
+            values.append(duration)
+        }
+
+        func snapshot() -> [Duration] {
+            values
+        }
+    }
+    
+    @MainActor
     final class FakeNetwork:
         NetworkConnectivityProviding {
 
@@ -49,6 +65,7 @@ final class NetworkRecoveryCoordinatorTests: XCTestCase {
         }
     }
 
+    @MainActor
     final class FakePlayback:
         PlaybackRecoveryTarget {
 
@@ -107,19 +124,19 @@ final class NetworkRecoveryCoordinatorTests: XCTestCase {
         let playback =
             FakePlayback()
 
-        let coordinator =
-            NetworkRecoveryCoordinator(
-                network: network,
-                playback: playback,
-                policy: NetworkRecoveryPolicy(
-                    maximumAttempts: 1,
-                    initialDelay: 0,
-                    maximumDelay: 0,
-                    jitterRatio: 0
-                ),
-                sleep: { _ in }
-            )
+        let recorder = SleepRecorder()
 
+        let coordinator =
+                NetworkRecoveryCoordinator(
+                    network: network,
+                    playback: playback,
+                    policy: policy,
+                    sleep: { duration in
+                        await recorder.record(duration)
+                    },
+                    random: { 0 }
+                )
+            
         coordinator.start()
 
         network.emit(
@@ -146,19 +163,19 @@ final class NetworkRecoveryCoordinatorTests: XCTestCase {
         let playback =
             FakePlayback()
 
+        let recorder = SleepRecorder()
+
         let coordinator =
             NetworkRecoveryCoordinator(
                 network: network,
                 playback: playback,
-                policy: NetworkRecoveryPolicy(
-                    maximumAttempts: 3,
-                    initialDelay: 0,
-                    maximumDelay: 0,
-                    jitterRatio: 0
-                ),
-                sleep: { _ in }
+                policy: policy,
+                sleep: { duration in
+                    await recorder.record(duration)
+                },
+                random: { 0 }
             )
-
+            
         coordinator.start()
 
         network.emit(
@@ -206,25 +223,21 @@ final class NetworkRecoveryCoordinatorTests: XCTestCase {
 
         playback.recoveryFailuresBeforeSuccess = 2
 
-        var sleeps: [Duration] = []
+        let recorder = SleepRecorder()
 
         let coordinator =
             NetworkRecoveryCoordinator(
                 network: network,
                 playback: playback,
-                policy: NetworkRecoveryPolicy(
-                    maximumAttempts: 3,
-                    initialDelay: 0.5,
-                    maximumDelay: 2,
-                    backoffMultiplier: 2,
-                    jitterRatio: 0
-                ),
+                policy: policy,
                 sleep: { duration in
-                    sleeps.append(duration)
+                    await recorder.record(duration)
                 },
                 random: { 0 }
             )
-
+        
+        let sleeps = await recorder.snapshot()
+            
         coordinator.start()
 
         network.emit(
@@ -276,19 +289,19 @@ final class NetworkRecoveryCoordinatorTests: XCTestCase {
 
         playback.recoveryFailuresBeforeSuccess = 100
 
+        let recorder = SleepRecorder()
+
         let coordinator =
             NetworkRecoveryCoordinator(
                 network: network,
                 playback: playback,
-                policy: NetworkRecoveryPolicy(
-                    maximumAttempts: 3,
-                    initialDelay: 0,
-                    maximumDelay: 0,
-                    jitterRatio: 0
-                ),
-                sleep: { _ in }
+                policy: policy,
+                sleep: { duration in
+                    await recorder.record(duration)
+                },
+                random: { 0 }
             )
-
+            
         coordinator.start()
 
         network.emit(

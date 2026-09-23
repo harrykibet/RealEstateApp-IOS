@@ -1,40 +1,134 @@
 import Foundation
 
-public final class DefaultStreamingPipeline: StreamingPipeline, Sendable {
-    private let cacheWarmer: CacheWarmer
-    private let offlineController: OfflineDownloadController
-    private let cdnSelector: CdnSelector?
+@available(iOS 18.0, macOS 10.15, *)
+public final class DefaultStreamingPipeline:
+    StreamingPipeline,
+    Sendable {
 
-    public init(cdns: [Cdn] = [], cacheWarmer: CacheWarmer? = nil, offlineController: OfflineDownloadController = OfflineDownloadController(), measurer: LatencyMeasurer = DefaultLatencyMeasurer(), metrics: MetricsCollector? = nil) {
-        self.cacheWarmer = cacheWarmer ?? CacheWarmer(metrics: metrics)
-        self.offlineController = offlineController
-        self.cdnSelector = cdns.isEmpty ? nil : CdnSelector(cdns: cdns, measurer: measurer)
+    private let cacheWarmer:
+        MediaCacheWarmer
+
+    private let offlineController:
+        OfflineDownloadController
+
+    private let cdnSelector:
+        CdnSelector?
+
+    private let cacheKeyFactory:
+        MediaCacheKeyProviding
+
+    public init(
+        cdns: [Cdn] = [],
+        cacheWarmer:
+            MediaCacheWarmer,
+        offlineController:
+            OfflineDownloadController =
+            OfflineDownloadController(),
+        measurer:
+            LatencyMeasurer =
+            DefaultLatencyMeasurer(),
+        cacheKeyFactory:
+            MediaCacheKeyProviding =
+            DefaultMediaCacheKeyFactory()
+    ) {
+        self.cacheWarmer =
+            cacheWarmer
+
+        self.offlineController =
+            offlineController
+
+        self.cdnSelector =
+            cdns.isEmpty
+            ? nil
+            : CdnSelector(
+                cdns: cdns,
+                measurer: measurer
+            )
+
+        self.cacheKeyFactory =
+            cacheKeyFactory
     }
 
-    public func warm(mediaId: String, source: MediaSource, priority: WarmPriority) async {
-        Task.detached {
-            // If CDN selection is configured, try to resolve the best CDN then warm that endpoint.
-            if let selector = self.cdnSelector {
-                if let best = await selector.selectBestCdn(forPath: source.url.path) {
-                    // Resolve by replacing the origin with the CDN base URL while preserving the path
-                    let base = best.baseURL.absoluteString
-                    let path = source.url.path
-                    let resolvedString: String
-                    if base.hasSuffix("/") {
-                        resolvedString = String(base.dropLast()) + path
-                    } else {
-                        resolvedString = base + path
-                    }
+    public func warm(
+        mediaId: String,
+        source: MediaSource,
+        priority: WarmPriority
+    ) async {
 
-                    let resolved = URL(string: resolvedString) ?? source.url
-                    let replacementSource = MediaSource(url: resolved, type: source.type, headers: source.headers, metadata: source.metadata)
-                    await self.cacheWarmer.warm(mediaId: mediaId, source: replacementSource, priority: priority)
-                } else {
-                    await self.cacheWarmer.warm(mediaId: mediaId, source: source, priority: priority)
-                }
-            } else {
-                await self.cacheWarmer.warm(mediaId: mediaId, source: source, priority: priority)
+        guard !Task.isCancelled else {
+            return
+        }
+
+        // IMPORTANT:
+        // Compute the cache identity from the logical/original source,
+        // not the CDN-resolved URL. Otherwise every CDN creates a distinct
+        // local cache namespace for the same logical media.
+        let cacheKey =
+            cacheKeyFactory.makeKey(
+                mediaId:
+                    mediaId,
+                source:
+                    source
+            )
+
+        var networkSource =
+            source
+
+        if let selector =
+            cdnSelector,
+           let best =
+            await selector.selectBestCdn(
+                forPath:
+                    source.url.path
+            ) {
+
+            let base =
+                best.baseURL
+                    .absoluteString
+
+            let path =
+                source.url.path
+
+            let resolvedString:
+
+                String =
+                base.hasSuffix("/")
+                ? String(
+                    base.dropLast()
+                ) + path
+                : base + path
+
+            if let resolved =
+                URL(
+                    string:
+                        resolvedString
+                ) {
+
+                networkSource =
+                    MediaSource(
+                        url:
+                            resolved,
+                        type:
+                            source.type,
+                        headers:
+                            source.headers,
+                        metadata:
+                            source.metadata
+                    )
             }
         }
+
+        _ = await cacheWarmer.warm(
+            MediaCacheWarmRequest(
+                mediaId:
+                    mediaId,
+                source:
+                    networkSource,
+                cacheKey:
+                    cacheKey,
+                priority:
+                    priority
+            )
+        )
     }
 }

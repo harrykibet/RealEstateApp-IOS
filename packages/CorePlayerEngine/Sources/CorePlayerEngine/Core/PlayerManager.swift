@@ -21,9 +21,39 @@ public final class PlayerManager {
         
         let pool = PlayerPool()
         
-        let streamingPipeline = DefaultStreamingPipeline()
+        let cacheDirectory =
+            FileManager.default.urls(
+                for: .cachesDirectory,
+                in: .userDomainMask
+            )[0]
+            .appendingPathComponent(
+                "Estatia/PlayerMediaCache/v1",
+                isDirectory: true
+            )
+
+        let cacheStore =
+            FileMediaCacheStore(
+                rootDirectory:
+                    cacheDirectory
+            )
+
+        let cacheWarmer =
+            MediaCacheWarmer(
+                store:
+                    cacheStore
+            )
+
+        let streamingPipeline =
+            DefaultStreamingPipeline(
+                cacheWarmer:
+                    cacheWarmer
+            )
         
-        let orchestrator = PlaybackOrchestrator(pool: pool, streamingPipeline: streamingPipeline)
+        let orchestrator =
+            PlaybackOrchestrator(
+                pool: pool,
+                streamingPipeline: streamingPipeline
+            )
         
         let networkMonitor = NetworkConnectivityMonitor()
         

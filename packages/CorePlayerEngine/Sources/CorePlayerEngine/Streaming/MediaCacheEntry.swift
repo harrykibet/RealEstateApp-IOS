@@ -12,6 +12,7 @@
 //
 
 import Foundation
+import CryptoKit
 
 public struct MediaCacheEntry:
     Codable,

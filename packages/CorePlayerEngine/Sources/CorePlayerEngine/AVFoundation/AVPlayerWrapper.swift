@@ -216,17 +216,6 @@ final class AVPlayerWrapper:
             throw PlayerError.invalidSource
         }
 
-        let cacheKey =
-            configuration.keyFactory.makeKey(
-                mediaId:
-                    Self.mediaID(
-                        from:
-                            source
-                    ),
-                source:
-                    source
-            )
-
         let loader =
             MediaCacheResourceLoader(
                 source:
@@ -263,8 +252,6 @@ final class AVPlayerWrapper:
             resourceLoader:
                 loader
         )
-
-        _ = cacheKey
     }
 
     // MARK: - Direct Load

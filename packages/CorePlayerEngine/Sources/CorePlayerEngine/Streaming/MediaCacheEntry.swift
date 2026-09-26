@@ -537,7 +537,30 @@ public actor FileMediaCacheStore {
                 .corruptedEntry
         }
     }
+    
+    public func containsRange(
+        key: String,
+        offset: Int64,
+        length: Int
+    ) throws -> Bool {
 
+        guard length > 0,
+              offset >= 0
+        else {
+            throw MediaCacheStoreError.invalidRange
+        }
+
+        return try read(
+            key:
+                key,
+            offset:
+                offset,
+            length:
+                length
+        ) != nil
+    }
+    
+    
     private func saveEntry(
         _ entry: MediaCacheEntry
     ) throws {

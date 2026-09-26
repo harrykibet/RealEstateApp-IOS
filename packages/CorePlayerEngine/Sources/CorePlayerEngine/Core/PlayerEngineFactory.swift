@@ -24,24 +24,35 @@ public enum PlayerEngineFactory {
     /// - Returns: Fully wired PlayerEngine
     
     @MainActor
-    public static func make(
-        config: PlayerConfiguration = PlayerConfiguration()
+    internal static func make(
+        config: PlayerConfiguration = PlayerConfiguration(),
+        cacheConfiguration: PlayerCacheConfiguration? = nil
     ) -> PlayerEngine {
         
-        let wrapper = AVPlayerWrapper(
-            progressInterval: config.progressUpdateInterval
+        let wrapper =
+        AVPlayerWrapper(
+            progressInterval:
+                config.progressUpdateInterval,
+            cacheConfiguration:
+                cacheConfiguration
         )
         
-        let watchdog = PlaybackWatchdog(
-            configuration: .init(
-                bufferingTimeout: .seconds(7)
-            )
+        let watchdog =
+        PlaybackWatchdog(
+            configuration:
+                    .init(
+                        bufferingTimeout:
+                                .seconds(7)
+                    )
         )
         
         return DefaultPlayerEngine(
-            config: config,
-            player: wrapper,
-            watchdog: watchdog
+            config:
+                config,
+            player:
+                wrapper,
+            watchdog:
+                watchdog
         )
     }
 }

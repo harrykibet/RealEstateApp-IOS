@@ -120,6 +120,8 @@ final class AVPlayerWrapper:
 
     nonisolated(nonsending)
     func load(
+        mediaId:
+        String,
         _ source:
             MediaSource
     ) async throws {

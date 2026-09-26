@@ -15,6 +15,20 @@ import AVFoundation
 import Foundation
 import UniformTypeIdentifiers
 
+private actor RequestState {
+
+    var requests:
+        [ObjectIdentifier:
+         AVAssetResourceLoadingRequest] = [:]
+
+    var tasks:
+        [ObjectIdentifier:
+         Task<Void, Never>] = [:]
+
+    var metadataTask:
+        Task<MediaCacheEntry, Error>?
+}
+
 @available(iOS 18.0, macOS 10.15, *)
 final class MediaCacheResourceLoader:
     NSObject,

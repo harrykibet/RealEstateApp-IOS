@@ -1,3 +1,4 @@
+import Foundation
 @MainActor
 public final class PlayerManager {
     
@@ -19,8 +20,6 @@ public final class PlayerManager {
     
     public init() {
         
-        let pool = PlayerPool()
-        
         let cacheDirectory =
             FileManager.default.urls(
                 for: .cachesDirectory,
@@ -30,13 +29,29 @@ public final class PlayerManager {
                 "Estatia/PlayerMediaCache/v1",
                 isDirectory: true
             )
-
+        
         let cacheStore =
             FileMediaCacheStore(
                 rootDirectory:
                     cacheDirectory
             )
-
+        
+        let cacheConfiguration =
+            PlayerCacheConfiguration(
+                store:
+                    cacheStore
+            )
+        
+        let pool =
+            PlayerPool(
+                factory: {
+                    PlayerEngineFactory.make(
+                        cacheConfiguration:
+                            cacheConfiguration
+                    )
+                }
+            )
+        
         let cacheWarmer =
             MediaCacheWarmer(
                 store:

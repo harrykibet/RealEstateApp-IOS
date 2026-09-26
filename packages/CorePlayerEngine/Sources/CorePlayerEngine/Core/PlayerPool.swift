@@ -82,8 +82,7 @@ public final class PlayerPool {
             PlayerPoolConfiguration =
             PlayerPoolConfiguration(),
 
-        factory:
-            @escaping @MainActor () -> PlayerEngine =
+        factory: @escaping @MainActor () -> PlayerEngine =
             {
                 PlayerEngineFactory.make()
             }

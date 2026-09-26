@@ -55,4 +55,9 @@ public enum PlayerEngineFactory {
                 watchdog
         )
     }
+    
+    public typealias PlayerEngineFactoryClosure =
+    @MainActor (
+        PlayerConfiguration
+    ) -> PlayerEngine
 }

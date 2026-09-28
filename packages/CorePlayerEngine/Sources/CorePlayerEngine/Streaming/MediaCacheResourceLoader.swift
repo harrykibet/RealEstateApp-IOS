@@ -17,18 +17,96 @@ import UniformTypeIdentifiers
 
 private actor RequestState {
 
-    var requests:
+    private var requests:
         [ObjectIdentifier:
          AVAssetResourceLoadingRequest] = [:]
 
-    var tasks:
+    private var tasks:
         [ObjectIdentifier:
          Task<Void, Never>] = [:]
 
-    var metadataTask:
+    private var metadataTask:
         Task<MediaCacheEntry, Error>?
-}
 
+    private var cancelledRequests:
+        Set<ObjectIdentifier> = []
+
+    func start(
+        id:
+            ObjectIdentifier,
+        request:
+            AVAssetResourceLoadingRequest,
+        operation:
+            @escaping @Sendable () async -> Void
+    ) {
+        if cancelledRequests.remove(id) != nil {
+            return
+        }
+
+        requests[id] = request
+
+        let task =
+            Task {
+                await operation()
+                await finish(
+                    id:
+                        id
+                )
+            }
+
+        tasks[id] = task
+    }
+
+    func cancel(
+        id:
+            ObjectIdentifier
+    ) {
+        cancelledRequests.insert(id)
+        tasks.removeValue(forKey: id)?.cancel()
+        requests.removeValue(forKey: id)
+    }
+
+    func finish(
+        id:
+            ObjectIdentifier
+    ) {
+        tasks.removeValue(forKey: id)
+        requests.removeValue(forKey: id)
+        cancelledRequests.remove(id)
+    }
+
+    func cancelAll() {
+        for task in tasks.values {
+            task.cancel()
+        }
+        tasks.removeAll(keepingCapacity: false)
+        requests.removeAll(keepingCapacity: false)
+        cancelledRequests.removeAll(keepingCapacity: false)
+        metadataTask?.cancel()
+        metadataTask = nil
+    }
+
+    func metadata(
+        operation:
+            @escaping @Sendable () async throws -> MediaCacheEntry
+    ) async throws -> MediaCacheEntry {
+        if let metadataTask {
+            return try await metadataTask.value
+        }
+        let task = Task<MediaCacheEntry, Error> {
+            try await operation()
+        }
+        metadataTask = task
+        do {
+            let result = try await task.value
+            metadataTask = nil
+            return result
+        } catch {
+            metadataTask = nil
+            throw error
+        }
+    }
+}
 @available(iOS 18.0, macOS 10.15, *)
 final class MediaCacheResourceLoader:
     NSObject,
@@ -59,40 +137,15 @@ final class MediaCacheResourceLoader:
     private let requestChunkSize:
         Int
 
-    // MARK: - Delegate Queue
+    // MARK: - Request State
 
-    /// AVFoundation invokes resource-loader callbacks synchronously
-    /// on this queue.
-    ///
-    /// We never perform blocking network/disk work directly here.
-    private let delegateQueue =
-        DispatchQueue(
-            label:
-                "com.estatia.coreplayerengine.resource-loader",
-            qos:
-                .userInitiated
-        )
-
-    // MARK: - Outstanding Work
-
-    /// AVFoundation requires asynchronously handled requests to remain
-    /// strongly referenced until completed.
-    private var loadingRequests:
-        [ObjectIdentifier:
-            AVAssetResourceLoadingRequest] = [:]
-
-    private var loadingTasks:
-        [ObjectIdentifier:
-            Task<Void, Never>] = [:]
-
-    // MARK: - Metadata
-
-    private var metadataTask:
-        Task<MediaCacheEntry, Error>?
+    private let requestState =
+        RequestState()
 
     // MARK: - Initialization
 
     init(
+        mediaId: String,
         source: MediaSource,
         configuration: PlayerCacheConfiguration
     ) {
@@ -113,10 +166,7 @@ final class MediaCacheResourceLoader:
         self.cacheKey =
             configuration.keyFactory.makeKey(
                 mediaId:
-                    Self.mediaID(
-                        from:
-                            source
-                    ),
+                    mediaId,
                 source:
                     source
             )
@@ -168,32 +218,16 @@ final class MediaCacheResourceLoader:
                 loadingRequest
             )
 
-        loadingRequests[
-            identifier
-        ] =
-            loadingRequest
-
-        let task =
-            Task {
-                [weak self,
-                 weak loadingRequest] in
-
-                guard
-                    let self,
-                    let loadingRequest
-                else {
-                    return
+        Task { [weak self, weak loadingRequest, requestState] in
+            await requestState.start(
+                id: identifier,
+                request: loadingRequest,
+                operation: {
+                    guard let self, let loadingRequest else { return }
+                    await self.process(loadingRequest)
                 }
-
-                await self.process(
-                    loadingRequest
-                )
-            }
-
-        loadingTasks[
-            identifier
-        ] =
-            task
+            )
+        }
 
         return true
     }
@@ -210,19 +244,9 @@ final class MediaCacheResourceLoader:
                 loadingRequest
             )
 
-        loadingTasks[
-            identifier
-        ]?.cancel()
-
-        loadingTasks.removeValue(
-            forKey:
-                identifier
-        )
-
-        loadingRequests.removeValue(
-            forKey:
-                identifier
-        )
+        Task { [requestState] in
+            await requestState.cancel(id: identifier)
+        }
     }
 
     // MARK: - Processing
@@ -316,17 +340,18 @@ final class MediaCacheResourceLoader:
     private func metadata()
         async throws -> MediaCacheEntry {
 
-        if let metadataTask {
-            return try await metadataTask.value
-        }
+        let store = self.store
+        let fetcher = self.fetcher
+        let source = self.source
+        let cacheKey = self.cacheKey
+        let requestChunkSize = self.requestChunkSize
 
-        let task =
-            Task<MediaCacheEntry, Error> {
-                [store,
-                 fetcher,
-                 source,
-                 cacheKey,
-                 requestChunkSize] in
+        return try await requestState.metadata {
+            [store,
+             fetcher,
+             source,
+             cacheKey,
+             requestChunkSize] in
 
                 if let existing =
                     try await store.entry(
@@ -390,16 +415,7 @@ final class MediaCacheResourceLoader:
 
                 return metadata
             }
-
-        metadataTask =
-            task
-
-        defer {
-            metadataTask = nil
         }
-
-        return try await task.value
-    }
 
     private func populateContentInformation(
         loadingRequest:
@@ -662,21 +678,6 @@ final class MediaCacheResourceLoader:
 
     // MARK: - Helpers
 
-    private static func mediaID(
-        from source:
-            MediaSource
-    ) -> String {
-
-        if let id =
-            source.metadata?.id,
-           !id.isEmpty {
-
-            return id
-        }
-
-        return source.url.absoluteString
-    }
-
     private static func contentTypeIdentifier(
         from mimeType:
             String,
@@ -734,14 +735,10 @@ final class MediaCacheResourceLoader:
     }
 
     deinit {
-
-        for task in
-            loadingTasks.values {
-
-            task.cancel()
+        let requestState = self.requestState
+        Task {
+            await requestState.cancelAll()
         }
-
-        metadataTask?.cancel()
     }
 }
 

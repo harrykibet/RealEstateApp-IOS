@@ -121,8 +121,8 @@ final class AVPlayerWrapper:
     nonisolated(nonsending)
     func load(
         mediaId:
-        String,
-        _ source:
+            String,
+        source:
             MediaSource
     ) async throws {
 
@@ -150,6 +150,8 @@ final class AVPlayerWrapper:
                 do {
 
                     try self.loadSynchronously(
+                        mediaId:
+                            mediaId,
                         source:
                             source
                     )
@@ -168,6 +170,8 @@ final class AVPlayerWrapper:
     }
 
     private func loadSynchronously(
+        mediaId:
+            String,
         source:
             MediaSource
     ) throws {
@@ -184,6 +188,8 @@ final class AVPlayerWrapper:
            let cacheConfiguration {
 
             try loadCached(
+                mediaId:
+                    mediaId,
                 source:
                     source,
                 configuration:
@@ -202,6 +208,8 @@ final class AVPlayerWrapper:
     // MARK: - Cached Load
 
     private func loadCached(
+        mediaId:
+            String,
         source:
             MediaSource,
         configuration:
@@ -220,6 +228,8 @@ final class AVPlayerWrapper:
 
         let loader =
             MediaCacheResourceLoader(
+                mediaId:
+                    mediaId,
                 source:
                     source,
                 configuration:
@@ -560,20 +570,4 @@ final class AVPlayerWrapper:
         }
     }
 
-    // MARK: - Media Identity
-
-    private static func mediaID(
-        from source:
-            MediaSource
-    ) -> String {
-
-        if let metadataID =
-            source.metadata?.id,
-           !metadataID.isEmpty {
-
-            return metadataID
-        }
-
-        return source.url.absoluteString
-    }
 }

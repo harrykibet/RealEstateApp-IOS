@@ -98,6 +98,11 @@ public actor FileMediaCacheStore {
     private let fileManager:
         FileManager
 
+    /// Recent reads stay in memory so hot playback does not rewrite
+    /// metadata.json on every cache hit.
+    private var accessOverrides:
+        [String: Date] = [:]
+
     // MARK: - Init
 
     public init(
@@ -224,6 +229,8 @@ public actor FileMediaCacheStore {
                 Int64(readEnd)
         }
 
+        accessOverrides[key] = Date()
+
         return result
     }
 
@@ -315,6 +322,9 @@ public actor FileMediaCacheStore {
         entry.lastAccessedAt =
             Date()
 
+        accessOverrides[key] =
+            entry.lastAccessedAt
+
         try saveEntry(
             entry
         )
@@ -346,6 +356,9 @@ public actor FileMediaCacheStore {
         entry.lastAccessedAt =
             Date()
 
+        accessOverrides[key] =
+            entry.lastAccessedAt
+
         try saveEntry(
             entry
         )
@@ -371,6 +384,11 @@ public actor FileMediaCacheStore {
         try fileManager.removeItem(
             at: directory
         )
+
+        accessOverrides.removeValue(
+            forKey:
+                key
+        )
     }
 
     public func removeAll() throws {
@@ -383,6 +401,10 @@ public actor FileMediaCacheStore {
 
         try fileManager.removeItem(
             at: rootDirectory
+        )
+
+        accessOverrides.removeAll(
+            keepingCapacity: false
         )
     }
 
@@ -491,9 +513,22 @@ public actor FileMediaCacheStore {
                 "metadata.json"
             }
             .compactMap {
-                try loadMetadata(
-                    from: $0
-                )
+                var entry =
+                    try loadMetadata(
+                        from: $0
+                    )
+
+                if let override =
+                    accessOverrides[
+                        entry.key
+                    ],
+                   override >
+                    entry.lastAccessedAt {
+                    entry.lastAccessedAt =
+                        override
+                }
+
+                return entry
             }
     }
 
@@ -512,9 +547,21 @@ public actor FileMediaCacheStore {
             return nil
         }
 
-        return try loadMetadata(
-            from: metadataURL
-        )
+        var entry =
+            try loadMetadata(
+                from:
+                    metadataURL
+            )
+
+        if let override =
+            accessOverrides[key],
+           override >
+            entry.lastAccessedAt {
+            entry.lastAccessedAt =
+                override
+        }
+
+        return entry
     }
 
     private func loadMetadata(

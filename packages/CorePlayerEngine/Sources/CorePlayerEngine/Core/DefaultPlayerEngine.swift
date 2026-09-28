@@ -50,6 +50,18 @@ final class DefaultPlayerEngine: PlayerEngine {
     func load(_ source: MediaSource) async throws {
         try await actor.handle(.load(source))
     }
+
+    func load(
+        mediaId: String,
+        source: MediaSource
+    ) async throws {
+        try await actor.handle(
+            .load(
+                mediaId: mediaId,
+                source: source
+            )
+        )
+    }
     
     func play() async throws {
         try await actor.handle(.play)

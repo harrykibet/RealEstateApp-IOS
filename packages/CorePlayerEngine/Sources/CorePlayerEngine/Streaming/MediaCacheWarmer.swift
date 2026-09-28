@@ -269,6 +269,9 @@ public final class MediaCacheWarmer:
         let environment =
             await environmentProvider()
 
+        let startTime =
+            ContinuousClock.now
+
         let budget =
             sizingPolicy.budget(
                 for: request.priority,
@@ -420,6 +423,24 @@ public final class MediaCacheWarmer:
                 sizingPolicy.maximumCacheBytes
         )
 
+        let elapsed =
+            startTime.duration(
+                to:
+                    ContinuousClock.now
+            )
+
+        let components =
+            elapsed.components
+
+        let elapsedSeconds =
+            TimeInterval(
+                components.seconds
+            ) +
+            TimeInterval(
+                components.attoseconds
+            ) /
+            1_000_000_000_000_000_000
+
         metrics?.onPrefetch(
             mediaId:
                 request.mediaId,
@@ -433,7 +454,7 @@ public final class MediaCacheWarmer:
                     )
                 ),
             time:
-                0
+                elapsedSeconds
         )
 
         return .warmed(

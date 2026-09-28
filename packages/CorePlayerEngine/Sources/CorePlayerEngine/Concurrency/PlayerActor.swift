@@ -203,7 +203,35 @@ actor PlayerActor {
             currentSource = source
             
             do {
-                try await player.load(source)
+                try await player.load(
+                    mediaId:
+                        source.url.absoluteString,
+                    source:
+                        source
+                )
+            } catch {
+                handlePlaybackFailure(error)
+                throw error
+            }
+
+        case let .load(
+            mediaId: mediaId,
+            source: source
+        ):
+            
+            await watchdog.cancel()
+            
+            apply(.loadStarted)
+            
+            currentSource = source
+            
+            do {
+                try await player.load(
+                    mediaId:
+                        mediaId,
+                    source:
+                        source
+                )
             } catch {
                 handlePlaybackFailure(error)
                 throw error

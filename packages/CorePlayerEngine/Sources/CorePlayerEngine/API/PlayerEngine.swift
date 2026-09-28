@@ -12,6 +12,12 @@ public protocol PlayerEngine: AnyObject {
 
     func load(_ source: MediaSource) async throws
 
+    /// Loads media using its stable domain-level identity.
+    func load(
+        mediaId: String,
+        source: MediaSource
+    ) async throws
+
     func play() async throws
 
     func pause() async throws
@@ -41,4 +47,14 @@ public protocol PlayerEngine: AnyObject {
     var currentTime: TimeInterval { get async }
 
     var duration: TimeInterval? { get async }
+}
+
+public extension PlayerEngine {
+
+    func load(
+        mediaId: String,
+        source: MediaSource
+    ) async throws {
+        try await load(source)
+    }
 }

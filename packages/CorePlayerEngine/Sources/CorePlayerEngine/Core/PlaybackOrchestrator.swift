@@ -345,7 +345,10 @@ extension PlaybackOrchestrator: PlaybackRecoveryTarget {
         let generation = playGeneration
 
         try await managed.engine.load(
-            activePlayback.source
+            mediaId:
+                activePlayback.mediaId,
+            source:
+                activePlayback.source
         )
 
         // A user action may have replaced the active item while

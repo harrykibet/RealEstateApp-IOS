@@ -180,6 +180,74 @@ final class MediaCacheStoreTests:
         )
     }
 
+
+    func testReadUpdatesRecencyWithoutChangingCachedBytes()
+        async throws {
+
+        let (
+            store,
+            directory
+        ) =
+            try makeStore()
+
+        defer {
+            try? FileManager.default
+                .removeItem(
+                    at:
+                        directory
+                )
+        }
+
+        try await store.writeChunk(
+            key:
+                "video-1",
+            offset:
+                0,
+            data:
+                Data(
+                    repeating:
+                        1,
+                    count:
+                        16
+                )
+        )
+
+        let before =
+            try await store.entry(
+                key:
+                    "video-1"
+            )!
+
+        try await Task.sleep(
+            for:
+                .milliseconds(10)
+        )
+
+        _ = try await store.read(
+            key:
+                "video-1",
+            offset:
+                0,
+            length:
+                16
+        )
+
+        let after =
+            try await store.entry(
+                key:
+                    "video-1"
+            )!
+
+        XCTAssertEqual(
+            before.cachedByteCount,
+            after.cachedByteCount
+        )
+        XCTAssertGreaterThan(
+            after.lastAccessedAt,
+            before.lastAccessedAt
+        )
+    }
+
     func testTrimRemovesCacheUntilUnderLimit()
         async throws {
 

@@ -15,6 +15,7 @@ final class PlayerPoolTests: XCTestCase {
         private var eventContinuation: AsyncStream<PlayerEvent>.Continuation?
 
         private(set) var loadCount = 0
+        private(set) var loadedMediaIds: [String] = []
         private(set) var playCount = 0
         private(set) var pauseCount = 0
         private(set) var stopCount = 0
@@ -53,6 +54,14 @@ final class PlayerPoolTests: XCTestCase {
             await Task.yield()
 
             stateContinuation?.yield(.ready)
+        }
+
+        func load(
+            mediaId: String,
+            source: MediaSource
+        ) async throws {
+            loadedMediaIds.append(mediaId)
+            try await load(source)
         }
 
         func play() async throws {
@@ -127,6 +136,10 @@ final class PlayerPoolTests: XCTestCase {
 
         XCTAssertTrue(success)
         XCTAssertEqual(created.count, 1)
+        XCTAssertEqual(
+            created[0].loadedMediaIds,
+            ["one"]
+        )
         XCTAssertEqual(await pool.activeCount, 1)
         XCTAssertEqual(await pool.idleCount, 0)
     }

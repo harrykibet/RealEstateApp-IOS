@@ -18,19 +18,19 @@ jobs:
       uses: actions/checkout@v4
 
     # =========================
-    # 🧠 Force Xcode 26.2
+    # 🧠 Force Xcode 26.6
     # =========================
-    - name: Select Xcode 26.2
+    - name: Select Xcode 26.6
       run: |
         set -e
 
         echo "🔍 Checking installed Xcode versions:"
         ls -d /Applications/Xcode*.app || true
 
-        XCODE_PATH="/Applications/Xcode_26.2.app"
+        XCODE_PATH="/Applications/Xcode_26.6.app"
 
         if [ ! -d "$XCODE_PATH" ]; then
-          echo "❌ Xcode 26.2 not found at $XCODE_PATH"
+          echo "❌ Xcode 26.6 not found at $XCODE_PATH"
           exit 1
         fi
 
@@ -48,7 +48,7 @@ jobs:
     # 🚨 Fail fast if wrong toolchain is active
     - name: Validate Xcode version
       run: |
-        xcodebuild -version | grep "26.2"
+        xcodebuild -version | grep "26.6"
 
     # =========================
     # ⚡ SwiftPM Cache

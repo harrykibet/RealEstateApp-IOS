@@ -213,13 +213,15 @@ final class MediaCacheResourceLoader:
                 loadingRequest
             )
 
-        Task { [weak self, weak loadingRequest, requestState] in
+        let request = loadingRequest
+
+        Task { [weak self, requestState] in
             await requestState.start(
                 id: identifier,
-                request: loadingRequest,
+                request: request,
                 operation: {
-                    guard let self, let loadingRequest else { return }
-                    await self.process(loadingRequest)
+                    guard let self else { return }
+                    await self.process(request)
                 }
             )
         }

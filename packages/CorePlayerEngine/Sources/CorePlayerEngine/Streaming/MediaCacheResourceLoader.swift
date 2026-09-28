@@ -110,7 +110,8 @@ private actor RequestState {
 @available(iOS 18.0, macOS 10.15, *)
 final class MediaCacheResourceLoader:
     NSObject,
-    AVAssetResourceLoaderDelegate {
+    AVAssetResourceLoaderDelegate,
+    @unchecked Sendable {
 
     // MARK: - Constants
 
@@ -130,9 +131,6 @@ final class MediaCacheResourceLoader:
 
     private let fetcher:
         MediaDataFetching
-
-    private let keyFactory:
-        MediaCacheKeyProviding
 
     private let requestChunkSize:
         Int
@@ -156,9 +154,6 @@ final class MediaCacheResourceLoader:
 
         self.fetcher =
             configuration.fetcher
-
-        self.keyFactory =
-            configuration.keyFactory
 
         self.requestChunkSize =
             configuration.requestChunkSize

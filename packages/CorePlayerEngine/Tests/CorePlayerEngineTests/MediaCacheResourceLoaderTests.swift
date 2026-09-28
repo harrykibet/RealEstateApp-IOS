@@ -14,6 +14,22 @@ import AVFoundation
 final class MediaCacheResourceLoaderTests:
     XCTestCase {
 
+
+    private final class RecordingKeyFactory:
+        MediaCacheKeyProviding,
+        @unchecked Sendable {
+
+        private(set) var receivedMediaId: String?
+
+        func makeKey(
+            mediaId: String,
+            source: MediaSource
+        ) -> String {
+            receivedMediaId = mediaId
+            return "test-key"
+        }
+    }
+
     func testCachedSchemeIsCreated() {
 
         let original =
@@ -47,6 +63,62 @@ final class MediaCacheResourceLoaderTests:
         XCTAssertEqual(
             cached?.query,
             original.query
+        )
+    }
+
+    func testLogicalMediaIdIsUsedForCacheIdentity() {
+
+        let directory =
+            FileManager.default
+                .temporaryDirectory
+                .appendingPathComponent(
+                    UUID().uuidString,
+                    isDirectory: true
+                )
+
+        defer {
+            try? FileManager.default
+                .removeItem(
+                    at:
+                        directory
+                )
+        }
+
+        let store =
+            FileMediaCacheStore(
+                rootDirectory:
+                    directory
+            )
+
+        let keyFactory =
+            RecordingKeyFactory()
+
+        let configuration =
+            PlayerCacheConfiguration(
+                store:
+                    store,
+                keyFactory:
+                    keyFactory
+            )
+
+        _ = MediaCacheResourceLoader(
+            mediaId:
+                "property-123",
+            source:
+                MediaSource(
+                    url:
+                        URL(
+                            string:
+                                "https://example.com/video.mp4"
+                        )!
+                ),
+            configuration:
+                configuration
+        )
+
+        XCTAssertEqual(
+            keyFactory.receivedMediaId,
+            "property-123"
         )
     }
 

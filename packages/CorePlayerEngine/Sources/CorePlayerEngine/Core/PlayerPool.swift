@@ -182,7 +182,10 @@ public final class PlayerPool {
             try Task.checkCancellation()
 
             try await managed.engine.load(
-                source
+                mediaId:
+                    mediaId,
+                source:
+                    source
             )
 
             try Task.checkCancellation()

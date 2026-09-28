@@ -47,6 +47,7 @@ public protocol PlayerEngine: AnyObject {
     var currentTime: TimeInterval { get async }
 
     var duration: TimeInterval? { get async }
+}
 
 public extension PlayerEngine {
 

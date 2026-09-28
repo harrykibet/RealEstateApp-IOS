@@ -10,6 +10,7 @@ import Foundation
 
 public enum PlayerIntent {
     case load(MediaSource)
+    case load(mediaId: String, source: MediaSource)
     case play
     case pause
     case seek(TimeInterval)
